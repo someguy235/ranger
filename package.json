@@ -27,7 +27,6 @@
     "@parcel/transformer-image": "^2.6.0",
     "@parcel/transformer-sass": "^2.6.0",
     "bcrypt": "^5.0.1",
-    "body-parser": "^1.20.0",
     "dotenv": "^16.0.1",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",

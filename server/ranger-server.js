@@ -1,47 +1,36 @@
 const express = require("express");
-// const fetch = require("node-fetch");
-// const _ = require("underscore");
-// const secret = require("./secret.json");
-// const MongoClient = require("mongodb").MongoClient;
+const mongoose = require("mongoose");
+const passport = require("passport");
 
-const PORT = process.env.PORT || 3001;
+// const UserModel = require("./model/model");
+
+mongoose.connect("mongodb://127.0.0.1:27017/passport-jwt", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+mongoose.connection.on("error", (error) => console.log(error));
+mongoose.Promise = global.Promise;
+
+require("./auth/auth");
+
+const routes = require("./routes/routes");
+const secureRoute = require("./routes/secure-routes");
 
 const app = express();
-// const jwt = require("jsonwebtoken");
-// const dotenv = require("dotenv");
 
-// get config vars
-// dotenv.config();
+app.use(express.json());
 
-// const generateAccessToken = (username) => {
-//   return jwt.sign(username, process.env.TOKEN_SECRET, { expiresIn: "1800s" });
-// };
+app.use("/", routes);
 
-// const authenticateToken = (req, res, next) => {
-//   const authHeader = req.headers["authorization"];
-//   const token = authHeader && authHeader.split(" ")[1];
-//   if (token == null) return res.sendStatus(401);
-//   jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
-//     console.log(err);
-//     if (err) return res.sendStatus(403);
-//     req.user = user;
-//     next();
-//   });
-// };
+// Plug in the JWT strategy as a middleware so only verified users can access this route.
+app.use("/user", passport.authenticate("jwt", { session: false }), secureRoute);
 
-app.get("/", async (req, res) => {
-  res.json({ response: "ok" });
+// Handle errors.
+app.use(function (err, req, res, next) {
+  res.status(err.status || 500);
+  res.json({ error: err });
 });
 
-// app.post("/api/upload", authenticateToken, (req, res) => {
-//   res.json({ response: "upload" });
-// });
-
-// app.post("/api/signin", (req, res) => {
-//   const token = generateAccessToken({ username: req.body.username });
-//   res.json(token);
-// });
-
-app.listen(PORT, () => {
-  console.log(`Server listening on ${PORT}`);
+app.listen(3001, () => {
+  console.log("Server started.");
 });
