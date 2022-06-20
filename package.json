@@ -26,6 +26,7 @@
   "dependencies": {
     "@parcel/transformer-image": "^2.6.0",
     "@parcel/transformer-sass": "^2.6.0",
+    "@vue/cli": "^5.0.6",
     "bcrypt": "^5.0.1",
     "dotenv": "^16.0.1",
     "express": "^4.17.1",

@@ -1,5 +1,22 @@
 <template>
-  <div class="row">
+  <div class="main">
+    <header class="header">
+      <div></div>
+      <div class="header-content">Header</div>
+      <div></div>
+    </header>
+    <div class="content">
+      <div class="content-row">
+        <section class="trips">Trips</section>
+        <section class="map">Maps</section>
+        <section class="parks">Parks</section>
+      </div>
+      <div class="timeline-row">
+        <div class="timeline">Timeline</div>
+      </div>
+    </div>
+  </div>
+  <!-- <div class="row">
     <input v-model.number="num1" type="number" />
     <span>+</span>
     <input v-model.number="num2" type="number" />
@@ -14,7 +31,7 @@
       <option>Al Pastor</option>
     </select>
     <p v-if="name">My favorite kind of taco is {{ name }}</p>
-  </div>
+  </div> -->
 </template>
 
 <script>
@@ -30,34 +47,79 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-$primary: #5968d7;
-
-.row {
-  margin: 50px;
-  display: flex;
-  justify-content: center;
-  font-family: "Work Sans", sans-serif;
+.main {
+  display: grid;
+  height: 100%;
+  grid-template-rows: 100px minmax(400px, 800px);
 }
-
-input,
-span {
-  padding: 10px;
-  font-size: 30px;
-  font-family: "Work Sans", sans-serif;
-}
-
-input {
-  width: 50px;
-}
-
-span {
-  width: 20px;
-}
-
-.second {
-  font-size: 18px;
-  p {
-    margin-left: 20px;
+.header {
+  display: grid;
+  grid-template-columns: auto minmax(50%, 1140px) auto;
+  width: 100%;
+  .header-content {
+    background-color: #e9baf1;
   }
 }
+.content {
+  background-color: #f5f5f5;
+  display: grid;
+  grid-template-rows: auto 100px;
+
+  .content-row {
+    display: grid;
+    grid-template-columns:
+      minmax(20%, 300px)
+      minmax(60%, 1400px)
+      minmax(20%, 300px);
+    .trips {
+      background-color: #eba1a1;
+    }
+    .map {
+      background-color: #dad6b6;
+    }
+    .parks {
+      background-color: #a1cceb;
+    }
+  }
+  .timeline-row {
+    display: grid;
+    // grid-template-columns:
+    // minmax(20%, 300px)
+    // minmax(60%, 1400px)
+    // minmax(20%, 300px);
+    .timeline {
+      background-color: #c2e5c4;
+    }
+  }
+}
+// $primary: #5968d7;
+
+// .row {
+//   margin: 50px;
+//   display: flex;
+//   justify-content: center;
+//   font-family: "Work Sans", sans-serif;
+// }
+
+// input,
+// span {
+//   padding: 10px;
+//   font-size: 30px;
+//   font-family: "Work Sans", sans-serif;
+// }
+
+// input {
+//   width: 50px;
+// }
+
+// span {
+//   width: 20px;
+// }
+
+// .second {
+//   font-size: 18px;
+//   p {
+//     margin-left: 20px;
+//   }
+// }
 </style>
