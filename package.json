@@ -38,7 +38,8 @@
     "passport": "^0.6.0",
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
-    "vue": "^3.2.37"
+    "vue": "^3.2.37",
+    "vuex": "^4.0.2"
   },
   "browserslist": [
     "last 2 Chrome versions"
