@@ -21,10 +21,8 @@ const app = express();
 app.use(express.json());
 
 app.use("/ranger/api/", routes);
-
-// Plug in the JWT strategy as a middleware so only verified users can access this route.
 app.use(
-  "/ranger/api/user",
+  "/ranger/api/",
   passport.authenticate("jwt", { session: false }),
   secureRoute
 );

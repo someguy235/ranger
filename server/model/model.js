@@ -28,6 +28,28 @@ UserSchema.methods.isValidPassword = async function (password) {
   return compare;
 };
 
-const UserModel = mongoose.model("user", UserSchema);
+const TripSchema = new Schema({
+  title: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+  bDate: {
+    type: String,
+    required: true,
+    unique: false,
+  },
+  eDate: {
+    type: String,
+    required: true,
+    unique: false,
+  },
+  kml: {},
+  image: {},
+  parks: {},
+});
 
-module.exports = UserModel;
+const UserModel = mongoose.model("user", UserSchema);
+const TripModel = mongoose.model("trip", TripSchema);
+
+module.exports = { UserModel, TripModel };

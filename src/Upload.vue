@@ -11,7 +11,18 @@
   </div>
   <div id="upload" v-if="token !== null">
     <div>{{ user }}</div>
-    <div>{{ token }}</div>
+    <!-- <div>{{ token }}</div> -->
+    <form @submit.prevent="upload">
+      <input v-model="title" placeholder="title" />
+      <br />
+      <input v-model="bDate" type="date" />
+      <br />
+      <input v-model="eDate" type="date" />
+      <br />
+      <input v-model="parks" />
+      <br />
+      <button type="submit">Upload</button>
+    </form>
   </div>
 </template>
 
@@ -32,6 +43,12 @@ export default {
     return {
       email: "",
       password: "",
+      title: "",
+      bDate: "",
+      eDate: "",
+      kml: null,
+      image: null,
+      parks: [],
     };
   },
   methods: {
@@ -49,6 +66,20 @@ export default {
       const { user, token } = await response.json();
       this.setUser(this.email);
       this.setToken(token);
+    },
+    async upload() {
+      const response = await fetch("/ranger/api/upload", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+          Authorization: "Bearer " + this.token,
+        },
+        body: JSON.stringify({
+          title: "Test trip",
+        }),
+      });
+      const r = response.json();
+      console.log(r);
     },
   },
 };
