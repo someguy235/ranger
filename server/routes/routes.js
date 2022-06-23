@@ -3,6 +3,8 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 
+const ParkModel = require("../model/model").ParkModel;
+
 dotenv.config();
 
 const router = express.Router();
@@ -39,6 +41,17 @@ router.post("/login", async (req, res, next) => {
       return next(error);
     }
   })(req, res, next);
+});
+
+router.get("/parks", async (req, res) => {
+  try {
+    const parks = await ParkModel.find();
+    console.log(parks);
+    res.json(parks);
+  } catch (error) {
+    console.log(error);
+    res.json(null);
+  }
 });
 
 module.exports = router;

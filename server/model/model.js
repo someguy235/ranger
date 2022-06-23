@@ -49,7 +49,16 @@ const TripSchema = new Schema({
   parks: {},
 });
 
+const ParkSchema = new Schema({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
+});
+
 const UserModel = mongoose.model("user", UserSchema);
 const TripModel = mongoose.model("trip", TripSchema);
+const ParkModel = mongoose.model("park", ParkSchema);
 
-module.exports = { UserModel, TripModel };
+module.exports = { UserModel, TripModel, ParkModel };

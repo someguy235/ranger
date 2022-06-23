@@ -1,0 +1,12 @@
+[
+  {
+    "id": 1,
+    "name": "Yosemite",
+    "state": "CA"
+  },
+  { "name": "Zion" },
+  { "name": "Congaree" },
+  { "name": "Yellowstone" },
+  { "name": "Bryce Canyon" },
+  { "name": "Grand Canyon" }
+]

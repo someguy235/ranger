@@ -19,7 +19,15 @@
       <br />
       <input v-model="eDate" type="date" />
       <br />
-      <input v-model="parks" />
+      <select v-model="parks" size="5" multiple>
+        <option v-for="park in availableParks" :value="park.name">
+          {{ park.name }}
+        </option>
+      </select>
+      <br />
+      <label>KML<input type="file" ref="kml" /></label>
+      <br />
+      <label>IMG<input type="file" ref="img" /></label>
       <br />
       <button type="submit">Upload</button>
     </form>
@@ -29,9 +37,12 @@
 <script>
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
+import { ref } from "vue";
 export default {
   setup() {
     const store = useStore();
+    const kml = ref(null);
+    const img = ref(null);
     return {
       user: computed(() => store.state.user),
       token: computed(() => store.state.token),
@@ -46,8 +57,9 @@ export default {
       title: "",
       bDate: "",
       eDate: "",
-      kml: null,
-      image: null,
+      //   kml: null,
+      //   image: null,
+      availableParks: [],
       parks: [],
     };
   },
@@ -68,19 +80,36 @@ export default {
       this.setToken(token);
     },
     async upload() {
-      const response = await fetch("/ranger/api/upload", {
-        method: "POST",
-        headers: {
-          "Content-type": "application/json",
-          Authorization: "Bearer " + this.token,
-        },
-        body: JSON.stringify({
-          title: "Test trip",
-        }),
-      });
-      const r = response.json();
-      console.log(r);
+      console.log(`title: ${this.title}`);
+      console.log(`bDate: ${this.bDate}`);
+      console.log(`eDate: ${this.eDate}`);
+      console.log(`parks: ${this.parks}`);
+      console.log(`kml: ${kml}`);
+      console.log(`img: ${img}`);
+      //   const response = await fetch("/ranger/api/upload", {
+      //     method: "POST",
+      //     headers: {
+      //       "Content-type": "application/json",
+      //       Authorization: "Bearer " + this.token,
+      //     },
+      //     body: JSON.stringify({
+      //       title: "Test trip",
+      //     }),
+      //   });
+      //   const r = await response.json();
+      //   console.log(r);
     },
+    async getParks() {
+      const response = await fetch("/ranger/api/parks", {
+        method: "GET",
+      });
+      const parks = await response.json();
+      console.log(parks);
+      this.availableParks = parks;
+    },
+  },
+  beforeMount() {
+    this.getParks();
   },
 };
 </script>
