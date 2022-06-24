@@ -12,7 +12,7 @@
   <div id="upload" v-if="token !== null">
     <div>{{ user }}</div>
     <!-- <div>{{ token }}</div> -->
-    <form @submit.prevent="upload">
+    <form @submit.prevent="upload" enctype="multipart/form-data">
       <input v-model="title" placeholder="title" />
       <br />
       <input v-model="bDate" type="date" />
@@ -25,9 +25,9 @@
         </option>
       </select>
       <br />
-      <label>KML<input type="file" ref="kml" /></label>
+      <label>KML<input type="file" ref="kml" name="kml" /></label>
       <br />
-      <label>IMG<input type="file" ref="img" /></label>
+      <label>IMG<input type="file" ref="img" name="img" /></label>
       <br />
       <button type="submit">Upload</button>
     </form>
@@ -44,6 +44,8 @@ export default {
     const kml = ref(null);
     const img = ref(null);
     return {
+      kml,
+      img,
       user: computed(() => store.state.user),
       token: computed(() => store.state.token),
       setUser: (user) => store.commit("setUser", user),
@@ -80,31 +82,28 @@ export default {
       this.setToken(token);
     },
     async upload() {
-      console.log(`title: ${this.title}`);
-      console.log(`bDate: ${this.bDate}`);
-      console.log(`eDate: ${this.eDate}`);
-      console.log(`parks: ${this.parks}`);
-      console.log(`kml: ${kml}`);
-      console.log(`img: ${img}`);
-      //   const response = await fetch("/ranger/api/upload", {
-      //     method: "POST",
-      //     headers: {
-      //       "Content-type": "application/json",
-      //       Authorization: "Bearer " + this.token,
-      //     },
-      //     body: JSON.stringify({
-      //       title: "Test trip",
-      //     }),
-      //   });
-      //   const r = await response.json();
-      //   console.log(r);
+      const params = new FormData();
+      params.append("title", this.title);
+      params.append("bDate", this.bDate);
+      params.append("eDate", this.eDate);
+      params.append("parks", this.parks);
+      params.append("kml", this.kml.files[0]);
+      params.append("img", this.img.files[0]);
+      const response = await fetch("/ranger/api/upload", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + this.token,
+        },
+        body: params,
+      });
+      const r = await response.json();
+      console.log(r);
     },
     async getParks() {
       const response = await fetch("/ranger/api/parks", {
         method: "GET",
       });
       const parks = await response.json();
-      console.log(parks);
       this.availableParks = parks;
     },
   },

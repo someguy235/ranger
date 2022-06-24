@@ -46,7 +46,6 @@ router.post("/login", async (req, res, next) => {
 router.get("/parks", async (req, res) => {
   try {
     const parks = await ParkModel.find();
-    console.log(parks);
     res.json(parks);
   } catch (error) {
     console.log(error);
