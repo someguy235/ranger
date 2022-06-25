@@ -1,36 +1,30 @@
 <template>
-  <div>upload page</div>
-  <div id="login" v-if="token === null">
-    <form @submit.prevent="login">
-      <input v-model="email" placeholder="email" />
-      <br />
-      <input v-model="password" placeholder="password" />
-      <br />
-      <button type="submit">Login</button>
-    </form>
-  </div>
-  <div id="upload" v-if="token !== null">
-    <div>{{ user }}</div>
-    <!-- <div>{{ token }}</div> -->
-    <form @submit.prevent="upload" enctype="multipart/form-data">
-      <input v-model="title" placeholder="title" />
-      <br />
-      <input v-model="bDate" type="date" />
-      <br />
-      <input v-model="eDate" type="date" />
-      <br />
-      <select v-model="parks" size="5" multiple>
-        <option v-for="park in availableParks" :value="park.name">
-          {{ park.name }}
-        </option>
-      </select>
-      <br />
-      <label>KML<input type="file" ref="kml" name="kml" /></label>
-      <br />
-      <label>IMG<input type="file" ref="img" name="img" /></label>
-      <br />
-      <button type="submit">Upload</button>
-    </form>
+  <div class="main">
+    <div id="title">upload page ({{ user }})</div>
+    <div id="login" v-if="token === null">
+      <form @submit.prevent="login">
+        <input v-model="email" placeholder="email" />
+        <br />
+        <input v-model="password" placeholder="password" />
+        <br />
+        <button type="submit">Login</button>
+      </form>
+    </div>
+    <div id="upload" v-if="token !== null">
+      <form @submit.prevent="upload" enctype="multipart/form-data">
+        <input v-model="title" placeholder="title" />
+        <input v-model="bDate" type="date" />
+        <input v-model="eDate" type="date" />
+        <select v-model="parks" size="5" multiple>
+          <option v-for="park in availableParks" :value="park.name">
+            {{ park.name }}
+          </option>
+        </select>
+        <label>KML<input type="file" ref="kml" name="kml" /></label>
+        <label>IMG<input type="file" ref="img" name="img" /></label>
+        <button type="submit">Upload</button>
+      </form>
+    </div>
   </div>
 </template>
 
@@ -113,4 +107,44 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.main {
+  display: grid;
+  grid-template-columns: 25% 50% 25%;
+  grid-template-rows: 10% 90%;
+  grid-template-areas:
+    ". title ."
+    ". main .";
+  height: 100%;
+  justify-content: center;
+}
+#title {
+  align-items: center;
+  display: grid;
+  grid-area: title;
+  justify-content: center;
+}
+#login {
+  display: grid;
+  grid-area: main;
+  justify-content: center;
+}
+#upload {
+  display: grid;
+  grid-area: main;
+  justify-content: center;
+  form {
+    background-color: aquamarine;
+    display: grid;
+    row-gap: 1rem;
+    height: 50%;
+    justify-content: center;
+    // align-items: center;
+    input {
+      margin: 0;
+      padding: 0;
+      width: 75%;
+    }
+  }
+}
+</style>
