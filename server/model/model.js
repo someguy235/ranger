@@ -29,24 +29,41 @@ UserSchema.methods.isValidPassword = async function (password) {
 };
 
 const TripSchema = new Schema({
+  user: {
+    type: String,
+    required: true,
+    unique: false,
+  },
   title: {
     type: String,
     required: true,
-    unique: true,
+    unique: false,
   },
   bDate: {
-    type: String,
+    type: Date,
     required: true,
     unique: false,
   },
   eDate: {
-    type: String,
+    type: Date,
     required: true,
     unique: false,
   },
-  kml: {},
-  image: {},
-  parks: {},
+  kml: {
+    type: Buffer,
+    required: true,
+    unique: false,
+  },
+  image: {
+    type: Buffer,
+    required: true,
+    unique: false,
+  },
+  parks: {
+    type: Array,
+    required: true,
+    unique: false,
+  },
 });
 
 const ParkSchema = new Schema({

@@ -12,16 +12,18 @@
     </div>
     <div id="upload" v-if="token !== null">
       <form @submit.prevent="upload" enctype="multipart/form-data">
-        <input v-model="title" placeholder="title" />
-        <input v-model="bDate" type="date" />
-        <input v-model="eDate" type="date" />
-        <select v-model="parks" size="5" multiple>
+        <input v-model="title" placeholder="title" required />
+        <input v-model="bDate" type="date" required />
+        <input v-model="eDate" type="date" required />
+        <select v-model="parks" size="5" multiple required>
           <option v-for="park in availableParks" :value="park.name">
             {{ park.name }}
           </option>
         </select>
-        <label>KML<input type="file" ref="kml" name="kml" /></label>
-        <label>IMG<input type="file" ref="img" name="img" /></label>
+        <label>KML<input type="file" ref="kml" name="kml" required /></label>
+        <label
+          >IMG<input type="file" ref="image" name="image" required
+        /></label>
         <button type="submit">Upload</button>
       </form>
     </div>
@@ -36,10 +38,10 @@ export default {
   setup() {
     const store = useStore();
     const kml = ref(null);
-    const img = ref(null);
+    const image = ref(null);
     return {
       kml,
-      img,
+      image,
       user: computed(() => store.state.user),
       token: computed(() => store.state.token),
       setUser: (user) => store.commit("setUser", user),
@@ -53,8 +55,6 @@ export default {
       title: "",
       bDate: "",
       eDate: "",
-      //   kml: null,
-      //   image: null,
       availableParks: [],
       parks: [],
     };
@@ -82,7 +82,7 @@ export default {
       params.append("eDate", this.eDate);
       params.append("parks", this.parks);
       params.append("kml", this.kml.files[0]);
-      params.append("img", this.img.files[0]);
+      params.append("image", this.image.files[0]);
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {
