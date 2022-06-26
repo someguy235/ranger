@@ -2,13 +2,7 @@
   <div class="main">
     <div id="title">upload page ({{ user }})</div>
     <div id="login" v-if="token === null">
-      <form @submit.prevent="login">
-        <input v-model="email" placeholder="email" />
-        <br />
-        <input v-model="password" placeholder="password" />
-        <br />
-        <button type="submit">Login</button>
-      </form>
+      <login />
     </div>
     <div id="upload" v-if="token !== null">
       <form @submit.prevent="upload" enctype="multipart/form-data">
@@ -34,7 +28,12 @@
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { ref } from "vue";
+import Login from "./components/Login.vue";
+
 export default {
+  components: {
+    Login,
+  },
   setup() {
     const store = useStore();
     const kml = ref(null);
@@ -44,14 +43,10 @@ export default {
       image,
       user: computed(() => store.state.user),
       token: computed(() => store.state.token),
-      setUser: (user) => store.commit("setUser", user),
-      setToken: (token) => store.commit("setToken", token),
     };
   },
   data() {
     return {
-      email: "",
-      password: "",
       title: "",
       bDate: "",
       eDate: "",
@@ -60,21 +55,6 @@ export default {
     };
   },
   methods: {
-    async login() {
-      const response = await fetch("/ranger/api/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: this.email,
-          password: this.password,
-        }),
-      });
-      const { user, token } = await response.json();
-      this.setUser(this.email);
-      this.setToken(token);
-    },
     async upload() {
       const params = new FormData();
       params.append("title", this.title);
@@ -124,11 +104,6 @@ export default {
   grid-area: title;
   justify-content: center;
 }
-#login {
-  display: grid;
-  grid-area: main;
-  justify-content: center;
-}
 #upload {
   display: grid;
   grid-area: main;
@@ -139,7 +114,6 @@ export default {
     row-gap: 1rem;
     height: 50%;
     justify-content: center;
-    // align-items: center;
     input {
       margin: 0;
       padding: 0;

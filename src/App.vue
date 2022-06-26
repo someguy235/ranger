@@ -5,10 +5,12 @@
 <script>
 import Home from "./Home.vue";
 import Upload from "./Upload.vue";
+import Edit from "./Edit.vue";
 import NotFound from "./NotFound.vue";
 const routes = {
   "/": Home,
   "/upload": Upload,
+  "/edit": Edit,
 };
 export default {
   data() {

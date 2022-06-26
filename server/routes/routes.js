@@ -2,6 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const { TripModel } = require("../model/model");
 
 const ParkModel = require("../model/model").ParkModel;
 
@@ -47,6 +48,23 @@ router.get("/parks", async (req, res) => {
   try {
     const parks = await ParkModel.find();
     res.json(parks);
+  } catch (error) {
+    console.log(error);
+    res.json(null);
+  }
+});
+
+router.get("/trips", async (req, res) => {
+  console.log("/trips");
+  console.log(req.query);
+  try {
+    const user = req.query.user;
+    if (user !== null) {
+      const trips = await TripModel.find({ user });
+      res.json(trips);
+    } else {
+      res.json([]);
+    }
   } catch (error) {
     console.log(error);
     res.json(null);
