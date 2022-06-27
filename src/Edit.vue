@@ -8,9 +8,18 @@
       <form @submit.prevent="getTrips">
         <button type="submit">Get Trips</button>
       </form>
-      <div v-for="trip in trips" class="trip">
+      <div v-for="trip in trips" id="trips">
         <div class="trip">
-          {{ trip.title }}
+          Title: {{ trip.title }}
+          <br />
+          id: {{ trip._id }} <br />
+          bDate:
+          {{ trip.bDate }} <br />
+          eDate: {{ trip.eDate }} <br />
+          parks: {{ trip.parks }} <br />
+          kml:
+          {{ trip.kml }} <br />
+          img: {{ trip.image }}
         </div>
       </div>
     </div>
@@ -46,6 +55,7 @@ export default {
           method: "GET",
         });
         const trips = await response.json();
+        console.log(trips);
         this.trips = trips;
       }
     },
@@ -73,6 +83,13 @@ export default {
 #edit {
   display: grid;
   grid-area: main;
+  grid-template-rows: 10% 90%;
   justify-content: center;
+}
+#trips {
+  display: grid;
+}
+.trip {
+  display: grid;
 }
 </style>
