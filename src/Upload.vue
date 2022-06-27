@@ -20,6 +20,7 @@
         /></label>
         <button type="submit">Upload</button>
       </form>
+      <div>{{ uploadMsg }}</div>
     </div>
   </div>
 </template>
@@ -52,10 +53,13 @@ export default {
       eDate: "",
       availableParks: [],
       parks: [],
+      uploadMsg: "waiting",
     };
   },
   methods: {
     async upload() {
+      // TODO: file type validation
+      this.uploadMsg = "";
       const params = new FormData();
       params.append("title", this.title);
       params.append("bDate", this.bDate);
@@ -63,6 +67,7 @@ export default {
       params.append("parks", this.parks);
       params.append("kml", this.kml.files[0]);
       params.append("image", this.image.files[0]);
+
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {
@@ -70,8 +75,18 @@ export default {
         },
         body: params,
       });
-      const r = await response.json();
-      console.log(r);
+      const r = await response.status;
+      if (r === 200) {
+        this.uploadMsg = "upload successful";
+        this.title = "";
+        this.bDate = "";
+        this.eDate = "";
+        this.parks = [];
+        this.kml.value = null;
+        this.image.value = null;
+      } else {
+        this.uploadMsg = "something went wrong";
+      }
     },
     async getParks() {
       const response = await fetch("/ranger/api/parks", {
@@ -91,7 +106,7 @@ export default {
 .main {
   display: grid;
   grid-template-columns: 25% 50% 25%;
-  grid-template-rows: 10% 90%;
+  grid-template-rows: 10% auto;
   grid-template-areas:
     ". title ."
     ". main .";
@@ -107,12 +122,12 @@ export default {
 #upload {
   display: grid;
   grid-area: main;
+  grid-template-rows: 50% auto;
   justify-content: center;
   form {
     background-color: aquamarine;
     display: grid;
     row-gap: 1rem;
-    height: 50%;
     justify-content: center;
     input {
       margin: 0;

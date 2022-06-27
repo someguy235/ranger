@@ -5,21 +5,21 @@
       <login />
     </div>
     <div id="edit" v-if="token !== null">
-      <form @submit.prevent="getTrips">
+      <!-- <form @submit.prevent="getTrips">
         <button type="submit">Get Trips</button>
-      </form>
-      <div v-for="trip in trips" id="trips">
-        <div class="trip">
-          Title: {{ trip.title }}
-          <br />
-          id: {{ trip._id }} <br />
-          bDate:
-          {{ trip.bDate }} <br />
-          eDate: {{ trip.eDate }} <br />
-          parks: {{ trip.parks }} <br />
-          kml:
-          {{ trip.kml }} <br />
-          img: {{ trip.image }}
+      </form> -->
+      <div id="trips">
+        <div v-for="trip in trips" class="trip">
+          <div>Title: {{ trip.title }}</div>
+          <div>id: {{ trip._id }}</div>
+          <div>bDate: {{ trip.bDate }}</div>
+          <div>eDate: {{ trip.eDate }}</div>
+          <div>parks: {{ trip.parks }}</div>
+          <!-- <div>kml: {{ trip.kml }}</div> -->
+          <div>
+            <img :src="`${getImgData(trip.image.data)}`" />
+          </div>
+          <div><button>edit</button></div>
         </div>
       </div>
     </div>
@@ -47,9 +47,14 @@ export default {
       trips: [],
     };
   },
+  watch: {
+    user(user) {
+      this.getTrips();
+    },
+  },
   methods: {
     async getTrips() {
-      console.log(`getTrips(${this.user})`);
+      console.log("getTrips()");
       if (this.user !== null) {
         const response = await fetch(`/ranger/api/trips?user=${this.user}`, {
           method: "GET",
@@ -59,6 +64,14 @@ export default {
         this.trips = trips;
       }
     },
+    getImgData(data) {
+      const buffer = Buffer.from(data);
+      const string = "data:image/jpg;base64," + buffer.toString("base64");
+      return string;
+    },
+  },
+  beforeMount() {
+    this.getTrips();
   },
 };
 </script>
@@ -83,13 +96,17 @@ export default {
 #edit {
   display: grid;
   grid-area: main;
-  grid-template-rows: 10% 90%;
+  grid-template-columns: 100%;
   justify-content: center;
 }
 #trips {
   display: grid;
+  overflow: scroll;
 }
 .trip {
   display: grid;
+  img {
+    max-width: 100%;
+  }
 }
 </style>

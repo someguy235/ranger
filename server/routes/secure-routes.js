@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const sharp = require("sharp");
 const router = express.Router();
 const TripModel = require("../model/model").TripModel;
 
@@ -12,23 +13,28 @@ router.post(
     { name: "kml", maxCount: 1 },
   ]),
   async (req, res) => {
-    // TODO: return success/error indications
+    // TODO: file type validation
     if (req.isAuthenticated()) {
-      //   res.json({
-      //     message: "It's the secure upload route",
-      //   });
       try {
-        const trip = await TripModel.create({
-          user: req.user.email,
-          title: req.body.title,
-          bDate: req.body.bDate,
-          eDate: req.body.eDate,
-          parks: req.body.parks.split(","),
-          kml: req.files.kml[0].buffer,
-          image: req.files.image[0].buffer,
-        });
+        sharp(req.files.image[0].buffer)
+          .resize(400)
+          .jpeg()
+          .toBuffer()
+          .then(async (imgData) => {
+            await TripModel.create({
+              user: req.user.email,
+              title: req.body.title,
+              bDate: req.body.bDate,
+              eDate: req.body.eDate,
+              parks: req.body.parks.split(","),
+              kml: req.files.kml[0].buffer,
+              image: imgData,
+            });
+            res.status(200).json();
+          });
       } catch (e) {
         console.log(e);
+        res.status(500).json();
       }
     }
   }
