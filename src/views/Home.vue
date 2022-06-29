@@ -2,7 +2,7 @@
   <div class="main">
     <header class="header">
       <div></div>
-      <div class="header-content">Header</div>
+      <div class="header-content">Home Page</div>
       <div></div>
     </header>
     <div class="content">
@@ -24,7 +24,9 @@
 <script>
 export default {
   data() {
-    return {};
+    return {
+      name: "Home",
+    };
   },
 };
 </script>

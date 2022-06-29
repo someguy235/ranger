@@ -1,32 +1,23 @@
 <template>
-  <component :is="currentView" />
+  <div id="nav">
+    <router-link to="/">Home</router-link> |
+    <router-link to="/Upload">Upload</router-link>
+  </div>
+  <router-view></router-view>
 </template>
 
 <script>
-import Home from "./Home.vue";
-import Upload from "./Upload.vue";
-import Edit from "./Edit.vue";
-import NotFound from "./NotFound.vue";
-const routes = {
-  "/": Home,
-  "/upload": Upload,
-  "/edit": Edit,
-};
 export default {
-  data() {
-    return { currentPath: window.location.hash };
-  },
-  computed: {
-    currentView() {
-      return routes[this.currentPath.slice(1) || "/"] || NotFound;
-    },
-  },
-  mounted() {
-    window.addEventListener("hashchange", () => {
-      this.currentPath = window.location.hash;
-    });
-  },
+  name: "App",
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style>
+body,
+html,
+#app {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+</style>

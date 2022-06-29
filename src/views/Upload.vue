@@ -29,7 +29,7 @@
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { ref } from "vue";
-import Login from "./components/Login.vue";
+import Login from "../components/Login.vue";
 
 export default {
   components: {
