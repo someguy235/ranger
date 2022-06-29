@@ -1,10 +1,5 @@
 <template>
   <div class="main">
-    <header class="header">
-      <div></div>
-      <div class="header-content">Home Page</div>
-      <div></div>
-    </header>
     <div class="content">
       <div class="content-row">
         <section class="trips">Trips</section>
@@ -15,14 +10,20 @@
         <div class="timeline">Timeline</div>
       </div>
     </div>
-    <div class="upload-link">
-      <a href="#/upload">upload</a>
-    </div>
   </div>
 </template>
 
 <script>
+import { useStore } from "vuex";
+
 export default {
+  setup() {
+    const store = useStore();
+    return {
+      setUser: (user) => store.commit("setUser", user),
+      setToken: (token) => store.commit("setToken", token),
+    };
+  },
   data() {
     return {
       name: "Home",
@@ -35,15 +36,7 @@ export default {
 .main {
   display: grid;
   height: 100%;
-  grid-template-rows: 100px minmax(400px, 800px);
-}
-.header {
-  display: grid;
-  grid-template-columns: auto minmax(50%, 1140px) auto;
-  width: 100%;
-  .header-content {
-    background-color: #e9baf1;
-  }
+  grid-template-rows: minmax(400px, 800px);
 }
 .content {
   background-color: #f5f5f5;

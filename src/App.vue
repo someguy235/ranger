@@ -1,14 +1,31 @@
 <template>
-  <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/Upload">Upload</router-link>
-  </div>
+  <header-comp />
   <router-view></router-view>
 </template>
 
 <script>
+import { useStore } from "vuex";
+import HeaderComp from "./components/Header.vue";
+
 export default {
   name: "App",
+  components: {
+    HeaderComp,
+  },
+  setup() {
+    const store = useStore();
+    return {
+      setUser: (user) => store.commit("setUser", user),
+      setToken: (token) => store.commit("setToken", token),
+    };
+  },
+  beforeMount() {
+    const authToken = localStorage.getItem("authToken");
+    if (authToken && authToken !== "null") this.setToken(authToken);
+
+    const authUser = localStorage.getItem("authUser");
+    if (authUser && authUser !== "null") this.setUser(authUser);
+  },
 };
 </script>
 

@@ -5,6 +5,7 @@
     <input v-model="password" placeholder="password" />
     <br />
     <button type="submit">Login</button>
+    <button @click.prevent="cancel">Cancel</button>
   </form>
 </template>
 
@@ -25,6 +26,7 @@ export default {
       password: "",
     };
   },
+  props: ["cancel"],
   methods: {
     async login() {
       const response = await fetch("/ranger/api/login", {
@@ -37,9 +39,13 @@ export default {
           password: this.password,
         }),
       });
+      // TODO: login successful?
       const { user, token } = await response.json();
       this.setUser(this.email);
       this.setToken(token);
+      localStorage.setItem("authToken", token);
+      localStorage.setItem("authUser", this.email);
+      this.cancel();
     },
   },
 };

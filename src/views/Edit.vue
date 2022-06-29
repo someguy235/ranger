@@ -29,7 +29,7 @@
 <script>
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
-import Login from "./components/Login.vue";
+import Login from "../components/Login.vue";
 
 export default {
   components: {
@@ -55,6 +55,10 @@ export default {
   methods: {
     async getTrips() {
       console.log("getTrips()");
+      console.log(this.user);
+      console.log("null");
+      console.log(null);
+      console.log(this.user !== null);
       if (this.user !== null) {
         const response = await fetch(`/ranger/api/trips?user=${this.user}`, {
           method: "GET",
