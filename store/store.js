@@ -4,6 +4,7 @@ const store = createStore({
   state: {
     user: null,
     token: null,
+    parks: null,
   },
   mutations: {
     setUser(state, user) {
@@ -11,6 +12,9 @@ const store = createStore({
     },
     setToken(state, token) {
       state.token = token;
+    },
+    setParks(state, parks) {
+      state.parks = parks;
     },
   },
   actions: {},

@@ -2,9 +2,7 @@
   <div class="main">
     <div class="content">
       <div class="content-row">
-        <section class="trips">
-          <trips :tripList="tripList" />
-        </section>
+        <trips :tripList="tripList" />
         <section class="map">Maps</section>
         <section class="parks">Parks</section>
       </div>
@@ -74,7 +72,6 @@ export default {
 <style lang="scss" scoped>
 .main {
   display: grid;
-  height: 100%;
   grid-template-rows: minmax(400px, 800px);
 }
 .content {
@@ -88,11 +85,7 @@ export default {
       minmax(20%, 300px)
       minmax(60%, 1400px)
       minmax(20%, 300px);
-    .trips {
-      background-color: #eba1a1;
-      display: grid;
-      overflow: scroll;
-    }
+    overflow-y: scroll;
     .map {
       background-color: #dad6b6;
     }

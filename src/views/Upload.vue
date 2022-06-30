@@ -88,16 +88,9 @@ export default {
         this.uploadMsg = "something went wrong";
       }
     },
-    async getParks() {
-      const response = await fetch("/ranger/api/parks", {
-        method: "GET",
-      });
-      const parks = await response.json();
-      this.availableParks = parks;
-    },
   },
   beforeMount() {
-    this.getParks();
+    // this.getParks();
   },
 };
 </script>

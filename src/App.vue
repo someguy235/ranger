@@ -17,7 +17,18 @@ export default {
     return {
       setUser: (user) => store.commit("setUser", user),
       setToken: (token) => store.commit("setToken", token),
+      setParks: (parks) => store.commit("setParks", parks),
     };
+  },
+  methods: {
+    async getParks() {
+      const response = await fetch("/ranger/api/parks", {
+        method: "GET",
+      });
+      const parks = await response.json();
+      console.log(parks);
+      this.setParks(parks);
+    },
   },
   beforeMount() {
     const authToken = localStorage.getItem("authToken");
@@ -25,6 +36,8 @@ export default {
 
     const authUser = localStorage.getItem("authUser");
     if (authUser && authUser !== "null") this.setUser(authUser);
+
+    this.getParks();
   },
 };
 </script>
