@@ -4,9 +4,12 @@
     <div class="header-content">
       <div>Ranger Logo</div>
       <div v-if="user" id="nav">
-        <router-link to="/">Home</router-link> |
-        <router-link to="/Upload">Upload</router-link> |
-        <router-link to="/Edit">Edit</router-link>
+        <span v-if="path === '/'">Home</span>
+        <router-link v-else to="/">Home</router-link> |
+        <span v-if="path === '/upload'">Upload</span>
+        <router-link v-else to="/upload">Upload</router-link> |
+        <span v-if="path === '/edit'">Edit</span>
+        <router-link v-else to="/edit">Edit</router-link>
         <div class="logout">
           <button @click="logout">Logout</button>
         </div>
@@ -25,6 +28,7 @@
 <script>
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
+import { useRoute } from "vue-router";
 
 import Login from "./Login.vue";
 
@@ -35,8 +39,10 @@ export default {
   },
   setup() {
     const store = useStore();
+    const route = useRoute();
     return {
       user: computed(() => store.state.user),
+      path: computed(() => route.path),
     };
   },
   data() {
@@ -44,9 +50,9 @@ export default {
       showLogin: false,
     };
   },
+  props: ["setUser", "setToken"],
   methods: {
     logout() {
-      console.log("logout");
       localStorage.setItem("authToken", null);
       localStorage.setItem("authUser", null);
       this.setUser(null);

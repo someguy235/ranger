@@ -1,5 +1,5 @@
 <template>
-  <header-comp />
+  <header-comp :setUser="setUser" :setToken="setToken" />
   <router-view></router-view>
 </template>
 

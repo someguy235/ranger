@@ -1,9 +1,13 @@
 [
   {
-    "id": 1,
+    "id": 12,
     "name": "Yosemite",
-    "state": "CA"
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "img": []
   },
+  { "id": 1, "name": "Acadia", "state": "ME", "lat": "", "lon": "", "img": [] },
   { "name": "Zion" },
   { "name": "Congaree" },
   { "name": "Yellowstone" },
