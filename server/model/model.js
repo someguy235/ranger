@@ -51,12 +51,12 @@ const TripSchema = new Schema({
   },
   kml: {
     type: Buffer,
-    required: true,
+    required: false,
     unique: false,
   },
   image: {
     type: Buffer,
-    required: true,
+    required: false,
     unique: false,
   },
   parks: {

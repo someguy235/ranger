@@ -14,10 +14,8 @@
             {{ park.name }}
           </option>
         </select>
-        <label>KML<input type="file" ref="kml" name="kml" required /></label>
-        <label
-          >IMG<input type="file" ref="image" name="image" required
-        /></label>
+        <label>KML<input type="file" ref="kml" name="kml" /></label>
+        <label>IMG<input type="file" ref="image" name="image" /></label>
         <button type="submit">Upload</button>
       </form>
       <div>{{ uploadMsg }}</div>
@@ -44,6 +42,7 @@ export default {
       image,
       user: computed(() => store.state.user),
       token: computed(() => store.state.token),
+      availableParks: computed(() => store.state.parks),
     };
   },
   data() {
@@ -51,7 +50,7 @@ export default {
       title: "",
       bDate: "",
       eDate: "",
-      availableParks: [],
+      // availableParks: [],
       parks: [],
       uploadMsg: "waiting",
     };
@@ -89,9 +88,9 @@ export default {
       }
     },
   },
-  beforeMount() {
-    // this.getParks();
-  },
+  // beforeMount() {
+  // this.getParks();
+  // },
 };
 </script>
 
