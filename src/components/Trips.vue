@@ -1,6 +1,6 @@
 <template>
   <section class="trips">
-    <div v-for="trip in tripList" class="trip">
+    <div v-for="trip in trips" class="trip">
       <div class="title">
         {{ trip.title }}
         <input type="checkbox" />
@@ -24,11 +24,11 @@ import { useStore } from "vuex";
 
 export default {
   name: "Trips",
-  props: ["tripList"],
   setup() {
     const store = useStore();
     return {
       parks: computed(() => store.state.parks),
+      trips: computed(() => store.state.trips),
     };
   },
   methods: {
@@ -37,9 +37,6 @@ export default {
       return park.image;
     },
   },
-  //   beforeMount() {
-  // console.log(this.parks);
-  //   },
 };
 </script>
 

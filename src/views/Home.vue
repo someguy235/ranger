@@ -2,9 +2,9 @@
   <div class="main">
     <div class="content">
       <div class="content-row">
-        <trips :tripList="tripList" />
+        <trips />
         <section class="map">Maps</section>
-        <section class="parks">Parks</section>
+        <parks />
       </div>
       <div class="timeline-row">
         <div class="timeline">Timeline</div>
@@ -19,11 +19,13 @@ import { useRoute } from "vue-router";
 import { computed } from "@vue/reactivity";
 
 import Trips from "../components/Trips.vue";
+import Parks from "../components/Parks.vue";
 
 export default {
   name: "Home",
   components: {
     Trips,
+    Parks,
   },
   setup() {
     const store = useStore();
@@ -33,12 +35,13 @@ export default {
       setToken: (token) => store.commit("setToken", token),
       user: computed(() => store.state.user),
       viewUser: computed(() => route.query?.user || store.state.user),
+      setTrips: (trips) => store.commit("setTrips", trips),
+      tripList: computed(() => store.state.trips),
     };
   },
   data() {
     return {
       name: "Home",
-      tripList: [],
     };
   },
   watch: {
@@ -48,7 +51,6 @@ export default {
   },
   methods: {
     async getTrips() {
-      // TODO: add to store instead
       console.log("getTrips()");
       if (this.viewUser !== null) {
         const response = await fetch(
@@ -59,7 +61,7 @@ export default {
         );
         const trips = await response.json();
         console.log(trips);
-        this.tripList = trips;
+        this.setTrips(trips);
       }
     },
   },
@@ -88,9 +90,6 @@ export default {
     overflow-y: scroll;
     .map {
       background-color: #dad6b6;
-    }
-    .parks {
-      background-color: #a1cceb;
     }
   }
   .timeline-row {
