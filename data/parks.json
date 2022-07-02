@@ -1,16 +1,51 @@
 [
   {
-    "id": 12,
+    "name": "Acadia",
+    "state": "ME",
+    "lat": "",
+    "lon": "",
+    "image": "acadia.png"
+  },
+  {
+    "name": "Bryce Canyon",
+    "state": "UT",
+    "lat": "",
+    "lon": "",
+    "image": "bryce.png"
+  },
+  {
+    "name": "Congaree",
+    "state": "SC",
+    "lat": "",
+    "lon": "",
+    "image": "congaree.png"
+  },
+  {
+    "name": "Grand Canyon",
+    "state": "AZ",
+    "lat": "",
+    "lon": "",
+    "image": "grandcanyon.png"
+  },
+  {
+    "name": "Yellowstone",
+    "state": "WY",
+    "lat": "",
+    "lon": "",
+    "image": "yellowstone.png"
+  },
+  {
     "name": "Yosemite",
     "state": "CA",
     "lat": "",
     "lon": "",
-    "img": []
+    "image": "yosemite.png"
   },
-  { "id": 1, "name": "Acadia", "state": "ME", "lat": "", "lon": "", "img": [] },
-  { "name": "Zion" },
-  { "name": "Congaree" },
-  { "name": "Yellowstone" },
-  { "name": "Bryce Canyon" },
-  { "name": "Grand Canyon" }
+  {
+    "name": "Zion",
+    "state": "UT",
+    "lat": "",
+    "lon": "",
+    "image": "zion.png"
+  }
 ]

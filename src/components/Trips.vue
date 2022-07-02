@@ -11,7 +11,7 @@
       <div class="miles">xxx miles</div>
       <div class="parks">
         <div v-for="park in trip.parks">
-          <img :src="getImageString(park)" />
+          <img :src="'./images/parks/' + getParkFilename(park)" />
         </div>
       </div>
     </div>
@@ -32,11 +32,9 @@ export default {
     };
   },
   methods: {
-    getImageString(title) {
+    getParkFilename(title) {
       const park = this.parks.filter((p) => p.name === title)[0];
-      const img = park.image;
-      if (img) return `data:${img.mime};base64,${img.data}`;
-      return "";
+      return park.image;
     },
   },
   beforeMount() {
