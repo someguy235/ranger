@@ -7,11 +7,81 @@
     "image": "acadia.png"
   },
   {
+    "name": "American Samoa",
+    "state": "AS",
+    "lat": "",
+    "lon": "",
+    "image": "americansamoa.png"
+  },
+  {
+    "name": "Arches",
+    "state": "UT",
+    "lat": "",
+    "lon": "",
+    "image": "arches.png"
+  },
+  {
+    "name": "Badlands",
+    "state": "SD",
+    "lat": "",
+    "lon": "",
+    "image": "badlands.png"
+  },
+  {
+    "name": "Big Bend",
+    "state": "TX",
+    "lat": "",
+    "lon": "",
+    "image": "bigbend.png"
+  },
+  {
+    "name": "Biscayne",
+    "state": "FL",
+    "lat": "",
+    "lon": "",
+    "image": "biscayne.png"
+  },
+  {
+    "name": "Black Canyon of the Gunnison",
+    "state": "CO",
+    "lat": "",
+    "lon": "",
+    "image": "gunnison.png"
+  },
+  {
     "name": "Bryce Canyon",
     "state": "UT",
     "lat": "",
     "lon": "",
     "image": "bryce.png"
+  },
+  {
+    "name": "Canyonlands",
+    "state": "UT",
+    "lat": "",
+    "lon": "",
+    "image": "canyonlands.png"
+  },
+  {
+    "name": "Capitol Reef",
+    "state": "UT",
+    "lat": "",
+    "lon": "",
+    "image": "capitolreef.png"
+  },
+  {
+    "name": "Carlsbad Caverns",
+    "state": "NM",
+    "lat": "",
+    "lon": "",
+    "image": "carlsbad.png"
+  },
+  {
+    "name": "Channel Islands",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "channelislands.png"
   },
   {
     "name": "Congaree",
@@ -21,11 +91,333 @@
     "image": "congaree.png"
   },
   {
+    "name": "Crater Lake",
+    "state": "OR",
+    "lat": "",
+    "lon": "",
+    "image": "craterlake.png"
+  },
+  {
+    "name": "Cuyahoga Valley",
+    "state": "OH",
+    "lat": "",
+    "lon": "",
+    "image": "cuyahogavalley.png"
+  },
+  {
+    "name": "Death Valley",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "deathvalley.png"
+  },
+  {
+    "name": "Denali",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "denali.png"
+  },
+  {
+    "name": "Dry Tortugas",
+    "state": "FL",
+    "lat": "",
+    "lon": "",
+    "image": "drytortugas.png"
+  },
+  {
+    "name": "Everglades",
+    "state": "FL",
+    "lat": "",
+    "lon": "",
+    "image": "everglades.png"
+  },
+  {
+    "name": "Gates of the Arctic",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "gatesofthearctic.png"
+  },
+  {
+    "name": "Gateway Arch",
+    "state": "MO",
+    "lat": "",
+    "lon": "",
+    "image": "gatewayarch.png"
+  },
+  {
+    "name": "Glacier",
+    "state": "MT",
+    "lat": "",
+    "lon": "",
+    "image": "glacier.png"
+  },
+  {
+    "name": "Glacier Bay",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "glacierbay.png"
+  },
+  {
     "name": "Grand Canyon",
     "state": "AZ",
     "lat": "",
     "lon": "",
     "image": "grandcanyon.png"
+  },
+  {
+    "name": "Grand Teton",
+    "state": "WY",
+    "lat": "",
+    "lon": "",
+    "image": "grandteton.png"
+  },
+  {
+    "name": "Great Basin",
+    "state": "NV",
+    "lat": "",
+    "lon": "",
+    "image": "greatbasin.png"
+  },
+  {
+    "name": "Great Sand Dunes",
+    "state": "CO",
+    "lat": "",
+    "lon": "",
+    "image": "sanddunes.png"
+  },
+  {
+    "name": "Great Smokey Mountains",
+    "state": "NC/TN",
+    "lat": "",
+    "lon": "",
+    "image": "smokeys.pmg"
+  },
+  {
+    "name": "Guadalupe Mountains",
+    "state": "TX",
+    "lat": "",
+    "lon": "",
+    "image": "guadalupe.png"
+  },
+  {
+    "name": "Halealaka",
+    "state": "HI",
+    "lat": "",
+    "lon": "",
+    "image": "halealaka.png"
+  },
+  {
+    "name": "Hawai'i Volcanoes",
+    "state": "HI",
+    "lat": "",
+    "lon": "",
+    "image": "volcanoes.png"
+  },
+  {
+    "name": "Hot Springs",
+    "state": "AR",
+    "lat": "",
+    "lon": "",
+    "image": "hotsprings.png"
+  },
+  {
+    "name": "Indiana Dunes",
+    "state": "IN",
+    "lat": "",
+    "lon": "",
+    "image": "indianadunes.png"
+  },
+  {
+    "name": "Isle Royale",
+    "state": "MI",
+    "lat": "",
+    "lon": "",
+    "image": "isleroyale.png"
+  },
+  {
+    "name": "Joshua Tree",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "joshuatree.png"
+  },
+  {
+    "name": "Katmai",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "katmai.png"
+  },
+  {
+    "name": "Kenai Fjords",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "kenaifjords.png"
+  },
+  {
+    "name": "King's Canyon",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "kingscanyon.png"
+  },
+  {
+    "name": "Kobuk Valley",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "kobukvalley.png"
+  },
+  {
+    "name": "Lake Clark",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "lakeclark.png"
+  },
+  {
+    "name": "Lassen Volcanic",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "lassen.png"
+  },
+  {
+    "name": "Mammoth Cave",
+    "state": "KY",
+    "lat": "",
+    "lon": "",
+    "image": "mammothcave.png"
+  },
+  {
+    "name": "Mesa Verde",
+    "state": "CO",
+    "lat": "",
+    "lon": "",
+    "image": "mesaverde.png"
+  },
+  {
+    "name": "Mount Ranier",
+    "state": "WA",
+    "lat": "",
+    "lon": "",
+    "image": "ranier.png"
+  },
+  {
+    "name": "New River Gorge",
+    "state": "WV",
+    "lat": "",
+    "lon": "",
+    "image": "newrivergorge.png"
+  },
+  {
+    "name": "North Cascades",
+    "state": "WA",
+    "lat": "",
+    "lon": "",
+    "image": "cascades.png"
+  },
+  {
+    "name": "Olympic",
+    "state": "WA",
+    "lat": "",
+    "lon": "",
+    "image": "olympic.png"
+  },
+  {
+    "name": "Petrified Forest",
+    "state": "AZ",
+    "lat": "",
+    "lon": "",
+    "image": "petrifiedforest.png"
+  },
+  {
+    "name": "Pinnacles",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "pinnacles.png"
+  },
+  {
+    "name": "Redwood",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "redwood.png"
+  },
+  {
+    "name": "Rocky Mountain",
+    "state": "CO",
+    "lat": "",
+    "lon": "",
+    "image": "rockymountain.png"
+  },
+  {
+    "name": "Saguaro",
+    "state": "AZ",
+    "lat": "",
+    "lon": "",
+    "image": "saguaro.png"
+  },
+  {
+    "name": "Sequoia",
+    "state": "CA",
+    "lat": "",
+    "lon": "",
+    "image": "sequoia.png"
+  },
+  {
+    "name": "Shenandoah",
+    "state": "VA",
+    "lat": "",
+    "lon": "",
+    "image": "shenandoah.png"
+  },
+  {
+    "name": "Teddy Roosevelt",
+    "state": "ND",
+    "lat": "",
+    "lon": "",
+    "image": "teddyroosevelt.png"
+  },
+  {
+    "name": "Virgin Islands",
+    "state": "VI",
+    "lat": "",
+    "lon": "",
+    "image": "virginislands.png"
+  },
+  {
+    "name": "Voyageurs",
+    "state": "MN",
+    "lat": "",
+    "lon": "",
+    "image": "voyageurs.png"
+  },
+  {
+    "name": "White Sands",
+    "state": "NM",
+    "lat": "",
+    "lon": "",
+    "image": "whitesands.png"
+  },
+  {
+    "name": "Wind Cave",
+    "state": "SD",
+    "lat": "",
+    "lon": "",
+    "image": "windcave.png"
+  },
+  {
+    "name": "Wrangell-St Elias",
+    "state": "AK",
+    "lat": "",
+    "lon": "",
+    "image": "wrangellstelias.png"
   },
   {
     "name": "Yellowstone",
