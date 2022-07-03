@@ -1,5 +1,6 @@
 <template>
   <section class="trips">
+    <div><button>All</button><button>None</button></div>
     <div v-for="trip in trips" class="trip">
       <div class="title">
         {{ trip.title }}
@@ -29,11 +30,14 @@ export default {
     return {
       parks: computed(() => store.state.parks),
       trips: computed(() => store.state.trips),
+      activeTrips: computed(() => store.state.activeTrips),
+      setActiveTrips: (activeTrips) =>
+        store.commit("setActiveTrips", activeTrips),
     };
   },
   methods: {
-    getParkFilename(title) {
-      const park = this.parks.filter((p) => p.name === title)[0];
+    getParkFilename(name) {
+      const park = this.parks.filter((p) => p.name === name)[0];
       return park.image;
     },
   },
