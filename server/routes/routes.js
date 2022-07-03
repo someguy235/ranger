@@ -55,8 +55,6 @@ router.get("/parks", async (req, res) => {
 });
 
 router.get("/trips", async (req, res) => {
-  console.log("/trips");
-  console.log(req.query);
   try {
     const user = req.query.user;
     if (user !== null) {

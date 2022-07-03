@@ -3,7 +3,7 @@
     <div class="content">
       <div class="content-row">
         <trips />
-        <section class="map">Maps</section>
+        <maps />
         <parks />
       </div>
       <div class="timeline-row">
@@ -20,12 +20,14 @@ import { computed } from "@vue/reactivity";
 
 import Trips from "../components/Trips.vue";
 import Parks from "../components/Parks.vue";
+import Maps from "../components/Maps.vue";
 
 export default {
   name: "Home",
   components: {
     Trips,
     Parks,
+    Maps,
   },
   setup() {
     const store = useStore();
@@ -62,6 +64,12 @@ export default {
         this.setTrips(trips);
       }
     },
+    async getKml() {
+      console.log("getKml()");
+      const response = await fetch("/ranger/api/kml");
+      const kml = await response.text;
+      console.log(kml);
+    },
   },
   beforeMount() {
     this.getTrips();
@@ -86,9 +94,6 @@ export default {
       minmax(60%, 1400px)
       minmax(20%, 300px);
     overflow-y: scroll;
-    .map {
-      background-color: #dad6b6;
-    }
   }
   .timeline-row {
     display: grid;

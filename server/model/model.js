@@ -51,6 +51,7 @@ const TripSchema = new Schema({
   },
   kml: {
     type: Buffer,
+    contentType: String,
     required: false,
     unique: false,
   },

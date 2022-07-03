@@ -36,23 +36,6 @@ router.post(
         });
 
         res.status(200).json();
-
-        // sharp(req.files.image[0].buffer)
-        //   .resize(400)
-        //   .jpeg()
-        //   .toBuffer()
-        //   .then(async (imgData) => {
-        //     await TripModel.create({
-        //       user: req.user.email,
-        //       title: req.body.title,
-        //       bDate: req.body.bDate,
-        //       eDate: req.body.eDate,
-        //       parks: req.body.parks.split(","),
-        //       kml: req.files.kml[0].buffer,
-        //       image: imgData,
-        //     });
-        //     res.status(200).json();
-        //   });
       } catch (e) {
         console.log(e);
         res.status(500).json();

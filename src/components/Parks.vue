@@ -31,7 +31,8 @@ export default {
         .map((trip) => trip.parks)
         .flat()
         .includes(park.name);
-      return active ? "" : "filter:grayscale(1)";
+      //   return active ? "" : "filter:grayscale(1)";
+      return "";
     },
   },
 };
