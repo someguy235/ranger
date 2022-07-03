@@ -3,7 +3,7 @@
     <div class="park" v-for="park in parks">
       <img
         :src="'./images/parks/' + park.image"
-        :title="park.title"
+        :title="park.name"
         :style="getGrayscaleStyle(park)"
       />
     </div>
