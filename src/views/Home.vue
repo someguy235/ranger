@@ -51,7 +51,6 @@ export default {
   },
   methods: {
     async getTrips() {
-      console.log("getTrips()");
       if (this.viewUser !== null) {
         const response = await fetch(
           `/ranger/api/trips?user=${this.viewUser}`,
@@ -60,7 +59,6 @@ export default {
           }
         );
         const trips = await response.json();
-        console.log(trips);
         this.setTrips(trips);
       }
     },

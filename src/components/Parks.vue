@@ -21,15 +21,17 @@ export default {
     return {
       parks: computed(() => store.state.parks),
       trips: computed(() => store.state.trips),
+      activeTripTitles: computed(() => store.state.activeTripTitles),
     };
   },
   methods: {
     getGrayscaleStyle(park) {
-      if (!this.trips) return "";
-      const active = this.trips.filter((trip) => {
-        return trip.parks.includes(park.name);
-      });
-      return active.length ? "" : "filter:grayscale(1)";
+      const active = this.trips
+        .filter((trip) => this.activeTripTitles.includes(trip.title))
+        .map((trip) => trip.parks)
+        .flat()
+        .includes(park.name);
+      return active ? "" : "filter:grayscale(1)";
     },
   },
 };

@@ -26,7 +26,6 @@ export default {
         method: "GET",
       });
       const parks = await response.json();
-      console.log(parks);
       this.setParks(parks);
     },
   },

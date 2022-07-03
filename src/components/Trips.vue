@@ -4,7 +4,11 @@
     <div v-for="trip in trips" class="trip">
       <div class="title">
         {{ trip.title }}
-        <input type="checkbox" />
+        <input
+          type="checkbox"
+          @change="toggleActiveTrip(trip.title)"
+          :isChecked="getIsActive(trip.title)"
+        />
       </div>
       <div class="dates">
         {{ trip.bDate.substr(0, 10) }} - {{ trip.eDate.substr(0, 10) }}
@@ -30,15 +34,17 @@ export default {
     return {
       parks: computed(() => store.state.parks),
       trips: computed(() => store.state.trips),
-      activeTrips: computed(() => store.state.activeTrips),
-      setActiveTrips: (activeTrips) =>
-        store.commit("setActiveTrips", activeTrips),
+      activeTripTitles: computed(() => store.state.activeTripTitles),
+      toggleActiveTrip: (title) => store.commit("toggleActiveTrip", title),
     };
   },
   methods: {
     getParkFilename(name) {
       const park = this.parks.filter((p) => p.name === name)[0];
       return park.image;
+    },
+    getIsActive(title) {
+      return this.activeTripTitles.includes(title);
     },
   },
 };

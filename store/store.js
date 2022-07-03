@@ -5,8 +5,8 @@ const store = createStore({
     user: null,
     token: null,
     parks: null,
-    trips: null,
-    activeTrips: null,
+    trips: [],
+    activeTripTitles: [],
   },
   mutations: {
     setUser(state, user) {
@@ -21,8 +21,16 @@ const store = createStore({
     setTrips(state, trips) {
       state.trips = trips;
     },
-    setActiveTrips(state, activeTrips) {
-      state.activeTrips = activeTrips;
+    toggleActiveTrip(state, newTitle) {
+      if (state.activeTripTitles.includes(newTitle)) {
+        state.activeTripTitles = state.activeTripTitles.filter(
+          (title) => title !== newTitle
+        );
+      } else {
+        const newActiveTripTitles = state.activeTripTitles.slice();
+        newActiveTripTitles.push(newTitle);
+        state.activeTripTitles = newActiveTripTitles;
+      }
     },
   },
   actions: {},
