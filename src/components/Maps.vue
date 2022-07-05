@@ -1,7 +1,6 @@
 <template>
   <section class="map">
     <div id="mapContainer"></div>
-    <button @click="test">Test</button>
   </section>
 </template>
 
@@ -23,13 +22,13 @@ export default {
   },
   data() {
     return {
-      center: [37.7749, -122.4194],
       mapDiv: null,
+      layers: {},
     };
   },
   methods: {
     setupLeafletMap: function () {
-      this.mapDiv = L.map("mapContainer").setView(this.center, 13);
+      this.mapDiv = L.map("mapContainer").setView([39.8283, -98.5795], 4);
       L.tileLayer(
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
         {
@@ -37,23 +36,38 @@ export default {
             'Map data (c) <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery (c) <a href="https://www.mapbox.com/">Mapbox</a>',
           maxZoom: 18,
           id: "mapbox/streets-v11",
-          accessToken: "",
+          accessToken:
+            "pk.eyJ1Ijoic29tZWd1eTIzNSIsImEiOiJjbDU1cm53Y2cwcTVhM2RsOHRhcDgwd2k1In0.tujS3dsElV1hJHylnYQnAQ",
         }
       ).addTo(this.mapDiv);
     },
-    test: function () {
-      this.trips.map((trip) => {
-        if (trip.kml) {
-          var kmlString = new TextDecoder().decode(
-            new Uint8Array(trip.kml.data)
-          );
+  },
+  watch: {
+    "$store.state.activeTripTitles": {
+      handler(newVal) {
+        this.trips.map((trip) => {
+          if (trip.kml) {
+            if (this.activeTripTitles.includes(trip.title)) {
+              if (!Object.keys(this.layers).includes(trip.title)) {
+                var kmlString = new TextDecoder().decode(
+                  new Uint8Array(trip.kml.data)
+                );
 
-          const parser = new DOMParser();
-          const kml = parser.parseFromString(kmlString, "text/xml");
-          const kmlLayer = new L.KML(kml);
-          this.mapDiv.addLayer(kmlLayer);
-        }
-      });
+                const parser = new DOMParser();
+                const kml = parser.parseFromString(kmlString, "text/xml");
+                const kmlLayer = new L.KML(kml);
+                this.layers[trip.title] = kmlLayer;
+                this.mapDiv.addLayer(kmlLayer);
+              }
+            } else {
+              if (Object.keys(this.layers).includes(trip.title)) {
+                this.mapDiv.removeLayer(this.layers[trip.title]);
+                delete this.layers[trip.title];
+              }
+            }
+          }
+        });
+      },
     },
   },
   mounted() {
@@ -68,6 +82,6 @@ export default {
 }
 #mapContainer {
   width: 100%;
-  height: 90%;
+  height: 100%;
 }
 </style>
