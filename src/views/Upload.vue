@@ -7,13 +7,30 @@
     <div id="upload" v-if="token !== null">
       <form @submit.prevent="upload" enctype="multipart/form-data">
         <input v-model="title" placeholder="title" required />
-        <input v-model="bDate" type="date" required />
-        <input v-model="eDate" type="date" required />
-        <select v-model="parks" size="5" multiple required>
-          <option v-for="park in availableParks" :value="park.name">
-            {{ park.name }}
-          </option>
-        </select>
+        <div class="dates">
+          <input v-model="bDate" type="date" required />
+          <input v-model="eDate" type="date" required />
+        </div>
+        <div class="parks">
+          <select size="5">
+            <option
+              v-for="park in selectableParks"
+              :value="park.name"
+              @click="togglePark(park._id)"
+            >
+              {{ park.name }}
+            </option>
+          </select>
+          <select size="5">
+            <option
+              v-for="park in selectedParks"
+              :value="park.name"
+              @click="togglePark(park._id)"
+            >
+              {{ park.name }}
+            </option>
+          </select>
+        </div>
         <label>KML<input type="file" ref="kml" name="kml" /></label>
         <label>IMG<input type="file" ref="image" name="image" /></label>
         <button type="submit">Upload</button>
@@ -50,12 +67,39 @@ export default {
       title: "",
       bDate: "",
       eDate: "",
-      // availableParks: [],
-      parks: [],
+      selectedParkIds: [],
       uploadMsg: "waiting",
     };
   },
+  computed: {
+    selectableParks() {
+      if (this.availableParks) {
+        return this.availableParks.filter((park) => {
+          return !this.selectedParkIds.includes(park._id);
+        });
+      }
+    },
+    selectedParks() {
+      if (this.availableParks) {
+        return this.availableParks.filter((park) => {
+          return this.selectedParkIds.includes(park._id);
+        });
+      }
+    },
+  },
   methods: {
+    togglePark(newId) {
+      console.log(`togglePark(${newId})`);
+      if (this.selectedParkIds.includes(newId)) {
+        this.selectedParkIds = this.selectedParkIds.filter((id) => {
+          return id !== newId;
+        });
+      } else {
+        const newParkIds = this.selectedParkIds.slice();
+        newParkIds.push(newId);
+        this.selectedParkIds = newParkIds;
+      }
+    },
     async upload() {
       // TODO: file type validation
       this.uploadMsg = "";
@@ -63,7 +107,7 @@ export default {
       params.append("title", this.title);
       params.append("bDate", this.bDate);
       params.append("eDate", this.eDate);
-      params.append("parks", this.parks);
+      params.append("parks", this.selectedParkIds);
       params.append("kml", this.kml.files[0]);
       params.append("image", this.image.files[0]);
 
@@ -80,7 +124,7 @@ export default {
         this.title = "";
         this.bDate = "";
         this.eDate = "";
-        this.parks = [];
+        this.selectedParkIds = [];
         this.kml.value = null;
         this.image.value = null;
       } else {
@@ -88,9 +132,6 @@ export default {
       }
     },
   },
-  // beforeMount() {
-  // this.getParks();
-  // },
 };
 </script>
 
@@ -115,7 +156,6 @@ export default {
   display: grid;
   grid-area: main;
   grid-template-rows: 50% auto;
-  justify-content: center;
   form {
     background-color: aquamarine;
     display: grid;
@@ -124,7 +164,20 @@ export default {
     input {
       margin: 0;
       padding: 0;
-      width: 75%;
+    }
+    .dates {
+      column-gap: 5px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .parks {
+      column-gap: 5px;
+      display: grid;
+
+      grid-template-columns: 1fr 1fr;
+    }
+    select {
+      display: grid;
     }
   }
 }

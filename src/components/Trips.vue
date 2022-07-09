@@ -15,8 +15,11 @@
       </div>
       <div class="miles" v-if="trip.distance">{{ trip.distance }} miles</div>
       <div class="parks">
-        <div v-for="park in trip.parks">
-          <img :src="'./images/parks/' + getParkFilename(park)" :title="park" />
+        <div v-for="parkId in trip.parks">
+          <img
+            :src="'./images/parks/' + getParkFilename(parkId)"
+            :title="getParkName(parkId)"
+          />
         </div>
       </div>
     </div>
@@ -39,8 +42,12 @@ export default {
     };
   },
   methods: {
-    getParkFilename(name) {
-      const park = this.parks.filter((p) => p.name === name)[0];
+    getParkName(id) {
+      const park = this.parks.filter((p) => p._id === id)[0];
+      return park.name;
+    },
+    getParkFilename(id) {
+      const park = this.parks.filter((p) => p._id === id)[0];
       return park.image;
     },
     getIsActive(id) {
