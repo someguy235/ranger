@@ -50,10 +50,28 @@ const TripSchema = new Schema({
     unique: false,
   },
   kml: {
-    type: Buffer,
-    contentType: String,
+    type: String,
     required: false,
     unique: false,
+  },
+  distance: {
+    type: Number,
+    required: false,
+    unique: false,
+  },
+  bounds: {
+    minLat: {
+      type: Number,
+    },
+    maxLat: {
+      type: Number,
+    },
+    minLon: {
+      type: Number,
+    },
+    maxLon: {
+      type: Number,
+    },
   },
   image: {
     type: Buffer,

@@ -1,4 +1,5 @@
 const express = require("express");
+const compression = require("compression");
 const mongoose = require("mongoose");
 const passport = require("passport");
 
@@ -16,6 +17,7 @@ const secureRoute = require("./routes/secure-routes");
 
 const app = express();
 
+app.use(compression());
 app.use(express.json());
 
 app.use("/ranger/api/", routes);

@@ -49,12 +49,8 @@ export default {
           if (trip.kml) {
             if (this.activeTripTitles.includes(trip.title)) {
               if (!Object.keys(this.layers).includes(trip.title)) {
-                var kmlString = new TextDecoder().decode(
-                  new Uint8Array(trip.kml.data)
-                );
-
                 const parser = new DOMParser();
-                const kml = parser.parseFromString(kmlString, "text/xml");
+                const kml = parser.parseFromString(trip.kml, "text/xml");
                 const kmlLayer = new L.KML(kml);
                 this.layers[trip.title] = kmlLayer;
                 this.mapDiv.addLayer(kmlLayer);
