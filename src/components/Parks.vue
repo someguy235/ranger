@@ -21,13 +21,13 @@ export default {
     return {
       parks: computed(() => store.state.parks),
       trips: computed(() => store.state.trips),
-      activeTripTitles: computed(() => store.state.activeTripTitles),
+      activeTrips: computed(() => store.state.activeTrips),
     };
   },
   methods: {
     getGrayscaleStyle(park) {
       const active = this.trips
-        .filter((trip) => this.activeTripTitles.includes(trip.title))
+        .filter((trip) => this.activeTrips.includes(trip._id))
         .map((trip) => trip.parks)
         .flat()
         .includes(park.name);

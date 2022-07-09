@@ -6,14 +6,14 @@
         {{ trip.title }}
         <input
           type="checkbox"
-          @change="toggleActiveTrip(trip.title)"
-          :isChecked="getIsActive(trip.title)"
+          @change="toggleActiveTrip(trip._id)"
+          :isChecked="getIsActive(trip._id)"
         />
       </div>
       <div class="dates">
         {{ trip.bDate.substr(0, 10) }} - {{ trip.eDate.substr(0, 10) }}
       </div>
-      <div class="miles">xxx miles</div>
+      <div class="miles" v-if="trip.distance">{{ trip.distance }} miles</div>
       <div class="parks">
         <div v-for="park in trip.parks">
           <img :src="'./images/parks/' + getParkFilename(park)" :title="park" />
@@ -34,8 +34,8 @@ export default {
     return {
       parks: computed(() => store.state.parks),
       trips: computed(() => store.state.trips),
-      activeTripTitles: computed(() => store.state.activeTripTitles),
-      toggleActiveTrip: (title) => store.commit("toggleActiveTrip", title),
+      activeTrips: computed(() => store.state.activeTrips),
+      toggleActiveTrip: (id) => store.commit("toggleActiveTrip", id),
     };
   },
   methods: {
@@ -43,8 +43,8 @@ export default {
       const park = this.parks.filter((p) => p.name === name)[0];
       return park.image;
     },
-    getIsActive(title) {
-      return this.activeTripTitles.includes(title);
+    getIsActive(id) {
+      return this.activeTrips.includes(id);
     },
   },
 };

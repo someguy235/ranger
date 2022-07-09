@@ -17,7 +17,7 @@ export default {
     const store = useStore();
     return {
       trips: computed(() => store.state.trips),
-      activeTripTitles: computed(() => store.state.activeTripTitles),
+      activeTrips: computed(() => store.state.activeTrips),
     };
   },
   data() {
@@ -43,22 +43,22 @@ export default {
     },
   },
   watch: {
-    "$store.state.activeTripTitles": {
+    "$store.state.activeTrips": {
       handler(newVal) {
         this.trips.map((trip) => {
           if (trip.kml) {
-            if (this.activeTripTitles.includes(trip.title)) {
-              if (!Object.keys(this.layers).includes(trip.title)) {
+            if (this.activeTrips.includes(trip._id)) {
+              if (!Object.keys(this.layers).includes(trip._id)) {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(trip.kml, "text/xml");
                 const kmlLayer = new L.KML(kml);
-                this.layers[trip.title] = kmlLayer;
+                this.layers[trip._id] = kmlLayer;
                 this.mapDiv.addLayer(kmlLayer);
               }
             } else {
-              if (Object.keys(this.layers).includes(trip.title)) {
-                this.mapDiv.removeLayer(this.layers[trip.title]);
-                delete this.layers[trip.title];
+              if (Object.keys(this.layers).includes(trip._id)) {
+                this.mapDiv.removeLayer(this.layers[trip._id]);
+                delete this.layers[trip._id];
               }
             }
           }
