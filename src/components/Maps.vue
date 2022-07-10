@@ -18,6 +18,7 @@ export default {
     const store = useStore();
     return {
       trips: computed(() => store.state.trips),
+      parks: computed(() => store.state.parks),
       activeTrips: computed(() => store.state.activeTrips),
     };
   },
@@ -66,6 +67,20 @@ export default {
     },
   },
   watch: {
+    "$store.state.parks": {
+      handler(parks) {
+        parks.map((park) => {
+          L.marker([park.lat, park.lon], {
+            icon: L.icon({
+              iconUrl: `/images/parks/${park.image}`,
+              iconSize: [20, 30],
+            }),
+          })
+            .bindTooltip(park.name)
+            .addTo(this.mapDiv);
+        });
+      },
+    },
     "$store.state.activeTrips": {
       handler(newVal) {
         let mapBounds = null;
