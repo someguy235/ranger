@@ -17,10 +17,10 @@ const getKmlBounds = (a, b) => {
     };
   }
   return {
-    minLat: a.minLat < b.lat ? a.minLat : b.lat,
-    maxLat: a.maxLat > b.lat ? a.maxLat : b.lat,
-    minLon: a.minLon < b.lon ? a.minLon : b.lon,
-    maxLon: a.maxLon > b.lon ? a.maxLon : b.lon,
+    minLat: Math.min(a.minLat, b.lat),
+    maxLat: Math.max(a.maxLat, b.lat),
+    minLon: Math.min(a.minLon, b.lon),
+    maxLon: Math.max(a.maxLon, b.lon),
   };
 };
 

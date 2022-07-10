@@ -10,6 +10,7 @@ import L from "leaflet";
 import KML from "../assets/js/L.KML";
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
+import { map } from "rxjs";
 
 export default {
   name: "Maps",
@@ -24,11 +25,16 @@ export default {
     return {
       mapDiv: null,
       layers: {},
+      defaultCenter: [39.8283, -98.5795],
+      defaultZoom: 4,
     };
   },
   methods: {
     setupLeafletMap: function () {
-      this.mapDiv = L.map("mapContainer").setView([39.8283, -98.5795], 4);
+      this.mapDiv = L.map("mapContainer").setView(
+        this.defaultCenter,
+        this.defaultZoom
+      );
       L.tileLayer(
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
         {
@@ -41,13 +47,32 @@ export default {
         }
       ).addTo(this.mapDiv);
     },
+    findBounds: function (mapBounds, tripBounds) {
+      if (!mapBounds) {
+        return {
+          minLat: tripBounds.minLat,
+          maxLat: tripBounds.maxLat,
+          minLon: tripBounds.minLon,
+          maxLon: tripBounds.maxLon,
+        };
+      } else {
+        return {
+          minLat: Math.min(tripBounds.minLat, mapBounds.minLat),
+          maxLat: Math.max(tripBounds.maxLat, mapBounds.maxLat),
+          minLon: Math.min(tripBounds.minLon, mapBounds.minLon),
+          maxLon: Math.max(tripBounds.maxLon, mapBounds.maxLon),
+        };
+      }
+    },
   },
   watch: {
     "$store.state.activeTrips": {
       handler(newVal) {
+        let mapBounds = null;
         this.trips.map((trip) => {
           if (trip.kml) {
             if (this.activeTrips.includes(trip._id)) {
+              mapBounds = this.findBounds(mapBounds, trip.bounds);
               if (!Object.keys(this.layers).includes(trip._id)) {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(trip.kml, "text/xml");
@@ -63,6 +88,14 @@ export default {
             }
           }
         });
+        if (mapBounds) {
+          this.mapDiv.fitBounds([
+            [mapBounds.minLat, mapBounds.minLon],
+            [mapBounds.maxLat, mapBounds.maxLon],
+          ]);
+        } else {
+          this.mapDiv.setView(this.defaultCenter, this.defaultZoom);
+        }
       },
     },
   },
