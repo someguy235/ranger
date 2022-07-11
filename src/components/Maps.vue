@@ -26,6 +26,7 @@ export default {
     return {
       mapDiv: null,
       layers: {},
+      markers: {},
       defaultCenter: [39.8283, -98.5795],
       defaultZoom: 4,
     };
@@ -49,6 +50,7 @@ export default {
       ).addTo(this.mapDiv);
     },
     findBounds: function (mapBounds, tripBounds) {
+      if (!tripBounds) return mapBounds;
       if (!mapBounds) {
         return {
           minLat: tripBounds.minLat,
@@ -67,27 +69,17 @@ export default {
     },
   },
   watch: {
-    "$store.state.parks": {
-      handler(parks) {
-        parks.map((park) => {
-          L.marker([park.lat, park.lon], {
-            icon: L.icon({
-              iconUrl: `/images/parks/${park.image}`,
-              iconSize: [20, 30],
-            }),
-          })
-            .bindTooltip(park.name)
-            .addTo(this.mapDiv);
-        });
-      },
-    },
     "$store.state.activeTrips": {
       handler(newVal) {
         let mapBounds = null;
+        let activeParkIds = [];
+
+        // Add/remove kml routes based on active trips
         this.trips.map((trip) => {
-          if (trip.kml) {
-            if (this.activeTrips.includes(trip._id)) {
-              mapBounds = this.findBounds(mapBounds, trip.bounds);
+          if (this.activeTrips.includes(trip._id)) {
+            mapBounds = this.findBounds(mapBounds, trip.bounds);
+            activeParkIds.push(...trip.parks);
+            if (trip.kml) {
               if (!Object.keys(this.layers).includes(trip._id)) {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(trip.kml, "text/xml");
@@ -95,14 +87,16 @@ export default {
                 this.layers[trip._id] = kmlLayer;
                 this.mapDiv.addLayer(kmlLayer);
               }
-            } else {
-              if (Object.keys(this.layers).includes(trip._id)) {
-                this.mapDiv.removeLayer(this.layers[trip._id]);
-                delete this.layers[trip._id];
-              }
+            }
+          } else {
+            if (Object.keys(this.layers).includes(trip._id)) {
+              this.mapDiv.removeLayer(this.layers[trip._id]);
+              delete this.layers[trip._id];
             }
           }
         });
+
+        // Zoom map to fit active trips
         if (mapBounds) {
           this.mapDiv.fitBounds([
             [mapBounds.minLat, mapBounds.minLon],
@@ -111,6 +105,25 @@ export default {
         } else {
           this.mapDiv.setView(this.defaultCenter, this.defaultZoom);
         }
+
+        // Add/remove markers for selected trips
+        this.parks.map((park) => {
+          if (activeParkIds.includes(park._id)) {
+            if (!Object.keys(this.markers).includes(park._id)) {
+              const marker = L.marker([park.lat, park.lon], {
+                icon: L.icon({
+                  iconUrl: `/images/parks/${park.image}`,
+                  iconSize: [28, 42],
+                }),
+              }).bindTooltip(park.name);
+              this.markers[park._id] = marker;
+              this.mapDiv.addLayer(marker);
+            }
+          } else if (Object.keys(this.markers).includes(park._id)) {
+            this.mapDiv.removeLayer(this.markers[park._id]);
+            delete this.markers[park._id];
+          }
+        });
       },
     },
   },

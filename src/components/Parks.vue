@@ -10,6 +10,7 @@
   </section>
 </template>
 
+// TODO: filter by visited/not visited
 <script>
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
