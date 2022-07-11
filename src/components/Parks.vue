@@ -1,11 +1,23 @@
 <template>
   <section class="parks">
-    <div class="park" v-for="park in parks">
-      <img
-        :src="'./images/parks/' + park.image"
-        :title="park.name"
-        :style="getGrayscaleStyle(park)"
-      />
+    <div class="controls">
+      Show:
+      <select>
+        <option>All</option>
+        <option>Active</option>
+        <option>Visited</option>
+        <option>Not Visited</option>
+        <option>None</option>
+      </select>
+    </div>
+    <div class="park-list">
+      <div class="park" v-for="park in parks">
+        <img
+          :src="'./images/parks/' + park.image"
+          :title="park.name"
+          :style="getGrayscaleStyle(park)"
+        />
+      </div>
     </div>
   </section>
 </template>
@@ -43,9 +55,23 @@ export default {
 .parks {
   background-color: #a1cceb;
   display: grid;
-  grid-template-columns: auto auto auto;
+  grid-template-rows: auto auto;
   justify-content: space-around;
   overflow-y: scroll;
-  padding: 10px 10px;
+  .controls {
+    display: grid;
+  }
+  .park-list {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: space-around;
+    .park {
+      max-width: 60px;
+      padding: 3px;
+      img {
+        width: 100%;
+      }
+    }
+  }
 }
 </style>
