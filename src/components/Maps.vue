@@ -8,6 +8,7 @@
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import KML from "../assets/js/L.KML";
+import { toRaw } from "vue";
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 import { map } from "rxjs";
@@ -24,7 +25,7 @@ export default {
   },
   data() {
     return {
-      mapDiv: null,
+      map: null,
       layers: {},
       markers: {},
       defaultCenter: [39.8283, -98.5795],
@@ -33,7 +34,7 @@ export default {
   },
   methods: {
     setupLeafletMap: function () {
-      this.mapDiv = L.map("mapContainer").setView(
+      const map = L.map("mapContainer").setView(
         this.defaultCenter,
         this.defaultZoom
       );
@@ -47,7 +48,8 @@ export default {
           accessToken:
             "pk.eyJ1Ijoic29tZWd1eTIzNSIsImEiOiJjbDU1cm53Y2cwcTVhM2RsOHRhcDgwd2k1In0.tujS3dsElV1hJHylnYQnAQ",
         }
-      ).addTo(this.mapDiv);
+      ).addTo(map);
+      this.map = map;
     },
     findBounds: function (mapBounds, tripBounds) {
       if (!tripBounds) return mapBounds;
@@ -73,6 +75,9 @@ export default {
       handler(newVal) {
         let mapBounds = null;
         let activeParkIds = [];
+        const map = toRaw(this.map);
+        const layers = toRaw(this.layers);
+        const markers = toRaw(this.markers);
 
         // Add/remove kml routes based on active trips
         this.trips.map((trip) => {
@@ -80,51 +85,53 @@ export default {
             mapBounds = this.findBounds(mapBounds, trip.bounds);
             activeParkIds.push(...trip.parks);
             if (trip.kml) {
-              if (!Object.keys(this.layers).includes(trip._id)) {
+              if (!Object.keys(layers).includes(trip._id)) {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(trip.kml, "text/xml");
                 const kmlLayer = new L.KML(kml);
-                this.layers[trip._id] = kmlLayer;
-                this.mapDiv.addLayer(kmlLayer);
+                layers[trip._id] = kmlLayer;
+                map.addLayer(kmlLayer);
               }
             }
           } else {
-            if (Object.keys(this.layers).includes(trip._id)) {
-              this.mapDiv.removeLayer(this.layers[trip._id]);
-              delete this.layers[trip._id];
+            if (Object.keys(layers).includes(trip._id)) {
+              map.removeLayer(layers[trip._id]);
+              delete layers[trip._id];
             }
           }
         });
 
         // Zoom map to fit active trips
         if (mapBounds) {
-          this.mapDiv.fitBounds([
+          map.fitBounds([
             [mapBounds.minLat, mapBounds.minLon],
             [mapBounds.maxLat, mapBounds.maxLon],
           ]);
-          if (this.mapDiv.getZoom() > 10) this.mapDiv.setZoom(10);
+          if (map.getZoom() > 10) map.setZoom(10);
         } else {
-          this.mapDiv.setView(this.defaultCenter, this.defaultZoom);
+          map.setView(this.defaultCenter, this.defaultZoom);
         }
 
         // Add/remove markers for selected trips
         this.parks.map((park) => {
           if (activeParkIds.includes(park._id)) {
-            if (!Object.keys(this.markers).includes(park._id)) {
+            if (!Object.keys(markers).includes(park._id)) {
               const marker = L.marker([park.lat, park.lon], {
                 icon: L.icon({
                   iconUrl: `/images/parks/${park.image}`,
                   iconSize: [28, 42],
                 }),
               }).bindTooltip(park.name);
-              this.markers[park._id] = marker;
-              this.mapDiv.addLayer(marker);
+              markers[park._id] = marker;
+              map.addLayer(marker);
             }
-          } else if (Object.keys(this.markers).includes(park._id)) {
-            this.mapDiv.removeLayer(this.markers[park._id]);
-            delete this.markers[park._id];
+          } else if (Object.keys(markers).includes(park._id)) {
+            map.removeLayer(markers[park._id]);
+            delete markers[park._id];
           }
         });
+        this.layers = layers;
+        this.markers = markers;
       },
     },
   },
