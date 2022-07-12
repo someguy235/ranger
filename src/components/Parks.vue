@@ -21,9 +21,10 @@
     </div>
   </section>
 </template>
-
-// TODO: filter by visited/not visited
 <script>
+// TODO: toggle map markers
+// TODO: filter by visited/not visited
+// TODO: add marker to map on badge mouseover
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 

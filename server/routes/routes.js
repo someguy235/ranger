@@ -2,14 +2,13 @@ const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const { TripModel } = require("../model/model");
-
-const ParkModel = require("../model/model").ParkModel;
+const { TripModel, ParkModel } = require("../model/model");
 
 dotenv.config();
 
 const router = express.Router();
 
+// TODO: allow multiple users
 router.post(
   "/signup",
   passport.authenticate("signup", { session: false }),
@@ -22,6 +21,7 @@ router.post(
   }
 );
 
+// TODO: expire jwt
 router.post("/login", async (req, res, next) => {
   passport.authenticate("login", async (err, user, info) => {
     try {

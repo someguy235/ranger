@@ -27,6 +27,8 @@
 </template>
 
 <script>
+// TODO: trip path color, and persist on change
+// TODO: incorporate trip cover photo
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 

@@ -102,6 +102,7 @@ export default {
             [mapBounds.minLat, mapBounds.minLon],
             [mapBounds.maxLat, mapBounds.maxLon],
           ]);
+          if (this.mapDiv.getZoom() > 10) this.mapDiv.setZoom(10);
         } else {
           this.mapDiv.setView(this.defaultCenter, this.defaultZoom);
         }

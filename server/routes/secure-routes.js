@@ -3,7 +3,7 @@ const multer = require("multer");
 const sharp = require("sharp");
 const xml2js = require("xml2js");
 const router = express.Router();
-const TripModel = require("../model/model").TripModel;
+const { TripModel, ParkModel } = require("../model/model");
 
 const upload = multer();
 
@@ -22,6 +22,31 @@ const getKmlBounds = (a, b) => {
     minLon: Math.min(a.minLon, b.lon),
     maxLon: Math.max(a.maxLon, b.lon),
   };
+};
+
+const getParkBounds = (tripBounds, tripParks, parks) => {
+  for (const tripParkId of tripParks) {
+    const tripPark = parks.filter((park) => park._id == tripParkId)[0];
+    const parkLat = tripPark.get("lat"),
+      parkLon = tripPark.get("lon");
+    if (!tripBounds) {
+      tripBounds = {
+        minLat: parkLat,
+        maxLat: parkLat,
+        minLon: parkLon,
+        maxLon: parkLon,
+      };
+    } else {
+      tripBounds = {
+        minLat: Math.min(tripBounds.minLat, parkLat),
+        maxLat: Math.max(tripBounds.maxlat, parkLat),
+        minLon: Math.min(tripBounds.minLon, parkLon),
+        maxLon: Math.max(tripBounds.maxLon, parkLon),
+      };
+    }
+  }
+
+  return tripBounds;
 };
 
 const getKmlDistance = (a, b) => {
@@ -67,7 +92,7 @@ router.post(
     { name: "kml", maxCount: 1 },
   ]),
   async (req, res) => {
-    // TODO: file type validation
+    // TODO: form validation, including file type
     if (req.isAuthenticated()) {
       try {
         let imgData = null;
@@ -79,8 +104,8 @@ router.post(
         }
         const kmlBuffer = req.files.kml ? req.files.kml[0].buffer : null;
         let kmlString = null,
-          kmlBounds = null,
-          kmlDistance = null;
+          tripBounds = null,
+          tripDistance = null;
 
         if (kmlBuffer) {
           const parser = new xml2js.Parser();
@@ -90,18 +115,22 @@ router.post(
             kml?.kml?.Document[0]?.Placemark[0]?.LineString[0]?.coordinates[0]?.split(
               "\n"
             );
-          [kmlBounds, kmlDistance] = getKmlBoundsAndDistance(points);
+          [tripBounds, tripDistance] = getKmlBoundsAndDistance(points);
         }
+
+        const tripParks = req.body.parks.split(",");
+        const parks = await ParkModel.find();
+        tripBounds = getParkBounds(tripBounds, tripParks, parks);
 
         await TripModel.create({
           user: req.user.email,
           title: req.body.title,
           bDate: req.body.bDate,
           eDate: req.body.eDate,
-          parks: req.body.parks.split(","),
+          parks: tripParks,
           kml: kmlString,
-          distance: kmlDistance,
-          bounds: kmlBounds,
+          distance: tripDistance,
+          bounds: tripBounds,
           image: imgData,
         });
 

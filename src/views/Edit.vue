@@ -27,6 +27,7 @@
 </template>
 
 <script>
+// TODO: enable trip edit
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
 import Login from "../components/Login.vue";
