@@ -1,6 +1,6 @@
 <template>
   <section class="trips">
-    <div><button>All</button><button>None</button></div>
+    <div><v-btn>All</v-btn><v-btn>None</v-btn></div>
     <div v-for="trip in trips" class="trip">
       <div class="title">
         {{ trip.title }}
@@ -16,10 +16,7 @@
       <div class="miles" v-if="trip.distance">{{ trip.distance }} miles</div>
       <div class="parks">
         <div v-for="parkId in trip.parks">
-          <img
-            :src="'./images/parks/' + getParkFilename(parkId)"
-            :title="getParkName(parkId)"
-          />
+          <img :src="getParkFileData(parkId)" :title="getParkName(parkId)" />
         </div>
       </div>
     </div>
@@ -29,19 +26,24 @@
 <script>
 // TODO: trip path color, and persist on change
 // TODO: incorporate trip cover photo
-import { computed } from "@vue/reactivity";
-import { useStore } from "vuex";
+// import { computed } from "@vue/reactivity";
+import { mapGetters, mapState, useStore } from "vuex";
 
 export default {
   name: "Trips",
   setup() {
     const store = useStore();
     return {
-      parks: computed(() => store.state.parks),
-      trips: computed(() => store.state.trips),
-      activeTrips: computed(() => store.state.activeTrips),
       toggleActiveTrip: (id) => store.commit("toggleActiveTrip", id),
     };
+  },
+  computed: {
+    ...mapGetters(["getParkFileData"]),
+    ...mapState({
+      parks: (state) => state.parks,
+      trips: (state) => state.trips,
+      activeTrips: (state) => state.activeTrips,
+    }),
   },
   methods: {
     getParkName(id) {

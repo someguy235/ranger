@@ -13,7 +13,7 @@
     <div class="park-list">
       <div class="park" v-for="park in parks">
         <img
-          :src="'./images/parks/' + park.image"
+          :src="getParkFileData(park._id)"
           :title="park.name"
           :style="getGrayscaleStyle(park)"
         />
@@ -36,6 +36,7 @@ export default {
       parks: computed(() => store.state.parks),
       trips: computed(() => store.state.trips),
       activeTrips: computed(() => store.state.activeTrips),
+      icons: computed(() => store.state.icons),
     };
   },
   methods: {
@@ -45,8 +46,15 @@ export default {
         .map((trip) => trip.parks)
         .flat()
         .includes(park.name);
+      console.log(active);
       //   return active ? "" : "filter:grayscale(1)";
       return "";
+    },
+    getParkFileData(id) {
+      const park = this.parks.filter((p) => p._id === id)[0];
+      const image = park.image;
+      const data = this.icons[image];
+      return data;
     },
   },
 };

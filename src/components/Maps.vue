@@ -7,11 +7,11 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
+// eslint-disable-next-line
 import KML from "../assets/js/L.KML";
 import { toRaw } from "vue";
 import { computed } from "@vue/reactivity";
 import { useStore } from "vuex";
-import { map } from "rxjs";
 
 export default {
   name: "Maps",
@@ -21,6 +21,7 @@ export default {
       trips: computed(() => store.state.trips),
       parks: computed(() => store.state.parks),
       activeTrips: computed(() => store.state.activeTrips),
+      icons: computed(() => store.state.icons),
     };
   },
   data() {
@@ -72,7 +73,7 @@ export default {
   },
   watch: {
     "$store.state.activeTrips": {
-      handler(newVal) {
+      handler() {
         let mapBounds = null;
         let activeParkIds = [];
         const map = toRaw(this.map);

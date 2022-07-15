@@ -7,6 +7,7 @@ const store = createStore({
     parks: null,
     trips: [],
     activeTrips: [],
+    icons: {},
   },
   mutations: {
     setUser(state, user) {
@@ -30,9 +31,19 @@ const store = createStore({
         state.activeTrips = newActiveTrips;
       }
     },
+    setIcons(state, icons) {
+      state.icons = icons;
+    },
   },
   actions: {},
-  getters: {},
+  getters: {
+    getParkFileData: (state) => (id) => {
+      const park = state.parks.filter((p) => p._id === id)[0];
+      const image = park.image;
+      const data = state.icons[image];
+      return data;
+    },
+  },
 });
 
 export default store;

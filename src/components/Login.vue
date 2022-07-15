@@ -41,6 +41,7 @@ export default {
       });
       // TODO: login successful?
       const { user, token } = await response.json();
+      console.log(user);
       this.setUser(this.email);
       this.setToken(token);
       localStorage.setItem("authToken", token);

@@ -18,6 +18,7 @@ export default {
       setUser: (user) => store.commit("setUser", user),
       setToken: (token) => store.commit("setToken", token),
       setParks: (parks) => store.commit("setParks", parks),
+      setIcons: (icons) => store.commit("setIcons", icons),
     };
   },
   methods: {
@@ -28,6 +29,11 @@ export default {
       const parks = await response.json();
       this.setParks(parks);
     },
+    importAll(r) {
+      const icons = {};
+      r.keys().forEach((key) => (icons[key.replace("./", "")] = r(key)));
+      this.setIcons(icons);
+    },
   },
   beforeMount() {
     const authToken = localStorage.getItem("authToken");
@@ -37,6 +43,8 @@ export default {
     if (authUser && authUser !== "null") this.setUser(authUser);
 
     this.getParks();
+
+    this.importAll(require.context("./assets/images/parks/", true, /\.png$/));
   },
 };
 </script>

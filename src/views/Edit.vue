@@ -49,7 +49,7 @@ export default {
     };
   },
   watch: {
-    user(user) {
+    user() {
       this.getTrips();
     },
   },

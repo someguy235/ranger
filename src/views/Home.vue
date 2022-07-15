@@ -47,7 +47,7 @@ export default {
     };
   },
   watch: {
-    viewUser(viewUser) {
+    viewUser() {
       this.getTrips();
     },
   },
