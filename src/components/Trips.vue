@@ -13,7 +13,7 @@
       </v-row>
       <v-row v-for="trip in trips">
         <v-col>
-          <v-card class="trip">
+          <v-card class="trip mb-2 pa-3">
             <v-row no-gutters>
               <v-col cols="9" class="d-flex align-center">
                 <div class="title">
@@ -36,8 +36,9 @@
             <v-row no-gutters>
               <v-col>
                 <div class="dates">
-                  {{ trip.bDate.substr(0, 10) }} -
-                  {{ trip.eDate.substr(0, 10) }}
+                  <!-- {{ trip.bDate.substr(0, 10) }} - -->
+                  <!-- {{ trip.eDate.substr(0, 10) }} -->
+                  {{ formatTripDates(trip.bDate, trip.eDate) }}
                 </div>
               </v-col>
             </v-row>
@@ -49,8 +50,11 @@
               </v-col>
             </v-row>
 
-            <v-row no-gutters class="park-list">
-              <v-col v-for="parkId in trip.parks" class="d-flex justify-center">
+            <v-row no-gutters class="park-list mt-3">
+              <v-col
+                v-for="parkId in trip.parks"
+                class="d-flex justify-center pa-1"
+              >
                 <img
                   :src="getParkFileData(parkId)"
                   :title="getParkName(parkId)"
@@ -67,7 +71,7 @@
 <script>
 // TODO: trip path color, and persist on change
 // TODO: incorporate trip cover photo
-// TODO: rework date display, e.g. "7 days in Oct. 2015"
+// TODO: fix toggle model trying to write to activeTrips
 import { mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
@@ -89,27 +93,33 @@ export default {
     getIsActive(id) {
       return this.activeTrips.includes(id);
     },
+    formatTripDates(bDate, eDate) {
+      const bDateObj = new Date(bDate);
+      const eDateObj = new Date(eDate);
+
+      const millisecondsPerDay = 24 * 60 * 60 * 1000;
+      const tripDays = (eDateObj - bDateObj) / millisecondsPerDay + 1;
+      const dayWord = tripDays > 1 ? "days" : "day";
+
+      const bMon = bDateObj.toLocaleString("UTC", { month: "short" });
+      const eMon = eDateObj.toLocaleString("UTC", { month: "short" });
+      const tripMonth = bMon === eMon ? bMon : bMon + "-" + eMon;
+
+      const bYear = bDateObj.toLocaleString("UTC", { year: "numeric" });
+      const eYear = eDateObj.toLocaleString("UTC", { year: "numeric" });
+      const tripYear = bYear === eYear ? bYear : bYear + "-" + eYear;
+
+      return `${tripDays} ${dayWord} in ${tripMonth} ${tripYear}`;
+    },
   },
 };
 </script>
 
 <style lang="scss" scoped>
 .trips {
-  display: grid;
-  grid-auto-rows: minmax(min-content, max-content);
   overflow-y: scroll;
-  .trip {
-    margin-bottom: 1rem;
-    padding: 10px;
-    .title {
-      font-size: 1.8rem;
-    }
-    .park-list {
-      margin-top: 10px;
-      div {
-        padding: 3px;
-      }
-    }
+  .title {
+    font-size: 1.8rem;
   }
 }
 </style>

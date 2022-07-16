@@ -10,20 +10,10 @@ import L from "leaflet";
 // eslint-disable-next-line
 import KML from "../assets/js/L.KML";
 import { toRaw } from "vue";
-import { computed } from "@vue/reactivity";
-import { useStore } from "vuex";
+import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "Maps",
-  setup() {
-    const store = useStore();
-    return {
-      trips: computed(() => store.state.trips),
-      parks: computed(() => store.state.parks),
-      activeTrips: computed(() => store.state.activeTrips),
-      icons: computed(() => store.state.icons),
-    };
-  },
   data() {
     return {
       map: null,
@@ -32,6 +22,10 @@ export default {
       defaultCenter: [39.8283, -98.5795],
       defaultZoom: 4,
     };
+  },
+  computed: {
+    ...mapGetters(["getParkFileData"]),
+    ...mapState(["parks", "trips", "icons", "activeTrips"]),
   },
   methods: {
     setupLeafletMap: function () {
@@ -119,7 +113,7 @@ export default {
             if (!Object.keys(markers).includes(park._id)) {
               const marker = L.marker([park.lat, park.lon], {
                 icon: L.icon({
-                  iconUrl: `/images/parks/${park.image}`,
+                  iconUrl: this.getParkFileData(park._id),
                   iconSize: [28, 42],
                 }),
               }).bindTooltip(park.name);
@@ -143,9 +137,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.map {
-  background-color: #dad6b6;
-}
 #mapContainer {
   width: 100%;
   height: 100%;

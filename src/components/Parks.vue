@@ -14,7 +14,6 @@
             :title="park.name"
             :style="getGrayscaleStyle(park)"
           />
-          <!-- {{ park.name }} -->
         </v-col>
       </v-row>
     </v-container>
@@ -25,7 +24,7 @@
 // TODO: toggle map markers
 // TODO: filter by visited/not visited
 // TODO: add marker to map on badge mouseover
-import { mapState } from "vuex";
+import { mapState, mapGetters } from "vuex";
 
 export default {
   name: "Parks",
@@ -35,6 +34,7 @@ export default {
     };
   },
   computed: {
+    ...mapGetters(["getParkFileData"]),
     ...mapState(["parks", "trips", "icons", "activeTrips"]),
   },
   methods: {
@@ -47,12 +47,6 @@ export default {
       console.log(active);
       // return active ? "" : "filter:grayscale(1)";
       return "";
-    },
-    getParkFileData(id) {
-      const park = this.parks.filter((p) => p._id === id)[0];
-      const image = park.image;
-      const data = this.icons[image];
-      return data;
     },
   },
 };
