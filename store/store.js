@@ -23,12 +23,18 @@ const store = createStore({
       state.trips = trips;
     },
     toggleActiveTrip(state, newId) {
-      if (state.activeTrips.includes(newId)) {
-        state.activeTrips = state.activeTrips.filter((id) => id !== newId);
+      if (newId === "all") {
+        state.activeTrips = state.trips.map((trip) => trip._id);
+      } else if (newId === "none") {
+        state.activeTrips = [];
       } else {
-        const newActiveTrips = state.activeTrips.slice();
-        newActiveTrips.push(newId);
-        state.activeTrips = newActiveTrips;
+        if (state.activeTrips.includes(newId)) {
+          state.activeTrips = state.activeTrips.filter((id) => id !== newId);
+        } else {
+          const newActiveTrips = state.activeTrips.slice();
+          newActiveTrips.push(newId);
+          state.activeTrips = newActiveTrips;
+        }
       }
     },
     setIcons(state, icons) {

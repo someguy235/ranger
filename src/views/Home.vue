@@ -83,7 +83,7 @@ export default {
   grid-template-rows: minmax(400px, 800px);
 }
 .content {
-  background-color: #f5f5f5;
+  // background-color: #f5f5f5;
   display: grid;
   grid-template-rows: auto 100px;
 
