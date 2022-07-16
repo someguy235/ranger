@@ -49,7 +49,7 @@
               </v-col>
             </v-row>
 
-            <v-row no-gutters class="parks">
+            <v-row no-gutters class="park-list">
               <v-col v-for="parkId in trip.parks" class="d-flex justify-center">
                 <img
                   :src="getParkFileData(parkId)"
@@ -67,6 +67,7 @@
 <script>
 // TODO: trip path color, and persist on change
 // TODO: incorporate trip cover photo
+// TODO: rework date display, e.g. "7 days in Oct. 2015"
 import { mapGetters, mapMutations, mapState } from "vuex";
 
 export default {
@@ -103,7 +104,7 @@ export default {
     .title {
       font-size: 1.8rem;
     }
-    .parks {
+    .park-list {
       margin-top: 10px;
       div {
         padding: 3px;
