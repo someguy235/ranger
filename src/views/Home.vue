@@ -1,20 +1,18 @@
 <template>
-  <div class="main">
-    <div class="content">
-      <div class="content-row">
-        <trips />
-        <maps />
-        <parks />
-      </div>
-      <div class="timeline-row">
-        <div class="timeline">Timeline</div>
-      </div>
+  <div class="content">
+    <div class="content-row">
+      <trips />
+      <maps />
+      <parks />
+    </div>
+    <div class="timeline-row">
+      <div class="timeline">Timeline</div>
     </div>
   </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
+import { mapMutations, mapState, useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed } from "@vue/reactivity";
 
@@ -29,21 +27,14 @@ export default {
     Parks,
     Maps,
   },
+  computed: {
+    ...mapState(["user", "tripList"]),
+  },
   setup() {
     const store = useStore();
     const route = useRoute();
     return {
-      setUser: (user) => store.commit("setUser", user),
-      setToken: (token) => store.commit("setToken", token),
-      user: computed(() => store.state.user),
       viewUser: computed(() => route.query?.user || store.state.user),
-      setTrips: (trips) => store.commit("setTrips", trips),
-      tripList: computed(() => store.state.trips),
-    };
-  },
-  data() {
-    return {
-      name: "Home",
     };
   },
   watch: {
@@ -52,6 +43,7 @@ export default {
     },
   },
   methods: {
+    ...mapMutations(["setUser", "setToken", "setTrips"]),
     async getTrips() {
       if (this.viewUser !== null) {
         const response = await fetch(
@@ -78,22 +70,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.main {
-  display: grid;
-  grid-template-rows: minmax(400px, 800px);
-}
 .content {
-  // background-color: #f5f5f5;
   display: grid;
-  grid-template-rows: auto 100px;
-
+  grid-template-rows: calc(100% - 140px) 140px;
   .content-row {
     display: grid;
-    grid-template-columns:
-      minmax(20%, 300px)
-      minmax(60%, 1400px)
-      minmax(20%, 300px);
-    overflow-y: scroll;
+    grid-template-columns: 20% 60% 20%;
   }
   .timeline-row {
     display: grid;

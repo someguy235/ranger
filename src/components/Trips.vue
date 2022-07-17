@@ -1,70 +1,64 @@
 <template>
   <section class="trips">
-    <v-container>
-      <v-row class="py-2">
-        <v-col class="d-flex justify-center">
-          <v-btn value="all" @click="toggleActiveTrip('all')" class="mx-2">
-            All
-          </v-btn>
-          <v-btn value="none" @click="toggleActiveTrip('none')" class="mx-2">
-            None
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row v-for="trip in trips">
-        <v-col>
-          <v-card class="trip mb-2 pa-3">
-            <v-row no-gutters>
-              <v-col cols="9" class="d-flex align-center">
-                <div class="title">
-                  {{ trip.title }}
-                </div>
-              </v-col>
-              <v-col cols="3">
-                <v-switch
-                  class="d-flex justify-end"
-                  inset
-                  hide-details
-                  color="blue"
-                  :value="trip._id"
-                  v-model="activeTrips"
-                  @change="toggleActiveTrip(trip._id)"
-                ></v-switch>
-              </v-col>
-            </v-row>
+    <div class="trip-controls d-flex justify-center align-center">
+      <v-btn value="all" @click="toggleActiveTrip('all')" class="mx-2">
+        All
+      </v-btn>
+      <v-btn value="none" @click="toggleActiveTrip('none')" class="mx-2">
+        None
+      </v-btn>
+    </div>
+    <div class="trip-list pa-2">
+      <div v-for="trip in trips">
+        <v-card class="trip mb-2 pa-3">
+          <v-row no-gutters>
+            <v-col cols="9" class="d-flex align-center">
+              <div class="title">
+                {{ trip.title }}
+              </div>
+            </v-col>
+            <v-col cols="3">
+              <v-switch
+                class="d-flex justify-end"
+                inset
+                hide-details
+                color="blue"
+                :value="trip._id"
+                v-model="activeTrips"
+                @change="toggleActiveTrip(trip._id)"
+              ></v-switch>
+            </v-col>
+          </v-row>
 
-            <v-row no-gutters>
-              <v-col>
-                <div class="dates">
-                  <!-- {{ trip.bDate.substr(0, 10) }} - -->
-                  <!-- {{ trip.eDate.substr(0, 10) }} -->
-                  {{ formatTripDates(trip.bDate, trip.eDate) }}
-                </div>
-              </v-col>
-            </v-row>
-            <v-row no-gutters>
-              <v-col>
-                <div class="miles" v-if="trip.distance">
-                  {{ trip.distance }} miles
-                </div>
-              </v-col>
-            </v-row>
+          <v-row no-gutters>
+            <v-col>
+              <div class="dates">
+                {{ formatTripDates(trip.bDate, trip.eDate) }}
+              </div>
+            </v-col>
+          </v-row>
+          <v-row no-gutters>
+            <v-col>
+              <div class="miles" v-if="trip.distance">
+                {{ trip.distance }} miles
+              </div>
+            </v-col>
+          </v-row>
 
-            <v-row no-gutters class="park-list mt-3">
-              <v-col
-                v-for="parkId in trip.parks"
-                class="d-flex justify-center pa-1"
-              >
-                <img
-                  :src="getParkFileData(parkId)"
-                  :title="getParkName(parkId)"
-                />
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-      </v-row>
-    </v-container>
+          <v-row no-gutters class="park-list mt-3">
+            <v-col
+              v-for="parkId in trip.parks"
+              class="d-flex justify-center pa-1"
+            >
+              <img
+                :src="getParkFileData(parkId)"
+                :title="getParkName(parkId)"
+              />
+            </v-col>
+          </v-row>
+        </v-card>
+      </div>
+    </div>
   </section>
 </template>
 
@@ -117,9 +111,14 @@ export default {
 
 <style lang="scss" scoped>
 .trips {
+  display: grid;
+  grid-template-rows: 75px auto;
   overflow-y: scroll;
   .title {
     font-size: 1.8rem;
   }
+}
+.trip-list {
+  overflow-y: scroll;
 }
 </style>

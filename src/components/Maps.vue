@@ -129,6 +129,7 @@ export default {
         this.markers = markers;
       },
     },
+    "$store.state.activeParks": {},
   },
   mounted() {
     this.setupLeafletMap();

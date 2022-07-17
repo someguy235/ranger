@@ -27,7 +27,7 @@
 
 <script>
 import { computed } from "@vue/reactivity";
-import { useStore } from "vuex";
+import { mapState } from "vuex";
 import { useRoute } from "vue-router";
 
 import Login from "./Login.vue";
@@ -37,11 +37,12 @@ export default {
   components: {
     Login,
   },
+  computed: {
+    ...mapState(["user"]),
+  },
   setup() {
-    const store = useStore();
     const route = useRoute();
     return {
-      user: computed(() => store.state.user),
       path: computed(() => route.path),
     };
   },
@@ -69,7 +70,6 @@ export default {
 .header {
   display: grid;
   grid-template-columns: auto minmax(50%, 1140px) auto;
-  grid-template-rows: 100px;
   width: 100%;
   .header-content {
     background-color: #e9baf1;

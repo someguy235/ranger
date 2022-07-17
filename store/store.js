@@ -7,6 +7,7 @@ const store = createStore({
     parks: null,
     trips: [],
     activeTrips: [],
+    activeParks: [],
     icons: {},
   },
   mutations: {

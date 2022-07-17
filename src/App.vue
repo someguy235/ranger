@@ -1,10 +1,12 @@
 <template>
-  <header-comp :setUser="setUser" :setToken="setToken" />
-  <router-view></router-view>
+  <div id="container">
+    <header-comp :setUser="setUser" :setToken="setToken" />
+    <router-view></router-view>
+  </div>
 </template>
 
 <script>
-import { useStore } from "vuex";
+import { mapMutations } from "vuex";
 import HeaderComp from "./components/Header.vue";
 
 export default {
@@ -12,16 +14,8 @@ export default {
   components: {
     HeaderComp,
   },
-  setup() {
-    const store = useStore();
-    return {
-      setUser: (user) => store.commit("setUser", user),
-      setToken: (token) => store.commit("setToken", token),
-      setParks: (parks) => store.commit("setParks", parks),
-      setIcons: (icons) => store.commit("setIcons", icons),
-    };
-  },
   methods: {
+    ...mapMutations(["setUser", "setToken", "setParks", "setIcons"]),
     async getParks() {
       const response = await fetch("/ranger/api/parks", {
         method: "GET",
@@ -54,7 +48,12 @@ body,
 html,
 #app {
   height: 100%;
-  margin: 0;
+  margin: auto;
+  max-width: 1400px;
   padding: 0;
+}
+#container {
+  display: grid;
+  grid-template-rows: 140px calc(100vh - 140px);
 }
 </style>
