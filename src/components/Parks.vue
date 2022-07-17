@@ -4,8 +4,9 @@
       <v-select
         density="compact"
         variant="outlined"
-        :items="showOptions"
         label="Show"
+        :items="showOptions"
+        v-model="showOption"
       >
       </v-select>
     </div>
@@ -25,29 +26,42 @@
 // TODO: toggle map markers
 // TODO: filter by visited/not visited
 // TODO: add marker to map on badge mouseover
-import { mapState, mapGetters } from "vuex";
+import { mapState, mapGetters, mapMutations } from "vuex";
 
 export default {
   name: "Parks",
   data() {
     return {
       showOptions: ["All", "Active", "Visited", "Not Visited", "None"],
+      showOption: "Active",
     };
+  },
+  watch: {
+    showOption(newVal) {
+      this.setActiveParksFilter(newVal);
+    },
   },
   computed: {
     ...mapGetters(["getParkFileData"]),
-    ...mapState(["parks", "trips", "icons", "activeTrips"]),
+    ...mapState([
+      "parks",
+      "trips",
+      "icons",
+      "activeTrips",
+      "activeParks",
+      "activeParksFilter",
+    ]),
   },
   methods: {
+    ...mapMutations(["setActiveParksFilter"]),
     getGrayscaleStyle(park) {
-      const active = this.trips
-        .filter((trip) => this.activeTrips.includes(trip._id))
-        .map((trip) => trip.parks)
-        .flat()
-        .includes(park._id);
-      // console.log(active);
-      return active ? "" : "filter:grayscale(1)";
-      // return "";
+      // const active = this.trips
+      //   .filter((trip) => this.activeTrips.includes(trip._id))
+      //   .map((trip) => trip.parks)
+      //   .flat()
+      //   .includes(park._id);
+      const active = this.activeParks.includes(park._id);
+      return active ? "" : "filter:grayscale(1);opacity:.2;";
     },
   },
 };
@@ -67,6 +81,9 @@ export default {
     display: flex;
     flex-wrap: wrap;
     overflow-y: scroll;
+    img {
+      transition: all 0.3s;
+    }
   }
 }
 </style>

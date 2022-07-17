@@ -6,9 +6,10 @@ const store = createStore({
     token: null,
     parks: null,
     trips: [],
-    activeTrips: [],
-    activeParks: [],
     icons: {},
+    activeTrips: [],
+    activeParksFilter: "Active",
+    activeParks: [],
   },
   mutations: {
     setUser(state, user) {
@@ -22,6 +23,9 @@ const store = createStore({
     },
     setTrips(state, trips) {
       state.trips = trips;
+    },
+    setIcons(state, icons) {
+      state.icons = icons;
     },
     toggleActiveTrip(state, newId) {
       if (newId === "all") {
@@ -38,11 +42,25 @@ const store = createStore({
         }
       }
     },
-    setIcons(state, icons) {
-      state.icons = icons;
+    setActiveParksFilter(state, newActiveParksFilter) {
+      console.log(`setActiveParksFilter(${newActiveParksFilter})`);
+      state.activeParksFilter = newActiveParksFilter;
+
+      let activeParks = [];
+      // showOptions: ["All", "Active", "Visited", "Not Visited", "None"],
+      switch (newActiveParksFilter) {
+        case "All":
+          activeParks = state.parks.map((park) => park._id);
+          break;
+        case "None":
+          activeParks = [];
+      }
+      state.activeParks = activeParks;
     },
   },
-  actions: {},
+  actions: {
+    // updateActiveParks
+  },
   getters: {
     getParkFileData: (state) => (id) => {
       const park = state.parks.filter((p) => p._id === id)[0];
