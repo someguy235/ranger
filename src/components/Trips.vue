@@ -66,7 +66,7 @@
 // TODO: trip path color, and persist on change
 // TODO: incorporate trip cover photo
 // TODO: fix toggle model trying to write to activeTrips
-import { mapGetters, mapMutations, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Trips",
@@ -75,7 +75,8 @@ export default {
     ...mapState(["parks", "trips", "activeTrips"]),
   },
   methods: {
-    ...mapMutations(["toggleActiveTrip"]),
+    // ...mapMutations(["toggleActiveTrip"]),
+    ...mapActions(["toggleActiveTrip"]),
     getParkName(id) {
       const park = this.parks.filter((p) => p._id === id)[0];
       return park.name;

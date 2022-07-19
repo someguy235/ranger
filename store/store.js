@@ -43,23 +43,45 @@ const store = createStore({
       }
     },
     setActiveParksFilter(state, newActiveParksFilter) {
-      console.log(`setActiveParksFilter(${newActiveParksFilter})`);
       state.activeParksFilter = newActiveParksFilter;
-
+    },
+    updateActiveParks(state) {
       let activeParks = [];
       // showOptions: ["All", "Active", "Visited", "Not Visited", "None"],
-      switch (newActiveParksFilter) {
+      switch (state.activeParksFilter) {
         case "All":
           activeParks = state.parks.map((park) => park._id);
           break;
         case "None":
           activeParks = [];
+          break;
+        case "Active":
+          activeParks = state.trips
+            .filter((trip) => state.activeTrips.includes(trip._id))
+            .map((trip) => trip.parks)
+            .flat();
+          break;
+        case "Visited":
+          activeParks = state.trips.map((trip) => trip.parks).flat();
+          break;
+        case "Not Visited":
+          activeParks = state.parks
+            .filter((park) => !state.activeParks.includes(park._id))
+            .map((park) => park._id);
+          break;
       }
       state.activeParks = activeParks;
     },
   },
   actions: {
-    // updateActiveParks
+    toggleActiveTrip(context, newId) {
+      context.commit("toggleActiveTrip", newId);
+      context.commit("updateActiveParks");
+    },
+    setActiveParksFilter(context, newActiveParksFilter) {
+      context.commit("setActiveParksFilter", newActiveParksFilter);
+      context.commit("updateActiveParks");
+    },
   },
   getters: {
     getParkFileData: (state) => (id) => {

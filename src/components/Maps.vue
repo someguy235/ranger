@@ -25,7 +25,7 @@ export default {
   },
   computed: {
     ...mapGetters(["getParkFileData"]),
-    ...mapState(["parks", "trips", "icons", "activeTrips"]),
+    ...mapState(["parks", "trips", "icons", "activeTrips", "activeParks"]),
   },
   methods: {
     setupLeafletMap: function () {
@@ -69,16 +69,13 @@ export default {
     "$store.state.activeTrips": {
       handler() {
         let mapBounds = null;
-        let activeParkIds = [];
         const map = toRaw(this.map);
         const layers = toRaw(this.layers);
-        const markers = toRaw(this.markers);
 
         // Add/remove kml routes based on active trips
         this.trips.map((trip) => {
           if (this.activeTrips.includes(trip._id)) {
             mapBounds = this.findBounds(mapBounds, trip.bounds);
-            activeParkIds.push(...trip.parks);
             if (trip.kml) {
               if (!Object.keys(layers).includes(trip._id)) {
                 const parser = new DOMParser();
@@ -107,9 +104,16 @@ export default {
           map.setView(this.defaultCenter, this.defaultZoom);
         }
 
-        // Add/remove markers for selected trips
+        this.layers = layers;
+      },
+    },
+    "$store.state.activeParks": {
+      handler() {
+        const map = toRaw(this.map);
+        const markers = toRaw(this.markers);
+
         this.parks.map((park) => {
-          if (activeParkIds.includes(park._id)) {
+          if (this.activeParks.includes(park._id)) {
             if (!Object.keys(markers).includes(park._id)) {
               const marker = L.marker([park.lat, park.lon], {
                 icon: L.icon({
@@ -125,11 +129,10 @@ export default {
             delete markers[park._id];
           }
         });
-        this.layers = layers;
+
         this.markers = markers;
       },
     },
-    // "$store.state.activeParks": {},
   },
   mounted() {
     this.setupLeafletMap();

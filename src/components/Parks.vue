@@ -23,10 +23,8 @@
 </template>
 
 <script>
-// TODO: toggle map markers
-// TODO: filter by visited/not visited
 // TODO: add marker to map on badge mouseover
-import { mapState, mapGetters, mapMutations } from "vuex";
+import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
   name: "Parks",
@@ -53,13 +51,8 @@ export default {
     ]),
   },
   methods: {
-    ...mapMutations(["setActiveParksFilter"]),
+    ...mapActions(["setActiveParksFilter"]),
     getGrayscaleStyle(park) {
-      // const active = this.trips
-      //   .filter((trip) => this.activeTrips.includes(trip._id))
-      //   .map((trip) => trip.parks)
-      //   .flat()
-      //   .includes(park._id);
       const active = this.activeParks.includes(park._id);
       return active ? "" : "filter:grayscale(1);opacity:.2;";
     },
