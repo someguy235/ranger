@@ -8,6 +8,7 @@ const store = createStore({
     trips: [],
     icons: {},
     activeTrips: [],
+    // TODO: why is this two places?
     activeParksFilter: "Active",
     activeParks: [],
   },

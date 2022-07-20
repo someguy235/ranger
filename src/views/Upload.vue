@@ -1,48 +1,80 @@
 <template>
   <div class="main">
-    <div id="title">upload page ({{ user }})</div>
+    <!-- <div id="title">upload page ({{ user }})</div> -->
     <div id="login" v-if="token === null">
       <login />
     </div>
     <div id="upload" v-if="token !== null">
-      <form @submit.prevent="upload" enctype="multipart/form-data">
-        <input v-model="title" placeholder="title" required />
-        <div class="dates">
-          <input v-model="bDate" type="date" required />
-          <input v-model="eDate" type="date" required />
-        </div>
-        <div class="parks">
-          <select size="5">
-            <option
-              v-for="park in selectableParks"
-              :value="park.name"
-              @click="togglePark(park._id)"
-            >
-              {{ park.name }}
-            </option>
-          </select>
-          <select size="5">
-            <option
-              v-for="park in selectedParks"
-              :value="park.name"
-              @click="togglePark(park._id)"
-            >
-              {{ park.name }}
-            </option>
-          </select>
-        </div>
-        <label>KML<input type="file" ref="kml" name="kml" /></label>
-        <label>IMG<input type="file" ref="image" name="image" /></label>
-        <button type="submit">Upload</button>
-      </form>
-      <div>{{ uploadMsg }}</div>
+      <!-- <form @submit.prevent="upload" enctype="multipart/form-data"> -->
+      <v-form @submit.prevent="upload" enctype="multipart/form-data">
+        <v-container>
+          <v-row class="pt-6">
+            <v-col>
+              <v-text-field v-model="title" label="title" required />
+            </v-col>
+          </v-row>
+          <v-row class="dates">
+            <v-col class="date">
+              <input id="bDate" v-model="bDate" type="date" required />
+              <label for="bDate">begin date</label>
+            </v-col>
+            <v-col class="date">
+              <input id="eDate" v-model="eDate" type="date" required />
+              <label for="eDate">end date</label>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-select
+                multiple
+                v-model="selectedParkIds"
+                :items="parks"
+                item-title="name"
+                item-value="_id"
+                label="visited parks"
+              ></v-select>
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-file-input
+                id="kml-input"
+                ref="kml"
+                name="kml"
+                label="kml file"
+                prepend-icon="mdi-map"
+                accept=".kml"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col>
+              <v-file-input
+                id="img-input"
+                ref="image"
+                name="image"
+                label="cover image"
+                prepend-icon="mdi-camera"
+                accept="image/*"
+              />
+            </v-col>
+          </v-row>
+          <v-row>
+            <v-col class="d-flex justify-center">
+              <v-btn type="submit">Upload</v-btn>
+            </v-col>
+          </v-row>
+        </v-container>
+      </v-form>
+      <div>
+        <v-snackbar v-model="uploadMsg">{{ uploadMsg }}</v-snackbar>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { computed } from "@vue/reactivity";
-import { useStore } from "vuex";
+import { mapState } from "vuex";
 import { ref } from "vue";
 import Login from "../components/Login.vue";
 
@@ -51,15 +83,11 @@ export default {
     Login,
   },
   setup() {
-    const store = useStore();
     const kml = ref(null);
     const image = ref(null);
     return {
       kml,
       image,
-      user: computed(() => store.state.user),
-      token: computed(() => store.state.token),
-      availableParks: computed(() => store.state.parks),
     };
   },
   data() {
@@ -68,24 +96,25 @@ export default {
       bDate: "",
       eDate: "",
       selectedParkIds: [],
-      uploadMsg: "waiting",
+      uploadMsg: null,
     };
   },
   computed: {
+    ...mapState(["user", "token", "parks"]),
     selectableParks() {
       if (this.availableParks) {
-        return this.availableParks.filter((park) => {
-          return !this.selectedParkIds.includes(park._id);
-        });
+        // return this.availableParks.filter((park) => {
+        // return !this.selectedParkIds.includes(park._id);
+        // });
       }
     },
-    selectedParks() {
-      if (this.availableParks) {
-        return this.availableParks.filter((park) => {
-          return this.selectedParkIds.includes(park._id);
-        });
-      }
-    },
+    // selectedParks() {
+    //   if (this.availableParks) {
+    //     return this.availableParks.filter((park) => {
+    //       return this.selectedParkIds.includes(park._id);
+    //     });
+    //   }
+    // },
   },
   methods: {
     togglePark(newId) {
@@ -138,13 +167,11 @@ export default {
 <style lang="scss" scoped>
 .main {
   display: grid;
-  grid-template-columns: 25% 50% 25%;
-  grid-template-rows: 10% auto;
-  grid-template-areas:
-    ". title ."
-    ". main .";
+  grid-template-columns: auto minmax(250px, 500px) auto;
+  grid-template-areas: ". main .";
   height: 100%;
   justify-content: center;
+  padding-top: 3rem;
 }
 #title {
   align-items: center;
@@ -155,9 +182,10 @@ export default {
 #upload {
   display: grid;
   grid-area: main;
-  grid-template-rows: 50% auto;
+  // grid-template-rows: 50% auto;
   form {
-    background-color: aquamarine;
+    // background-color: aquamarine;
+    border: 1px solid grey;
     display: grid;
     row-gap: 1rem;
     justify-content: center;
@@ -166,9 +194,22 @@ export default {
       padding: 0;
     }
     .dates {
-      column-gap: 5px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
+      margin-bottom: 20px;
+      .date {
+        // column-gap: 5px;
+        // display: grid;
+        // grid-template-columns: 1fr 1fr;
+        align-items: center;
+        // background-color: black;
+        // border-bottom: 1px solid;
+        display: flex;
+        flex-direction: column;
+        input[type="date"] {
+          align-items: center;
+          align-self: center;
+          border-bottom: 1px solid;
+        }
+      }
     }
     .parks {
       column-gap: 5px;

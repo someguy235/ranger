@@ -10,7 +10,7 @@
     </div>
     <div class="trip-list pa-2">
       <div v-for="trip in trips">
-        <v-card class="trip mb-2 pa-3">
+        <v-card elevation="3" class="trip mb-2 pa-3">
           <v-row no-gutters>
             <v-col cols="9" class="d-flex align-center">
               <div class="title">
@@ -24,7 +24,7 @@
                 hide-details
                 color="blue"
                 :value="trip._id"
-                v-model="activeTrips"
+                v-model="activeTripsData"
                 @change="toggleActiveTrip(trip._id)"
               ></v-switch>
             </v-col>
@@ -65,17 +65,20 @@
 <script>
 // TODO: trip path color, and persist on change
 // TODO: incorporate trip cover photo
-// TODO: fix toggle model trying to write to activeTrips
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   name: "Trips",
+  data() {
+    return {
+      activeTripsData: [],
+    };
+  },
   computed: {
     ...mapGetters(["getParkFileData"]),
     ...mapState(["parks", "trips", "activeTrips"]),
   },
   methods: {
-    // ...mapMutations(["toggleActiveTrip"]),
     ...mapActions(["toggleActiveTrip"]),
     getParkName(id) {
       const park = this.parks.filter((p) => p._id === id)[0];
@@ -105,6 +108,13 @@ export default {
       const tripYear = bYear === eYear ? bYear : bYear + "-" + eYear;
 
       return `${tripDays} ${dayWord} in ${tripMonth} ${tripYear}`;
+    },
+  },
+  watch: {
+    "$store.state.activeTrips": {
+      handler() {
+        this.activeTripsData = this.activeTrips;
+      },
     },
   },
 };

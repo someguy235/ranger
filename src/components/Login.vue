@@ -1,12 +1,26 @@
 <template>
-  <form @submit.prevent="login">
-    <input v-model="email" placeholder="email" />
-    <br />
-    <input v-model="password" placeholder="password" />
-    <br />
-    <button type="submit">Login</button>
-    <button @click.prevent="cancel">Cancel</button>
-  </form>
+  <v-form @submit.prevent="login">
+    <v-container>
+      <v-row no-gutters>
+        <v-col>
+          <v-text-field density="compact" v-model="email" placeholder="email" />
+        </v-col>
+      </v-row>
+      <v-row no-gutters>
+        <v-col>
+          <v-text-field
+            density="compact"
+            v-model="password"
+            placeholder="password"
+          />
+        </v-col>
+      </v-row>
+      <v-row class="h-25">
+        <v-col><v-btn type="submit">Login</v-btn></v-col>
+        <v-col><v-btn @click.prevent="cancel">Cancel</v-btn></v-col>
+      </v-row>
+    </v-container>
+  </v-form>
 </template>
 
 <script>

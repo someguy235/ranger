@@ -39,13 +39,12 @@ const getParkBounds = (tripBounds, tripParks, parks) => {
     } else {
       tripBounds = {
         minLat: Math.min(tripBounds.minLat, parkLat),
-        maxLat: Math.max(tripBounds.maxlat, parkLat),
+        maxLat: Math.max(tripBounds.maxLat, parkLat),
         minLon: Math.min(tripBounds.minLon, parkLon),
         maxLon: Math.max(tripBounds.maxLon, parkLon),
       };
     }
   }
-
   return tripBounds;
 };
 
@@ -93,6 +92,7 @@ router.post(
   ]),
   async (req, res) => {
     // TODO: form validation, including file type
+    // TODO: random color on upload
     if (req.isAuthenticated()) {
       try {
         let imgData = null;
