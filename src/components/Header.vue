@@ -29,7 +29,16 @@
         </v-container>
       </div>
       <div v-if="!user && !showLogin">
-        <button @click="showLogin = true">login</button>
+        <v-container
+          class="h-100 d-flex flex-column justify-center align-center"
+        >
+          <v-row class="d-flex justify-center">
+            <v-col class="d-flex align-center">
+              <v-btn variant="flat" @click="showLogin = true">login</v-btn>
+            </v-col>
+          </v-row>
+          <!-- <v-row><v-col></v-col></v-row> -->
+        </v-container>
       </div>
       <div class="login" v-if="showLogin">
         <login :cancel="cancelLogin" />
@@ -81,6 +90,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import url("https://fonts.googleapis.com/css2?family=Vibur&display=swap");
 .header {
   display: grid;
   grid-template-columns: auto minmax(50%, 1100px) auto;
@@ -106,6 +116,7 @@ export default {
       font-weight: 400;
     }
     .nav {
+      font-family: "Roboto";
       span {
         color: white;
       }
@@ -115,11 +126,12 @@ export default {
     }
   }
   .login {
-    background-color: aquamarine;
+    background-color: white;
     border: 1px solid grey;
     position: absolute;
     right: 10px;
     top: 10px;
+    z-index: 1000;
   }
 }
 </style>
