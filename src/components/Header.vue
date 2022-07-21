@@ -2,28 +2,28 @@
   <header class="header">
     <div></div>
     <div class="header-content">
-      <div class="logo">Ranger Logo</div>
+      <span class="title px-8">Ranger</span>
       <div v-if="user" class="nav">
         <v-container
           class="h-100 d-flex flex-column justify-center align-center"
         >
           <v-row class="d-flex justify-center">
-            <v-col>
-              <span v-if="path === '/'">Home</span>
-              <router-link v-else to="/">Home</router-link>
-            </v-col>
-            <v-col>
-              <span v-if="path === '/upload'">Upload</span>
-              <router-link v-else to="/upload">Upload</router-link>
-            </v-col>
-            <v-col>
-              <span v-if="path === '/edit'">Edit</span>
-              <router-link v-else to="/edit">Edit</router-link>
+            <v-col class="d-flex align-center">
+              <v-btn variant="flat" @click="logout">Logout</v-btn>
             </v-col>
           </v-row>
           <v-row class="d-flex justify-center">
-            <v-col>
-              <v-btn variant="flat" @click="logout">Logout</v-btn>
+            <v-col class="d-flex align-center">
+              <span v-if="path === '/'">Home</span>
+              <router-link v-else to="/">Home</router-link>
+            </v-col>
+            <v-col class="d-flex align-center">
+              <span v-if="path === '/upload'">Upload</span>
+              <router-link v-else to="/upload">Upload</router-link>
+            </v-col>
+            <v-col class="d-flex align-center">
+              <span v-if="path === '/edit'">Edit</span>
+              <router-link v-else to="/edit">Edit</router-link>
             </v-col>
           </v-row>
         </v-container>
@@ -83,17 +83,35 @@ export default {
 <style lang="scss" scoped>
 .header {
   display: grid;
-  grid-template-columns: auto minmax(50%, 1140px) auto;
+  grid-template-columns: auto minmax(50%, 1100px) auto;
   width: 100%;
   .header-content {
     background-color: #e9baf1;
+    background-size: cover !important;
+    background: radial-gradient(
+        ellipse at center,
+        rgba(0, 0, 0, 0) 0%,
+        rgba(0, 0, 0, 0) 37%,
+        rgba(0, 0, 0, 0.65) 100%
+      ),
+      url(../assets/images/ranger-header.jpg) no-repeat center center scroll;
+
     display: grid;
-    grid-template-columns: 75% auto auto;
-    .nav {
-      background-color: cornflowerblue;
+    grid-template-columns: auto 20%;
+    margin: 20px 0;
+    .title {
+      color: white;
+      font-family: "Vibur";
+      font-size: 6rem;
+      font-weight: 400;
     }
-    .logo {
-      border: 1px solid grey;
+    .nav {
+      span {
+        color: white;
+      }
+      a {
+        color: white;
+      }
     }
   }
   .login {

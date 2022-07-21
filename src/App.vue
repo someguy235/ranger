@@ -54,6 +54,6 @@ html,
 }
 #container {
   display: grid;
-  grid-template-rows: 140px calc(100vh - 140px);
+  grid-template-rows: 180px calc(100vh - 180px);
 }
 </style>
