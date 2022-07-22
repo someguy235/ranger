@@ -184,10 +184,9 @@ export default {
   grid-area: main;
   // grid-template-rows: 50% auto;
   form {
-    // background-color: aquamarine;
     border: 1px solid grey;
-    display: grid;
-    row-gap: 1rem;
+    // display: grid;
+    // row-gap: 1rem;
     justify-content: center;
     input {
       margin: 0;
@@ -196,12 +195,7 @@ export default {
     .dates {
       margin-bottom: 20px;
       .date {
-        // column-gap: 5px;
-        // display: grid;
-        // grid-template-columns: 1fr 1fr;
         align-items: center;
-        // background-color: black;
-        // border-bottom: 1px solid;
         display: flex;
         flex-direction: column;
         input[type="date"] {
