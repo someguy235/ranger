@@ -1,8 +1,10 @@
 <template>
-  <div id="container">
-    <header-comp :setUser="setUser" :setToken="setToken" />
-    <router-view></router-view>
-  </div>
+  <v-app>
+    <div id="container">
+      <header-comp :setUser="setUser" :setToken="setToken" />
+      <router-view></router-view>
+    </div>
+  </v-app>
 </template>
 
 <script>

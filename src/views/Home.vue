@@ -16,10 +16,10 @@
               max="3"
               :step="1"
               show-ticks="always"
-              thumb-label="never"
+              thumb-label="always"
               tick-size="2"
             >
-              <!-- <template v-slot:thumb-label="{ modelValue }">test</template> -->
+              <template v-slot:thumb-label="{ modelValue }">test</template>
             </v-range-slider>
           </v-col>
         </v-row>
@@ -53,17 +53,12 @@ export default {
   computed: {
     ...mapState(["user", "tripList"]),
     ...mapGetters(["getTripDates"]),
-    // tripDates() {
-    //   console.log(this.tripList);
-    //   if (this.tripList) return this.tripList.map((trip) => trip.bDate);
-    // },
   },
   setup() {
     const store = useStore();
     const route = useRoute();
     return {
       viewUser: computed(() => route.query?.user || store.state.user),
-      // tripDates: computed(() => this.tripList.map((trip) => trip.bDate)),
     };
   },
   watch: {
@@ -85,12 +80,6 @@ export default {
         this.setTrips(trips);
       }
     },
-    async getKml() {
-      console.log("getKml()");
-      const response = await fetch("/ranger/api/kml");
-      const kml = await response.text;
-      console.log(kml);
-    },
   },
   beforeMount() {
     this.getTrips();
@@ -105,12 +94,6 @@ export default {
   .content-row {
     display: grid;
     grid-template-columns: 20% 60% 20%;
-  }
-  .timeline-row {
-    // display: grid;
-    .timeline {
-      // background-color: #c2e5c4;
-    }
   }
 }
 </style>
