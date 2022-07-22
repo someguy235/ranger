@@ -6,13 +6,31 @@
       <parks />
     </div>
     <div class="timeline-row">
-      <div class="timeline">Timeline</div>
+      <v-container>
+        <v-row>
+          <v-col class="pa-12">
+            <v-range-slider
+              :ticks="getTripDates"
+              :value="[0, 1]"
+              min="0"
+              max="3"
+              :step="1"
+              show-ticks="always"
+              thumb-label="never"
+              tick-size="2"
+            >
+              <!-- <template v-slot:thumb-label="{ modelValue }">test</template> -->
+            </v-range-slider>
+          </v-col>
+        </v-row>
+      </v-container>
+      <!-- <timeline /> -->
     </div>
   </div>
 </template>
 
 <script>
-import { mapMutations, mapState, useStore } from "vuex";
+import { mapGetters, mapMutations, mapState, useStore } from "vuex";
 import { useRoute } from "vue-router";
 import { computed } from "@vue/reactivity";
 
@@ -22,6 +40,11 @@ import Maps from "../components/Maps.vue";
 
 export default {
   name: "Home",
+  data() {
+    return {
+      ticks: { 0: "zero", 1: "one", 2: "two", 3: "three" },
+    };
+  },
   components: {
     Trips,
     Parks,
@@ -29,12 +52,18 @@ export default {
   },
   computed: {
     ...mapState(["user", "tripList"]),
+    ...mapGetters(["getTripDates"]),
+    // tripDates() {
+    //   console.log(this.tripList);
+    //   if (this.tripList) return this.tripList.map((trip) => trip.bDate);
+    // },
   },
   setup() {
     const store = useStore();
     const route = useRoute();
     return {
       viewUser: computed(() => route.query?.user || store.state.user),
+      // tripDates: computed(() => this.tripList.map((trip) => trip.bDate)),
     };
   },
   watch: {
@@ -78,9 +107,9 @@ export default {
     grid-template-columns: 20% 60% 20%;
   }
   .timeline-row {
-    display: grid;
+    // display: grid;
     .timeline {
-      background-color: #c2e5c4;
+      // background-color: #c2e5c4;
     }
   }
 }

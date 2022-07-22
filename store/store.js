@@ -91,6 +91,20 @@ const store = createStore({
       const data = state.icons[image];
       return data;
     },
+    getTripDates: (state) => {
+      const tripDates = state.trips
+        .sort((a, b) => (a.bDate < b.bDate ? -1 : 1))
+        .map((trip) => {
+          const k = trip.bDate.substring(0, 10);
+          return [k, trip.title];
+        });
+      const tripDatesObj = {};
+      for (const tripDate in tripDates) {
+        tripDatesObj[tripDate] = tripDates[tripDate][1];
+      }
+      console.log(tripDatesObj);
+      return tripDatesObj;
+    },
   },
 });
 
