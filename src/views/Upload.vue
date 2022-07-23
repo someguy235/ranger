@@ -1,11 +1,9 @@
 <template>
   <div class="main">
-    <!-- <div id="title">upload page ({{ user }})</div> -->
     <div id="login" v-if="token === null">
       <login />
     </div>
     <div id="upload" v-if="token !== null">
-      <!-- <form @submit.prevent="upload" enctype="multipart/form-data"> -->
       <v-form @submit.prevent="upload" enctype="multipart/form-data">
         <v-container>
           <v-row class="pt-6">

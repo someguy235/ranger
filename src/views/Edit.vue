@@ -10,26 +10,25 @@
             <v-row>
               <v-col>Title: {{ trip.title }}</v-col>
             </v-row>
-            <!-- <div>id: {{ trip._id }}</div> -->
             <v-row>
-              <v-col> bDate: {{ trip.bDate.substring(0, 10) }} </v-col>
-              <v-col> eDate: {{ trip.eDate.substring(0, 10) }} </v-col>
+              <v-col> begin: {{ trip.bDate.substring(0, 10) }} </v-col>
+              <v-col> end: {{ trip.eDate.substring(0, 10) }} </v-col>
             </v-row>
             <v-row>
               <v-col> parks: {{ getParkNames(trip) }} </v-col>
             </v-row>
             <v-row>
               <v-col v-if="trip.kml">
-                kml
-                <!--TODO: checkmark emoji --></v-col
-              >
+                <v-icon icon="mdi-map"></v-icon>
+                .kml
+              </v-col>
               <v-col v-if="trip.image">
+                <v-icon icon="mdi-camera"></v-icon>
                 img
-                <!--TODO: checkmark emoji --></v-col
-              >
+              </v-col>
             </v-row>
             <v-row>
-              <v-col class="d-flex justify-center">
+              <v-col class="d-flex justify-center pt-6">
                 <v-btn @click="editTrip(trip._id)">edit</v-btn>
               </v-col>
             </v-row>
@@ -69,7 +68,7 @@
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
+                <v-col cols="9">
                   <v-file-input
                     id="kml-input"
                     ref="kml"
@@ -77,12 +76,19 @@
                     label="kml file"
                     prepend-icon="mdi-map"
                     accept=".kml"
+                    :disabled="removeKml"
                   />
-                  <!-- TODO: 'remove' button -->
+                </v-col>
+                <v-col cols="3">
+                  <v-checkbox
+                    v-if="trip.kml"
+                    v-model="removeKml"
+                    label="remove"
+                  />
                 </v-col>
               </v-row>
               <v-row>
-                <v-col>
+                <v-col cols="9">
                   <v-file-input
                     id="img-input"
                     ref="image"
@@ -90,8 +96,15 @@
                     label="cover image"
                     prepend-icon="mdi-camera"
                     accept="image/*"
+                    :disabled="removeImg"
                   />
-                  <!-- TODO: 'remove' button -->
+                </v-col>
+                <v-col cols="3">
+                  <v-checkbox
+                    v-if="trip.img"
+                    v-model="removeImg"
+                    label="remove"
+                  />
                 </v-col>
               </v-row>
               <v-row class="d-flex justify-center">
@@ -116,7 +129,6 @@
 </template>
 
 <script>
-// TODO: enable trip edit
 // TODO: add this func to Trips component?
 import { ref } from "vue";
 import { mapState } from "vuex";
@@ -142,6 +154,8 @@ export default {
       editBDate: null,
       editEDate: null,
       editParkIds: [],
+      removeKml: false,
+      removeImg: false,
       updateMsg: null,
       showUpdateMsg: false,
     };
@@ -184,14 +198,17 @@ export default {
     async update() {
       this.uploadMsg = "";
       const params = new FormData();
-      params.append("title", this.title);
-      params.append("bDate", this.bDate);
-      params.append("eDate", this.eDate);
-      params.append("parks", this.selectedParkIds);
-      // params.append("kml", this.kml.files[0]);
-      // params.append("image", this.image.files[0]);
+      params.append("id", this.editId);
+      params.append("title", this.editTitle);
+      params.append("bDate", this.editBDate);
+      params.append("eDate", this.editEDate);
+      params.append("parks", this.editParkIds);
+      params.append("kml", this.$refs.kml[0].files[0]);
+      params.append("removeKml", this.removeKml);
+      params.append("image", this.$refs.image[0].files[0]);
+      params.append("removeImg", this.removeImg);
 
-      const response = await fetch("/ranger/api/update", {
+      const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {
           Authorization: "Bearer " + this.token,
@@ -238,12 +255,6 @@ export default {
     ". main .";
   height: 100%;
   justify-content: center;
-  // #title {
-  //   align-items: center;
-  //   display: grid;
-  //   grid-area: title;
-  //   justify-content: center;
-  // }
   #edit {
     display: grid;
     grid-area: main;
