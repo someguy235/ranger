@@ -49,6 +49,11 @@ const TripSchema = new Schema({
     required: true,
     unique: false,
   },
+  color: {
+    type: String,
+    required: true,
+    unique: false,
+  },
   kml: {
     type: String,
     required: false,

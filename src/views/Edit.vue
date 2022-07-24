@@ -41,8 +41,16 @@
           >
             <v-container>
               <v-row>
-                <v-col>
+                <v-col cols="10">
                   <v-text-field v-model="editTitle" label="title" required />
+                </v-col>
+                <v-col cols="2">
+                  <span v-if="trip.color">color</span>
+                </v-col>
+              </v-row>
+              <v-row class="pb-8">
+                <v-col class="d-flex justify-center">
+                  <v-color-picker v-model="editColor" />
                 </v-col>
               </v-row>
               <v-row class="dates">
@@ -153,6 +161,7 @@ export default {
       editTitle: null,
       editBDate: null,
       editEDate: null,
+      editColor: null,
       editParkIds: [],
       removeKml: false,
       removeImg: false,
@@ -190,6 +199,7 @@ export default {
       this.editTitle = targetTrip.title;
       this.editBDate = targetTrip.bDate.substring(0, 10);
       this.editEDate = targetTrip.eDate.substring(0, 10);
+      this.editColor = targetTrip.color;
       this.editParkIds = targetTrip.parks;
     },
     cancelEdit() {
@@ -202,6 +212,7 @@ export default {
       params.append("title", this.editTitle);
       params.append("bDate", this.editBDate);
       params.append("eDate", this.editEDate);
+      params.append("color", this.editColor);
       params.append("parks", this.editParkIds);
       params.append("kml", this.$refs.kml[0].files[0]);
       params.append("removeKml", this.removeKml);

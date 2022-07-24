@@ -34,7 +34,7 @@
             </v-col>
           </v-row>
           <v-row>
-            <v-col>
+            <v-col cols="10">
               <v-file-input
                 id="kml-input"
                 ref="kml"
@@ -43,6 +43,18 @@
                 prepend-icon="mdi-map"
                 accept=".kml"
               />
+            </v-col>
+            <v-col cols="2" class="d-flex">
+              <div
+                :style="{ 'background-color': color }"
+                class="w-100 h-50"
+                @click="toggleShowColor"
+              ></div>
+            </v-col>
+          </v-row>
+          <v-row v-if="showColor" class="mb-4">
+            <v-col class="d-flex justify-center">
+              <v-color-picker v-model="color" />
             </v-col>
           </v-row>
           <v-row>
@@ -93,26 +105,14 @@ export default {
       title: "",
       bDate: "",
       eDate: "",
+      color: null,
       selectedParkIds: [],
       uploadMsg: null,
+      showColor: false,
     };
   },
   computed: {
     ...mapState(["user", "token", "parks"]),
-    selectableParks() {
-      if (this.availableParks) {
-        // return this.availableParks.filter((park) => {
-        // return !this.selectedParkIds.includes(park._id);
-        // });
-      }
-    },
-    // selectedParks() {
-    //   if (this.availableParks) {
-    //     return this.availableParks.filter((park) => {
-    //       return this.selectedParkIds.includes(park._id);
-    //     });
-    //   }
-    // },
   },
   methods: {
     togglePark(newId) {
@@ -127,6 +127,12 @@ export default {
         this.selectedParkIds = newParkIds;
       }
     },
+    toggleShowColor() {
+      this.showColor = !this.showColor;
+    },
+    getRandomColor() {
+      return "#" + Math.floor(Math.random() * 16777215).toString(16);
+    },
     async upload() {
       // TODO: file type validation
       this.uploadMsg = "";
@@ -134,6 +140,7 @@ export default {
       params.append("title", this.title);
       params.append("bDate", this.bDate);
       params.append("eDate", this.eDate);
+      params.append("color", this.color);
       params.append("parks", this.selectedParkIds);
       params.append("kml", this.kml.files[0]);
       params.append("image", this.image.files[0]);
@@ -159,6 +166,9 @@ export default {
       }
     },
   },
+  mounted() {
+    this.color = this.getRandomColor();
+  },
 };
 </script>
 
@@ -180,11 +190,8 @@ export default {
 #upload {
   display: grid;
   grid-area: main;
-  // grid-template-rows: 50% auto;
   form {
     border: 1px solid grey;
-    // display: grid;
-    // row-gap: 1rem;
     justify-content: center;
     input {
       margin: 0;

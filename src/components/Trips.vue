@@ -10,8 +10,11 @@
     </div>
     <div class="trip-list pa-2">
       <div v-for="trip in trips">
-        <v-card elevation="3" class="trip mb-2 pa-3">
-          <v-row no-gutters>
+        <v-card elevation="3" class="trip mb-2 py-3">
+          <v-img v-if="trip.image" :src="getImgData(trip.image)" cover>
+            <v-card-title>{{ trip.title }}</v-card-title>
+          </v-img>
+          <!-- <v-row no-gutters class="px-3">
             <v-col cols="9" class="d-flex align-center">
               <div class="title">
                 {{ trip.title }}
@@ -28,23 +31,31 @@
                 @change="toggleActiveTrip(trip._id)"
               ></v-switch>
             </v-col>
-          </v-row>
-
-          <v-row no-gutters>
+          </v-row> -->
+          <!-- <v-row no-gutters class="px-3">
             <v-col>
               <div class="dates">
                 {{ formatTripDates(trip.bDate, trip.eDate) }}
               </div>
             </v-col>
-          </v-row>
-          <v-row no-gutters>
+          </v-row> -->
+          <!-- <v-row no-gutters class="px-3">
             <v-col>
               <div class="miles" v-if="trip.distance">
                 {{ trip.distance }} miles
               </div>
             </v-col>
+          </v-row> -->
+          <v-row v-if="trip.color" no-gutters class="pt-3">
+            <v-col>
+              <div
+                :style="{
+                  'background-color': trip.color,
+                  height: '10px',
+                }"
+              ></div>
+            </v-col>
           </v-row>
-
           <v-row no-gutters class="park-list mt-3">
             <v-col
               v-for="parkId in trip.parks"
@@ -91,6 +102,12 @@ export default {
     getIsActive(id) {
       return this.activeTrips.includes(id);
     },
+    // getImgData(data) {
+    //   console.log(data);
+    //   const buffer = ArrayBuffer.from(data);
+    //   const string = "data:image/jpg;base64," + buffer.toString("base64");
+    //   return string;
+    // },
     formatTripDates(bDate, eDate) {
       const bDateObj = new Date(bDate);
       const eDateObj = new Date(eDate);

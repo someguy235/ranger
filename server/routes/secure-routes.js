@@ -92,9 +92,6 @@ router.post(
   ]),
   async (req, res) => {
     // TODO: form validation, including file type
-    // TODO: random color on upload
-    // TODO: handle update here also
-    // TODO: how to remove img/kml data on update?
     if (req.isAuthenticated()) {
       try {
         const tripId = req.body.id;
@@ -107,11 +104,7 @@ router.post(
             .jpeg()
             .toBuffer();
         }
-
-        // handle kml data
-        // console.log(req.files);
-        // console.log(req.files.kml);
-        // console.log(req.files.kml[0].buffer);
+        console.log(imgData);
         const kmlBuffer = req.files.kml ? req.files.kml[0].buffer : null;
         let kmlString = null,
           tripBounds = null,
@@ -133,12 +126,12 @@ router.post(
 
         if (tripId) {
           // update
-
           const filter = { _id: tripId, user: req.user.email };
           const update = {};
           if (req.body.title) update.title = req.body.title;
           if (req.body.bDate) update.bDate = req.body.bDate;
           if (req.body.eDate) update.eDate = req.body.eDate;
+          if (req.body.color) update.color = req.body.color;
           if (tripParks) update.parks = tripParks;
           if (req.body.removeKml === "true") {
             update.kml = null;
@@ -152,18 +145,19 @@ router.post(
           if (req.body.removeImg === "true") {
             update.image = null;
           } else if (imgData) {
-            update.imgage = imgData;
+            update.image = imgData;
           }
-
+          // console.log(filter);
+          // console.log(update.image);
           await TripModel.findOneAndUpdate(filter, update);
         } else {
           // insert
-
           await TripModel.create({
             user: req.user.email,
             title: req.body.title,
             bDate: req.body.bDate,
             eDate: req.body.eDate,
+            color: req.body.color,
             parks: tripParks,
             kml: kmlString,
             distance: tripDistance,
