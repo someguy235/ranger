@@ -1,8 +1,5 @@
 <template>
   <div class="main">
-    <div id="login" v-if="token === null">
-      <login />
-    </div>
     <div id="upload" v-if="token !== null">
       <v-form @submit.prevent="upload" enctype="multipart/form-data">
         <v-container>
@@ -188,6 +185,8 @@ export default {
   justify-content: center;
 }
 #upload {
+  background-color: white;
+
   display: grid;
   grid-area: main;
   form {

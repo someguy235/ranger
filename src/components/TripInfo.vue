@@ -28,6 +28,7 @@
 
 <script>
 export default {
+  name: "TripInfo",
   props: ["trip"],
   methods: {
     formatTripDates(bDate, eDate) {

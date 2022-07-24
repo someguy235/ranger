@@ -10,7 +10,7 @@
     </div>
     <div class="trip-list pa-2">
       <div v-for="trip in trips">
-        <v-card elevation="3" class="trip mb-2 pb-3">
+        <v-card elevation="3" class="trip mb-4 pb-2">
           <v-img v-if="trip.image" :src="trip.image" cover>
             <TripInfo :trip="trip" />
           </v-img>
@@ -54,6 +54,9 @@
           </v-row>
         </v-card>
       </div>
+      <div class="d-flex justify-center">
+        <v-btn @click="toggleUpload">New</v-btn>
+      </div>
     </div>
   </section>
 </template>
@@ -64,6 +67,7 @@ import TripInfo from "./TripInfo";
 
 export default {
   name: "Trips",
+  props: ["toggleUpload"],
   components: {
     TripInfo,
   },

@@ -1,31 +1,13 @@
 <template>
   <div class="content">
     <div class="content-row">
-      <trips />
+      <trips :toggleUpload="toggleUpload" />
       <maps />
       <parks />
     </div>
-    <div class="timeline-row">
-      <v-container>
-        <v-row>
-          <v-col class="pa-12">
-            <v-range-slider
-              :ticks="getTripDates"
-              :value="[0, 1]"
-              min="0"
-              max="3"
-              :step="1"
-              show-ticks="always"
-              thumb-label="always"
-              tick-size="2"
-            >
-              <template v-slot:thumb-label="{ modelValue }">test</template>
-            </v-range-slider>
-          </v-col>
-        </v-row>
-      </v-container>
-      <!-- <timeline /> -->
-    </div>
+    <v-dialog v-model="showUpload">
+      <upload />
+    </v-dialog>
   </div>
 </template>
 
@@ -37,18 +19,21 @@ import { computed } from "@vue/reactivity";
 import Trips from "../components/Trips.vue";
 import Parks from "../components/Parks.vue";
 import Maps from "../components/Maps.vue";
+import Upload from "./Upload.vue";
 
 export default {
   name: "Home",
   data() {
     return {
       ticks: { 0: "zero", 1: "one", 2: "two", 3: "three" },
+      showUpload: false,
     };
   },
   components: {
     Trips,
     Parks,
     Maps,
+    Upload,
   },
   computed: {
     ...mapState(["user", "tripList"]),
@@ -80,6 +65,9 @@ export default {
         this.setTrips(trips);
       }
     },
+    toggleUpload() {
+      this.showUpload = !this.showUpload;
+    },
   },
   beforeMount() {
     this.getTrips();
@@ -90,7 +78,9 @@ export default {
 <style lang="scss" scoped>
 .content {
   display: grid;
-  grid-template-rows: calc(100% - 140px) 140px;
+  // grid-template-rows: calc(100% - 140px) 140px;
+  grid-template-rows: 100%;
+  margin-bottom: 1rem;
   .content-row {
     display: grid;
     grid-template-columns: 20% 60% 20%;

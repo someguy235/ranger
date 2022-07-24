@@ -1,6 +1,26 @@
 <template>
   <section class="map">
     <div id="mapContainer"></div>
+    <div class="timeline-row">
+      <v-container>
+        <v-row>
+          <v-col class="px-2 pt-10">
+            <v-range-slider
+              :ticks="getTripDates"
+              :value="[0, 1]"
+              min="0"
+              max="3"
+              :step="1"
+              show-ticks="always"
+              thumb-label="always"
+              tick-size="2"
+            >
+              <template v-slot:thumb-label="{ modelValue }">test</template>
+            </v-range-slider>
+          </v-col>
+        </v-row>
+      </v-container>
+    </div>
   </section>
 </template>
 
@@ -81,6 +101,7 @@ export default {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(trip.kml, "text/xml");
                 const kmlLayer = new L.KML(kml);
+                // TODO: set path color
                 layers[trip._id] = kmlLayer;
                 map.addLayer(kmlLayer);
               }
@@ -141,6 +162,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.map {
+  display: grid;
+  grid-template-rows: calc(100% - 122px) 122px;
+}
 #mapContainer {
   width: 100%;
   height: 100%;
