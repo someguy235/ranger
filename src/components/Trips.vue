@@ -12,43 +12,20 @@
       <div v-for="trip in trips">
         <v-card elevation="3" class="trip mb-2 pb-3">
           <v-img v-if="trip.image" :src="trip.image" cover>
-            <v-row>
-              <v-col class="trip-info pa-3">
-                <v-row no-gutters class="px-3">
-                  <v-col class="d-flex align-center">
-                    <div class="title">
-                      {{ trip.title }}
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters class="px-3">
-                  <v-col>
-                    <div class="dates">
-                      {{ formatTripDates(trip.bDate, trip.eDate) }}
-                    </div>
-                  </v-col>
-                </v-row>
-                <v-row no-gutters class="px-3">
-                  <v-col>
-                    <div class="miles" v-if="trip.distance">
-                      {{ trip.distance }} miles
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
+            <TripInfo :trip="trip" />
           </v-img>
-          <v-row v-if="trip.color" no-gutters class="pb-3">
+          <div v-else class="pb-3"><TripInfo :trip="trip" /></div>
+          <v-row v-if="trip.color" no-gutters class="">
             <v-col>
               <div
                 :style="{
                   'background-color': trip.color,
-                  height: '10px',
+                  height: '12px',
                 }"
               ></div>
             </v-col>
           </v-row>
-          <v-row no-gutters class="park-list">
+          <v-row no-gutters class="park-list pt-3">
             <v-col
               v-for="parkId in trip.parks"
               class="d-flex justify-center pa-1"
@@ -83,9 +60,13 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
+import TripInfo from "./TripInfo";
 
 export default {
   name: "Trips",
+  components: {
+    TripInfo,
+  },
   data() {
     return {
       activeTripsData: [],
@@ -108,24 +89,6 @@ export default {
     getIsActive(id) {
       return this.activeTrips.includes(id);
     },
-    formatTripDates(bDate, eDate) {
-      const bDateObj = new Date(bDate);
-      const eDateObj = new Date(eDate);
-
-      const millisecondsPerDay = 24 * 60 * 60 * 1000;
-      const tripDays = (eDateObj - bDateObj) / millisecondsPerDay + 1;
-      const dayWord = tripDays > 1 ? "days" : "day";
-
-      const bMon = bDateObj.toLocaleString("UTC", { month: "short" });
-      const eMon = eDateObj.toLocaleString("UTC", { month: "short" });
-      const tripMonth = bMon === eMon ? bMon : bMon + "-" + eMon;
-
-      const bYear = bDateObj.toLocaleString("UTC", { year: "numeric" });
-      const eYear = eDateObj.toLocaleString("UTC", { year: "numeric" });
-      const tripYear = bYear === eYear ? bYear : bYear + "-" + eYear;
-
-      return `${tripDays} ${dayWord} in ${tripMonth} ${tripYear}`;
-    },
   },
   watch: {
     "$store.state.activeTrips": {
@@ -144,15 +107,6 @@ export default {
   overflow-y: scroll;
   .trip-list {
     overflow-y: scroll;
-    .trip {
-      .trip-info {
-        background-color: rgba(1, 1, 1, 0.5);
-        color: white;
-        .title {
-          font-size: 1.8rem;
-        }
-      }
-    }
   }
 }
 </style>
