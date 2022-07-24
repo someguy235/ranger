@@ -79,7 +79,7 @@ const TripSchema = new Schema({
     },
   },
   image: {
-    type: Buffer,
+    type: String,
     required: false,
     unique: false,
   },

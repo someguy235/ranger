@@ -10,43 +10,35 @@
     </div>
     <div class="trip-list pa-2">
       <div v-for="trip in trips">
-        <v-card elevation="3" class="trip mb-2 py-3">
-          <v-img v-if="trip.image" :src="getImgData(trip.image)" cover>
-            <v-card-title>{{ trip.title }}</v-card-title>
+        <v-card elevation="3" class="trip mb-2 pb-3">
+          <v-img v-if="trip.image" :src="trip.image" cover>
+            <v-row>
+              <v-col class="trip-info pa-3">
+                <v-row no-gutters class="px-3">
+                  <v-col class="d-flex align-center">
+                    <div class="title">
+                      {{ trip.title }}
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters class="px-3">
+                  <v-col>
+                    <div class="dates">
+                      {{ formatTripDates(trip.bDate, trip.eDate) }}
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row no-gutters class="px-3">
+                  <v-col>
+                    <div class="miles" v-if="trip.distance">
+                      {{ trip.distance }} miles
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
           </v-img>
-          <!-- <v-row no-gutters class="px-3">
-            <v-col cols="9" class="d-flex align-center">
-              <div class="title">
-                {{ trip.title }}
-              </div>
-            </v-col>
-            <v-col cols="3">
-              <v-switch
-                class="d-flex justify-end"
-                inset
-                hide-details
-                color="blue"
-                :value="trip._id"
-                v-model="activeTripsData"
-                @change="toggleActiveTrip(trip._id)"
-              ></v-switch>
-            </v-col>
-          </v-row> -->
-          <!-- <v-row no-gutters class="px-3">
-            <v-col>
-              <div class="dates">
-                {{ formatTripDates(trip.bDate, trip.eDate) }}
-              </div>
-            </v-col>
-          </v-row> -->
-          <!-- <v-row no-gutters class="px-3">
-            <v-col>
-              <div class="miles" v-if="trip.distance">
-                {{ trip.distance }} miles
-              </div>
-            </v-col>
-          </v-row> -->
-          <v-row v-if="trip.color" no-gutters class="pt-3">
+          <v-row v-if="trip.color" no-gutters class="pb-3">
             <v-col>
               <div
                 :style="{
@@ -56,7 +48,7 @@
               ></div>
             </v-col>
           </v-row>
-          <v-row no-gutters class="park-list mt-3">
+          <v-row no-gutters class="park-list">
             <v-col
               v-for="parkId in trip.parks"
               class="d-flex justify-center pa-1"
@@ -67,6 +59,22 @@
               />
             </v-col>
           </v-row>
+          <v-row no-gutters>
+            <v-col cols="4" class="d-flex justify-center align-center">
+              <v-icon icon="mdi-clipboard-edit"></v-icon>
+            </v-col>
+            <v-col cols="4"></v-col>
+            <v-col cols="4" class="d-flex justify-center">
+              <v-switch
+                inset
+                hide-details
+                color="blue"
+                :value="trip._id"
+                v-model="activeTripsData"
+                @change="toggleActiveTrip(trip._id)"
+              ></v-switch>
+            </v-col>
+          </v-row>
         </v-card>
       </div>
     </div>
@@ -74,8 +82,6 @@
 </template>
 
 <script>
-// TODO: trip path color, and persist on change
-// TODO: incorporate trip cover photo
 import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
@@ -102,12 +108,6 @@ export default {
     getIsActive(id) {
       return this.activeTrips.includes(id);
     },
-    // getImgData(data) {
-    //   console.log(data);
-    //   const buffer = ArrayBuffer.from(data);
-    //   const string = "data:image/jpg;base64," + buffer.toString("base64");
-    //   return string;
-    // },
     formatTripDates(bDate, eDate) {
       const bDateObj = new Date(bDate);
       const eDateObj = new Date(eDate);
@@ -142,11 +142,17 @@ export default {
   display: grid;
   grid-template-rows: 75px auto;
   overflow-y: scroll;
-  .title {
-    font-size: 1.8rem;
+  .trip-list {
+    overflow-y: scroll;
+    .trip {
+      .trip-info {
+        background-color: rgba(1, 1, 1, 0.5);
+        color: white;
+        .title {
+          font-size: 1.8rem;
+        }
+      }
+    }
   }
-}
-.trip-list {
-  overflow-y: scroll;
 }
 </style>

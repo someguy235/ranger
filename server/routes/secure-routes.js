@@ -97,14 +97,15 @@ router.post(
         const tripId = req.body.id;
 
         // handle image data
-        let imgData = null;
+        let imgString = null;
         if (req.files.image) {
-          imgData = await sharp(req.files.image[0].buffer)
+          const imgData = await sharp(req.files.image[0].buffer)
             .resize(400)
             .jpeg()
             .toBuffer();
+          imgString = "data:image/jpg;base64," + imgData.toString("base64");
         }
-        console.log(imgData);
+
         const kmlBuffer = req.files.kml ? req.files.kml[0].buffer : null;
         let kmlString = null,
           tripBounds = null,
@@ -144,11 +145,9 @@ router.post(
           }
           if (req.body.removeImg === "true") {
             update.image = null;
-          } else if (imgData) {
-            update.image = imgData;
+          } else if (imgString) {
+            update.image = imgString;
           }
-          // console.log(filter);
-          // console.log(update.image);
           await TripModel.findOneAndUpdate(filter, update);
         } else {
           // insert
@@ -162,7 +161,7 @@ router.post(
             kml: kmlString,
             distance: tripDistance,
             bounds: tripBounds,
-            image: imgData,
+            image: imgString,
           });
         }
 

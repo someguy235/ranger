@@ -24,7 +24,7 @@
               </v-col>
               <v-col v-if="trip.image">
                 <v-icon icon="mdi-camera"></v-icon>
-                img
+                .img
               </v-col>
             </v-row>
             <v-row>
@@ -243,12 +243,6 @@ export default {
         this.showUpdateMsg = true;
       }
     },
-
-    // getImgData(data) {
-    //   const buffer = Buffer.from(data);
-    //   const string = "data:image/jpg;base64," + buffer.toString("base64");
-    //   return string;
-    // },
   },
   beforeMount() {
     this.getTrips();
