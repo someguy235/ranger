@@ -6,7 +6,7 @@
       <parks />
     </div>
     <v-dialog v-model="showUpload">
-      <upload />
+      <upload :getTrips="getTrips" :toggleUpload="toggleUpload" />
     </v-dialog>
   </div>
 </template>
@@ -78,7 +78,6 @@ export default {
 <style lang="scss" scoped>
 .content {
   display: grid;
-  // grid-template-rows: calc(100% - 140px) 140px;
   grid-template-rows: 100%;
   margin-bottom: 1rem;
   .content-row {

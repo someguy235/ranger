@@ -6,7 +6,7 @@
         <v-row>
           <v-col class="px-2 pt-10">
             <v-range-slider
-              :ticks="getTripDates"
+              :ticks="tripDates"
               :value="[0, 1]"
               min="0"
               max="3"
@@ -46,6 +46,9 @@ export default {
   computed: {
     ...mapGetters(["getParkFileData"]),
     ...mapState(["parks", "trips", "icons", "activeTrips", "activeParks"]),
+    tripDates() {
+      return this.trips.map((trip) => trip.bDate.substring(0, 10));
+    },
   },
   methods: {
     setupLeafletMap: function () {
@@ -84,6 +87,9 @@ export default {
         };
       }
     },
+    // getTripDates() {
+    //   return this.trips.map((trip) => trip.bDate);
+    // },
   },
   watch: {
     "$store.state.activeTrips": {

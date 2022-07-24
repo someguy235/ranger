@@ -86,6 +86,8 @@ import { ref } from "vue";
 import Login from "../components/Login.vue";
 
 export default {
+  name: "Upload",
+  props: ["getTrips", "toggleUpload"],
   components: {
     Login,
   },
@@ -113,7 +115,6 @@ export default {
   },
   methods: {
     togglePark(newId) {
-      console.log(`togglePark(${newId})`);
       if (this.selectedParkIds.includes(newId)) {
         this.selectedParkIds = this.selectedParkIds.filter((id) => {
           return id !== newId;
@@ -156,8 +157,10 @@ export default {
         this.bDate = "";
         this.eDate = "";
         this.selectedParkIds = [];
-        this.kml.value = null;
-        this.image.value = null;
+        // this.kml.value = null;
+        // this.image.value = null;
+        this.toggleUpload();
+        this.getTrips();
       } else {
         this.uploadMsg = "something went wrong";
       }

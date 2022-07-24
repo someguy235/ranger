@@ -37,10 +37,12 @@
             </v-col>
           </v-row>
           <v-row no-gutters>
-            <v-col cols="4" class="d-flex justify-center align-center">
-              <v-icon icon="mdi-clipboard-edit"></v-icon>
+            <v-col cols="6" class="d-flex justify-center align-center">
+              <v-btn variant="outlined"
+                ><v-icon icon="mdi-clipboard-edit"></v-icon
+              ></v-btn>
             </v-col>
-            <v-col cols="4"></v-col>
+            <v-col cols="2"></v-col>
             <v-col cols="4" class="d-flex justify-center">
               <v-switch
                 inset
