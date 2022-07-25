@@ -1,12 +1,15 @@
 <template>
   <div class="content">
     <div class="content-row">
-      <trips :toggleUpload="toggleUpload" />
+      <trips :toggleUpload="toggleUpload" :toggleEdit="toggleEdit" />
       <maps />
       <parks />
     </div>
     <v-dialog v-model="showUpload">
       <upload :getTrips="getTrips" :toggleUpload="toggleUpload" />
+    </v-dialog>
+    <v-dialog v-model="showEdit">
+      <edit :getTrips="getTrips" :toggleEdit="toggleEdit" :trip="editTrip" />
     </v-dialog>
   </div>
 </template>
@@ -20,6 +23,7 @@ import Trips from "../components/Trips.vue";
 import Parks from "../components/Parks.vue";
 import Maps from "../components/Maps.vue";
 import Upload from "./Upload.vue";
+import Edit from "./Edit.vue";
 
 export default {
   name: "Home",
@@ -27,6 +31,8 @@ export default {
     return {
       ticks: { 0: "zero", 1: "one", 2: "two", 3: "three" },
       showUpload: false,
+      showEdit: false,
+      editTrip: null,
     };
   },
   components: {
@@ -34,6 +40,7 @@ export default {
     Parks,
     Maps,
     Upload,
+    Edit,
   },
   computed: {
     ...mapState(["user", "tripList"]),
@@ -67,6 +74,10 @@ export default {
     },
     toggleUpload() {
       this.showUpload = !this.showUpload;
+    },
+    toggleEdit(trip) {
+      this.editTrip = trip;
+      this.showEdit = !this.showEdit;
     },
   },
   beforeMount() {

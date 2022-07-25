@@ -1,14 +1,18 @@
 <template>
   <div class="main">
     <div id="upload" v-if="token !== null">
-      <v-form @submit.prevent="upload" enctype="multipart/form-data">
-        <v-container>
-          <v-row class="pt-6">
+      <v-form
+        @submit.prevent="upload"
+        enctype="multipart/form-data"
+        class="pb-6"
+      >
+        <v-container :style="{ 'overflow-y': scroll }">
+          <v-row class="pt-6" no-gutters>
             <v-col>
               <v-text-field v-model="title" label="title" required />
             </v-col>
           </v-row>
-          <v-row class="dates">
+          <v-row class="dates pb-6" no-gutters>
             <v-col class="date">
               <input id="bDate" v-model="bDate" type="date" required />
               <label for="bDate">begin date</label>
@@ -18,7 +22,7 @@
               <label for="eDate">end date</label>
             </v-col>
           </v-row>
-          <v-row>
+          <v-row no-gutters>
             <v-col>
               <v-select
                 multiple
@@ -27,10 +31,10 @@
                 item-title="name"
                 item-value="_id"
                 label="visited parks"
-              ></v-select>
+              />
             </v-col>
           </v-row>
-          <v-row>
+          <v-row no-gutters>
             <v-col cols="10">
               <v-file-input
                 id="kml-input"
@@ -44,17 +48,17 @@
             <v-col cols="2" class="d-flex">
               <div
                 :style="{ 'background-color': color }"
-                class="w-100 h-50"
+                class="swatch"
                 @click="toggleShowColor"
               ></div>
             </v-col>
           </v-row>
-          <v-row v-if="showColor" class="mb-4">
+          <v-row v-if="showColor" class="mb-4" no-gutters>
             <v-col class="d-flex justify-center">
-              <v-color-picker v-model="color" />
+              <v-color-picker v-model="color" hide-inputs :modes="['rgb']" />
             </v-col>
           </v-row>
-          <v-row>
+          <v-row no-gutters>
             <v-col>
               <v-file-input
                 id="img-input"
@@ -66,7 +70,7 @@
               />
             </v-col>
           </v-row>
-          <v-row>
+          <v-row no-gutters>
             <v-col class="d-flex justify-center">
               <v-btn type="submit">Upload</v-btn>
             </v-col>
@@ -83,14 +87,10 @@
 <script>
 import { mapState } from "vuex";
 import { ref } from "vue";
-import Login from "../components/Login.vue";
 
 export default {
   name: "Upload",
   props: ["getTrips", "toggleUpload"],
-  components: {
-    Login,
-  },
   setup() {
     const kml = ref(null);
     const image = ref(null);
@@ -150,7 +150,9 @@ export default {
         },
         body: params,
       });
+
       const r = await response.status;
+
       if (r === 200) {
         this.uploadMsg = "upload successful";
         this.title = "";
@@ -179,47 +181,29 @@ export default {
   grid-template-areas: ". main .";
   height: 100%;
   justify-content: center;
+  overflow-y: scroll;
   padding-top: 3rem;
-}
-#title {
-  align-items: center;
-  display: grid;
-  grid-area: title;
-  justify-content: center;
-}
-#upload {
-  background-color: white;
-
-  display: grid;
-  grid-area: main;
-  form {
-    border: 1px solid grey;
-    justify-content: center;
-    input {
-      margin: 0;
-      padding: 0;
-    }
-    .dates {
-      margin-bottom: 20px;
-      .date {
-        align-items: center;
-        display: flex;
-        flex-direction: column;
-        input[type="date"] {
+  #upload {
+    background-color: white;
+    grid-area: main;
+    form {
+      border: 1px solid grey;
+      .dates {
+        .date {
           align-items: center;
-          align-self: center;
-          border-bottom: 1px solid;
+          display: flex;
+          flex-direction: column;
+          input[type="date"] {
+            align-items: center;
+            align-self: center;
+            border-bottom: 1px solid;
+          }
         }
       }
-    }
-    .parks {
-      column-gap: 5px;
-      display: grid;
-
-      grid-template-columns: 1fr 1fr;
-    }
-    select {
-      display: grid;
+      .swatch {
+        height: 56px;
+        width: 56px;
+      }
     }
   }
 }
