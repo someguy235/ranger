@@ -87,9 +87,6 @@ export default {
         };
       }
     },
-    // getTripDates() {
-    //   return this.trips.map((trip) => trip.bDate);
-    // },
   },
   watch: {
     "$store.state.activeTrips": {
@@ -107,7 +104,7 @@ export default {
                 const parser = new DOMParser();
                 const kml = parser.parseFromString(trip.kml, "text/xml");
                 const kmlLayer = new L.KML(kml);
-                // TODO: set path color
+                kmlLayer.setStyle({ color: trip.color });
                 layers[trip._id] = kmlLayer;
                 map.addLayer(kmlLayer);
               }

@@ -48,7 +48,6 @@
             </v-col>
             <v-col cols="2" class="d-flex">
               <div
-                v-if="trip.color"
                 :style="{ 'background-color': editColor }"
                 class="swatch"
                 @click="toggleShowColor"
@@ -215,6 +214,7 @@ export default {
         }
       }
       .swatch {
+        border: 1px solid grey;
         height: 56px;
         width: 56px;
       }

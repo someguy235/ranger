@@ -127,6 +127,8 @@ router.post(
 
         if (tripId) {
           // update
+          // TODO: update bounds on 'update'
+
           const filter = { _id: tripId, user: req.user.email };
           const update = {};
           if (req.body.title) update.title = req.body.title;
@@ -137,12 +139,11 @@ router.post(
           if (req.body.removeKml === "true") {
             update.kml = null;
             update.distance = null;
-            update.bounds = null;
           } else {
             if (kmlString) update.kml = kmlString;
             if (tripDistance) update.distance = tripDistance;
-            if (tripBounds) update.bounds = tripBounds;
           }
+          if (tripBounds) update.bounds = tripBounds;
           if (req.body.removeImg === "true") {
             update.image = null;
           } else if (imgString) {
