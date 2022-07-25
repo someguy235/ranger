@@ -64,6 +64,7 @@
 </template>
 
 <script>
+// TODO: only show color when kml present
 import { mapActions, mapGetters, mapState } from "vuex";
 import TripInfo from "./TripInfo";
 

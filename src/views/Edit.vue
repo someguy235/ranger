@@ -93,9 +93,6 @@
           </v-row>
         </v-container>
       </v-form>
-      <div>
-        <v-snackbar v-model="showUpdateMsg">{{ updateMsg }}</v-snackbar>
-      </div>
     </div>
   </div>
 </template>
@@ -106,7 +103,7 @@ import { ref } from "vue";
 
 export default {
   name: "Edit",
-  props: ["trip", "getTrips", "toggleEdit"],
+  props: ["trip", "getTrips", "toggleEdit", "setSnackMsg"],
   setup() {
     const kml = ref(null);
     const image = ref(null);
@@ -153,7 +150,6 @@ export default {
       this.editParkIds = targetTrip.parks;
     },
     async update() {
-      this.uploadMsg = "";
       const params = new FormData();
       params.append("id", this.editId);
       params.append("title", this.editTitle);
@@ -176,19 +172,17 @@ export default {
 
       const r = await response.status;
       if (r === 200) {
-        this.updateMsg = "update successful";
         this.showUpdateMsg = true;
         this.editId = null;
         this.editTitle = null;
         this.editBDate = null;
         this.editEDate = null;
         this.editParkIds = [];
+        this.setSnackMsg("update successful");
         this.getTrips();
         this.toggleEdit(this.trip._id);
       } else {
-        this.updateMsg = "something went wrong";
-        // TODO: really need this?
-        this.showUpdateMsg = true;
+        this.setSnackMsg("something went wrong");
       }
     },
   },

@@ -70,16 +70,16 @@
               />
             </v-col>
           </v-row>
-          <v-row no-gutters>
+          <v-row class="d-flex justify-center" no-gutters>
+            <v-col class="d-flex justify-center">
+              <v-btn @click.prevent="toggleUpload">Cancel</v-btn>
+            </v-col>
             <v-col class="d-flex justify-center">
               <v-btn type="submit">Upload</v-btn>
             </v-col>
           </v-row>
         </v-container>
       </v-form>
-      <div>
-        <v-snackbar v-model="uploadMsg">{{ uploadMsg }}</v-snackbar>
-      </div>
     </div>
   </div>
 </template>
@@ -90,7 +90,7 @@ import { ref } from "vue";
 
 export default {
   name: "Upload",
-  props: ["getTrips", "toggleUpload"],
+  props: ["getTrips", "toggleUpload", "setSnackMsg"],
   setup() {
     const kml = ref(null);
     const image = ref(null);
@@ -106,7 +106,6 @@ export default {
       eDate: "",
       color: null,
       selectedParkIds: [],
-      uploadMsg: null,
       showColor: false,
     };
   },
@@ -133,7 +132,6 @@ export default {
     },
     async upload() {
       // TODO: file type validation
-      this.uploadMsg = "";
       const params = new FormData();
       params.append("title", this.title);
       params.append("bDate", this.bDate);
@@ -154,17 +152,15 @@ export default {
       const r = await response.status;
 
       if (r === 200) {
-        this.uploadMsg = "upload successful";
         this.title = "";
         this.bDate = "";
         this.eDate = "";
         this.selectedParkIds = [];
-        // this.kml.value = null;
-        // this.image.value = null;
-        this.toggleUpload();
+        this.setSnackMsg("upload successful");
         this.getTrips();
+        this.toggleUpload();
       } else {
-        this.uploadMsg = "something went wrong";
+        this.setSnackMsg("something went wrong");
       }
     },
   },

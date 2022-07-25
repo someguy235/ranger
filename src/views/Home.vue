@@ -6,11 +6,21 @@
       <parks />
     </div>
     <v-dialog v-model="showUpload">
-      <upload :getTrips="getTrips" :toggleUpload="toggleUpload" />
+      <upload
+        :getTrips="getTrips"
+        :toggleUpload="toggleUpload"
+        :setSnackMsg="setSnackMsg"
+      />
     </v-dialog>
     <v-dialog v-model="showEdit">
-      <edit :getTrips="getTrips" :toggleEdit="toggleEdit" :trip="editTrip" />
+      <edit
+        :getTrips="getTrips"
+        :toggleEdit="toggleEdit"
+        :setSnackMsg="setSnackMsg"
+        :trip="editTrip"
+      />
     </v-dialog>
+    <v-snackbar v-model="snackMsg">{{ snackMsg }}</v-snackbar>
   </div>
 </template>
 
@@ -33,6 +43,7 @@ export default {
       showUpload: false,
       showEdit: false,
       editTrip: null,
+      snackMsg: null,
     };
   },
   components: {
@@ -78,6 +89,9 @@ export default {
     toggleEdit(trip) {
       this.editTrip = trip;
       this.showEdit = !this.showEdit;
+    },
+    setSnackMsg(msg) {
+      this.snackMsg = msg;
     },
   },
   beforeMount() {
