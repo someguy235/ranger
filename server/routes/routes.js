@@ -3,6 +3,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const { TripModel, ParkModel } = require("../model/model");
+const e = require("express");
 
 dotenv.config();
 
@@ -59,7 +60,7 @@ router.get("/trips", async (req, res) => {
     const user = req.query.user;
     if (user !== null) {
       const trips = await TripModel.find({ user });
-      res.json(trips);
+      res.json(trips.sort((a, b) => (a.bDate < b.bDate ? -1 : 1)));
     } else {
       res.json([]);
     }
