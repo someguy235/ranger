@@ -8,22 +8,13 @@
           class="h-100 d-flex flex-column justify-center align-center"
         >
           <v-row class="d-flex justify-center">
-            <v-col class="d-flex align-center">
-              <v-btn variant="flat" @click="logout">Logout</v-btn>
+            <v-col class="d-flex align-center user">
+              <v-icon icon="mdi-account"></v-icon>{{ user }}
             </v-col>
           </v-row>
           <v-row class="d-flex justify-center">
             <v-col class="d-flex align-center">
-              <span v-if="path === '/'">Home</span>
-              <router-link v-else to="/">Home</router-link>
-            </v-col>
-            <v-col class="d-flex align-center">
-              <span v-if="path === '/upload'">Upload</span>
-              <router-link v-else to="/upload">Upload</router-link>
-            </v-col>
-            <v-col class="d-flex align-center">
-              <span v-if="path === '/edit'">Edit</span>
-              <router-link v-else to="/edit">Edit</router-link>
+              <v-btn variant="flat" @click="logout">Logout</v-btn>
             </v-col>
           </v-row>
         </v-container>
@@ -37,7 +28,6 @@
               <v-btn variant="flat" @click="showLogin = true">login</v-btn>
             </v-col>
           </v-row>
-          <!-- <v-row><v-col></v-col></v-row> -->
         </v-container>
       </div>
       <div class="login" v-if="showLogin">
@@ -117,6 +107,9 @@ export default {
     }
     .nav {
       font-family: "Roboto";
+      .user {
+        color: white;
+      }
       span {
         color: white;
       }
