@@ -3,7 +3,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const { TripModel, ParkModel } = require("../model/model");
-const e = require("express");
+// const e = require("express");
 
 dotenv.config();
 

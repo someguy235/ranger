@@ -47,7 +47,10 @@ export default {
 
 <style>
 body,
-html,
+html {
+  height: 100%;
+  padding: 0;
+}
 #app {
   height: 100%;
   margin: auto;

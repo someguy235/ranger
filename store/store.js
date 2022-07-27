@@ -8,7 +8,6 @@ const store = createStore({
     trips: [],
     icons: {},
     activeTrips: [],
-    // TODO: why is this two places?
     activeParksFilter: "Active",
     activeParks: [],
   },
@@ -48,6 +47,7 @@ const store = createStore({
     },
     updateActiveParks(state) {
       let activeParks = [];
+      let visitedParks;
       // showOptions: ["All", "Active", "Visited", "Not Visited", "None"],
       switch (state.activeParksFilter) {
         case "All":
@@ -66,8 +66,9 @@ const store = createStore({
           activeParks = state.trips.map((trip) => trip.parks).flat();
           break;
         case "Not Visited":
+          visitedParks = state.trips.map((trip) => trip.parks).flat();
           activeParks = state.parks
-            .filter((park) => !state.activeParks.includes(park._id))
+            .filter((park) => !visitedParks.includes(park._id))
             .map((park) => park._id);
           break;
       }
