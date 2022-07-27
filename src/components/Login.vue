@@ -3,7 +3,11 @@
     <v-container>
       <v-row no-gutters>
         <v-col>
-          <v-text-field density="compact" v-model="email" placeholder="email" />
+          <v-text-field
+            density="compact"
+            v-model="username"
+            placeholder="username"
+          />
         </v-col>
       </v-row>
       <v-row no-gutters>
@@ -21,27 +25,23 @@
       </v-row>
     </v-container>
   </v-form>
+  <v-snackbar v-model="snackMsg">{{ snackMsg }}</v-snackbar>
 </template>
 
 <script>
-import { useStore } from "vuex";
+import { mapMutations } from "vuex";
 
 export default {
-  setup() {
-    const store = useStore();
-    return {
-      setUser: (user) => store.commit("setUser", user),
-      setToken: (token) => store.commit("setToken", token),
-    };
-  },
   data() {
     return {
-      email: "",
+      username: "",
       password: "",
+      snackMsg: null,
     };
   },
   props: ["cancel"],
   methods: {
+    ...mapMutations(["setUser", "setToken"]),
     async login() {
       const response = await fetch("/ranger/api/login", {
         method: "POST",
@@ -49,17 +49,25 @@ export default {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          email: this.email,
+          username: this.username,
           password: this.password,
         }),
       });
-      // TODO: login successful?
-      const { user, token } = await response.json();
-      this.setUser(this.email);
-      this.setToken(token);
-      localStorage.setItem("authToken", token);
-      localStorage.setItem("authUser", this.email);
-      this.cancel();
+
+      if (response.status === 200) {
+        const { token } = await response.json();
+        if (token) {
+          this.setUser(this.username);
+          this.setToken(token);
+          localStorage.setItem("authToken", token);
+          localStorage.setItem("authUser", this.username);
+          this.cancel();
+        } else {
+          this.snackMsg = "something went wrong";
+        }
+      } else {
+        this.snackMsg = "something went wrong";
+      }
     },
   },
 };

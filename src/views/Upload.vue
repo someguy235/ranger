@@ -131,7 +131,6 @@ export default {
       return "#" + Math.floor(Math.random() * 16777215).toString(16);
     },
     async upload() {
-      // TODO: file type validation
       const params = new FormData();
       params.append("title", this.title);
       params.append("bDate", this.bDate);
@@ -141,6 +140,7 @@ export default {
       params.append("kml", this.kml.files[0]);
       params.append("image", this.image.files[0]);
 
+      // TODO: auth working?
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {
