@@ -8,18 +8,17 @@ dotenv.config();
 
 const router = express.Router();
 
-// TODO: allow multiple users
-router.post(
-  "/signup",
-  passport.authenticate("signup", { session: false }),
-  async (req, res, next) => {
-    console.log("signup");
-    res.json({
-      message: "Signup successful",
-      user: req.user,
-    });
-  }
-);
+// router.post(
+//   "/signup",
+//   passport.authenticate("signup", { session: false }),
+//   async (req, res, next) => {
+//     console.log("signup");
+//     res.json({
+//       message: "Signup successful",
+//       user: req.user,
+//     });
+//   }
+// );
 
 // TODO: expire jwt
 router.post("/login", async (req, res, next) => {

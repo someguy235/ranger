@@ -1,6 +1,7 @@
 <template>
   <section class="map">
     <div id="mapContainer"></div>
+    <!-- TODO: timeline -->
     <div class="timeline-row">
       <v-container>
         <v-row>

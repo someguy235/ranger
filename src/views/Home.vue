@@ -24,7 +24,9 @@
         :trip="editTrip"
       />
     </v-dialog>
-    <v-snackbar v-model="snackMsg">{{ snackMsg }}</v-snackbar>
+    <v-snackbar v-model="showSnackMsg" class="text-center">{{
+      snackMsg
+    }}</v-snackbar>
   </div>
 </template>
 
@@ -48,6 +50,7 @@ export default {
       showEdit: false,
       editTrip: null,
       snackMsg: null,
+      showSnackMsg: false,
     };
   },
   components: {
@@ -71,6 +74,9 @@ export default {
   watch: {
     viewUser() {
       this.getTrips();
+    },
+    snackMsg() {
+      this.showSnackMsg = true;
     },
   },
   methods: {

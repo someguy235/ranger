@@ -161,7 +161,6 @@ export default {
       params.append("image", this.$refs.image.files[0]);
       params.append("removeImg", this.removeImg);
 
-      // TODO: auth working?
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {

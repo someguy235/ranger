@@ -140,7 +140,6 @@ export default {
       params.append("kml", this.kml.files[0]);
       params.append("image", this.image.files[0]);
 
-      // TODO: auth working?
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {
