@@ -127,9 +127,7 @@ router.post(
 
         if (tripId) {
           // update
-          // TODO: update bounds on 'update'
-
-          const filter = { _id: tripId, user: req.user.email };
+          const filter = { _id: tripId, user: req.user.username };
           const update = {};
           if (req.body.title) update.title = req.body.title;
           if (req.body.bDate) update.bDate = req.body.bDate;
@@ -149,11 +147,12 @@ router.post(
           } else if (imgString) {
             update.image = imgString;
           }
-          await TripModel.findOneAndUpdate(filter, update);
+          const result = await TripModel.findOneAndUpdate(filter, update);
+          if (!result) throw "no results updated";
         } else {
           // insert
           await TripModel.create({
-            user: req.user.email,
+            user: req.user.username,
             title: req.body.title,
             bDate: req.body.bDate,
             eDate: req.body.eDate,

@@ -3,7 +3,6 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
 const { TripModel, ParkModel } = require("../model/model");
-// const e = require("express");
 
 dotenv.config();
 
@@ -34,7 +33,7 @@ router.post("/login", async (req, res, next) => {
       req.login(user, { session: false }, async (error) => {
         if (error) return next(error);
 
-        const body = { _id: user._id, email: user.username };
+        const body = { _id: user._id, username: user.email };
         const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET);
 
         return res.json({ token, info });

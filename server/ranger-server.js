@@ -13,7 +13,7 @@ mongoose.Promise = global.Promise;
 require("./auth/auth");
 
 const routes = require("./routes/routes");
-const secureRoute = require("./routes/secure-routes");
+const secureRoutes = require("./routes/secure-routes");
 
 const app = express();
 
@@ -24,7 +24,7 @@ app.use("/ranger/api/", routes);
 app.use(
   "/ranger/api/",
   passport.authenticate("jwt", { session: false }),
-  secureRoute
+  secureRoutes
 );
 
 // Handle errors.
