@@ -1,7 +1,11 @@
 <template>
   <div class="content">
     <div class="content-row">
-      <trips :toggleUpload="toggleUpload" :toggleEdit="toggleEdit" />
+      <trips
+        :toggleUpload="toggleUpload"
+        :toggleEdit="toggleEdit"
+        :viewUser="viewUser"
+      />
       <maps />
       <parks />
     </div>

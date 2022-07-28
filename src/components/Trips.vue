@@ -38,7 +38,11 @@
           </v-row>
           <v-row no-gutters>
             <v-col cols="6" class="d-flex justify-center align-center">
-              <v-btn variant="outlined" @click="toggleEdit(trip)">
+              <v-btn
+                v-if="user === viewUser"
+                variant="outlined"
+                @click="toggleEdit(trip)"
+              >
                 <v-icon icon="mdi-clipboard-edit"></v-icon>
               </v-btn>
             </v-col>
@@ -56,7 +60,7 @@
           </v-row>
         </v-card>
       </div>
-      <div class="d-flex justify-center">
+      <div v-if="user === viewUser" class="d-flex justify-center">
         <v-btn @click="toggleUpload">New</v-btn>
       </div>
     </div>
@@ -69,7 +73,7 @@ import TripInfo from "./TripInfo";
 
 export default {
   name: "Trips",
-  props: ["toggleUpload", "toggleEdit"],
+  props: ["toggleUpload", "toggleEdit", "viewUser"],
   components: {
     TripInfo,
   },
@@ -80,7 +84,7 @@ export default {
   },
   computed: {
     ...mapGetters(["getParkFileData"]),
-    ...mapState(["parks", "trips", "activeTrips"]),
+    ...mapState(["user", "parks", "trips", "activeTrips"]),
   },
   methods: {
     ...mapActions(["toggleActiveTrip"]),
