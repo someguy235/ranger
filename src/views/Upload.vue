@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div id="upload" v-if="token !== null">
+    <div id="upload">
       <v-form
         @submit.prevent="upload"
         enctype="multipart/form-data"

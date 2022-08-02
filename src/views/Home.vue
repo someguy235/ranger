@@ -45,7 +45,6 @@ export default {
   name: "Home",
   data() {
     return {
-      ticks: { 0: "zero", 1: "one", 2: "two", 3: "three" },
       showUpload: false,
       showEdit: false,
       editTrip: null,

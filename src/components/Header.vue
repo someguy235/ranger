@@ -1,4 +1,5 @@
 <template>
+  <!-- TODO: fix header image -->
   <header class="header">
     <div></div>
     <div class="header-content">

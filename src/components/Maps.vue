@@ -2,26 +2,40 @@
   <section class="map">
     <div id="mapContainer"></div>
     <!-- TODO: timeline -->
-    <div class="timeline-row">
+    <!-- <div class="timeline-row">
       <v-container>
         <v-row>
           <v-col class="px-2 pt-10">
             <v-range-slider
               :ticks="tripDates"
-              :value="[0, 1]"
+              :value="[0, trips.length]"
               min="0"
-              max="3"
+              :max="trips.length"
               :step="1"
-              show-ticks="always"
+              strict
               thumb-label="always"
-              tick-size="2"
+              tick-size="1"
+              hide-details
             >
-              <template v-slot:thumb-label="{ modelValue }">test</template>
+              <template v-slot:thumb-label="{ modelValue }">
+                {{ tripDates[modelValue] }}
+                {{
+                  modelValue && tripDates[modelValue]
+                    ? tripDates[modelValue][0]
+                    : null
+                }}
+                <br />
+                {{
+                  modelValue && tripDates[modelValue]
+                    ? tripDates[modelValu][1]
+                    : null
+                }}
+              </template>
             </v-range-slider>
           </v-col>
         </v-row>
       </v-container>
-    </div>
+    </div> -->
   </section>
 </template>
 
@@ -47,9 +61,16 @@ export default {
   computed: {
     ...mapGetters(["getParkFileData"]),
     ...mapState(["parks", "trips", "icons", "activeTrips", "activeParks"]),
-    tripDates() {
-      return this.trips.map((trip) => trip.bDate.substring(0, 10));
-    },
+    // tripDates() {
+    //   console.log(this.trips);
+    //   console.log(this.trips.length);
+    //   const td = {};
+    //   this.trips.forEach((trip, i) => {
+    //     td[i] = [trip.bDate.substring(0, 10), trip.title];
+    //   });
+    //   console.log(td);
+    //   return td;
+    // },
   },
   methods: {
     setupLeafletMap: function () {
@@ -168,7 +189,8 @@ export default {
 <style lang="scss" scoped>
 .map {
   display: grid;
-  grid-template-rows: calc(100% - 122px) 122px;
+  // grid-template-rows: calc(100% - 88px) 88px;
+  grid-template-rows: 100%;
 }
 #mapContainer {
   width: 100%;

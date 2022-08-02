@@ -9,6 +9,7 @@ export async function loadFonts() {
     /* webpackChunkName: "webfontloader" */ "webfontloader"
   );
 
+  // TODO: can't load multiple fonts
   webFontLoader.load({
     google: {
       families: [

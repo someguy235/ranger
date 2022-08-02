@@ -92,7 +92,7 @@ router.post(
   ]),
   async (req, res) => {
     // TODO: form validation, including file type
-    if (req.isAuthenticated()) {
+    if (req.isAuthenticated() && req.user.username != null) {
       try {
         const tripId = req.body.id;
 
@@ -170,6 +170,8 @@ router.post(
         console.log(e);
         res.status(500).json();
       }
+    } else {
+      res.status(401).json();
     }
   }
 );

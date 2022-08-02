@@ -1,6 +1,6 @@
 <template>
   <div class="main">
-    <div id="edit" v-if="token !== null">
+    <div id="edit">
       <v-form
         @submit.prevent="update"
         enctype="multipart/form-data"
