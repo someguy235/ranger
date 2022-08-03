@@ -46,6 +46,9 @@ export default {
 </script>
 
 <style>
+@import url("https://fonts.googleapis.com/css2?family=Vibur&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+
 body,
 html {
   height: 100%;
