@@ -54,13 +54,21 @@ export default {
       map: null,
       layers: {},
       markers: {},
+      mouseMarker: null,
       defaultCenter: [39.8283, -98.5795],
       defaultZoom: 4,
     };
   },
   computed: {
     ...mapGetters(["getParkFileData"]),
-    ...mapState(["parks", "trips", "icons", "activeTrips", "activeParks"]),
+    ...mapState([
+      "parks",
+      "trips",
+      "icons",
+      "activeTrips",
+      "activeParks",
+      "mousedPark",
+    ]),
     // tripDates() {
     //   console.log(this.trips);
     //   console.log(this.trips.length);
@@ -177,6 +185,28 @@ export default {
         });
 
         this.markers = markers;
+      },
+    },
+    "$store.state.mousedPark": {
+      handler() {
+        const map = toRaw(this.map);
+        const mouseMarker = toRaw(this.mouseMarker);
+
+        if (!this.mousedPark) {
+          map.removeLayer(mouseMarker);
+        } else {
+          const park = this.parks.filter(
+            (park) => park._id === this.mousedPark
+          )[0];
+          const marker = L.marker([park.lat, park.lon], {
+            icon: L.icon({
+              iconUrl: this.getParkFileData(park._id),
+              iconSize: [36, 54],
+            }),
+          }).bindTooltip(park.name);
+          this.mouseMarker = marker;
+          map.addLayer(marker);
+        }
       },
     },
   },

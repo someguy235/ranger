@@ -69,9 +69,7 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
-// TODO: what's wrong with eslint here?
-// eslint-disable-next-line
-import TripInfo from "./TripInfo";
+import TripInfo from "./TripInfo.vue";
 
 export default {
   name: "Trips",

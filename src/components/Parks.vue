@@ -11,7 +11,12 @@
       </v-select>
     </div>
     <div class="park-list justify-center">
-      <div v-for="park in parks" class="d-flex pa-1">
+      <div
+        v-for="park in parks"
+        class="d-flex pa-1"
+        @mouseenter="setMousedPark(park._id)"
+        @mouseleave="setMousedPark(null)"
+      >
         <img
           :src="getParkFileData(park._id)"
           :title="park.name"
@@ -23,7 +28,6 @@
 </template>
 
 <script>
-// TODO: add marker to map on badge mouseover
 import { mapState, mapGetters, mapActions } from "vuex";
 
 export default {
@@ -51,7 +55,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["setActiveParksFilter"]),
+    ...mapActions(["setActiveParksFilter", "setMousedPark"]),
     getGrayscaleStyle(park) {
       const active = this.activeParks.includes(park._id);
       return active ? "" : "filter:grayscale(1);opacity:.2;";

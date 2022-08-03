@@ -10,6 +10,7 @@ const store = createStore({
     activeTrips: [],
     activeParksFilter: "Active",
     activeParks: [],
+    mousedPark: null,
   },
   mutations: {
     setUser(state, user) {
@@ -74,6 +75,9 @@ const store = createStore({
       }
       state.activeParks = activeParks;
     },
+    setMousedPark(state, mousedParkId) {
+      state.mousedPark = mousedParkId;
+    },
   },
   actions: {
     toggleActiveTrip(context, newId) {
@@ -83,6 +87,9 @@ const store = createStore({
     setActiveParksFilter(context, newActiveParksFilter) {
       context.commit("setActiveParksFilter", newActiveParksFilter);
       context.commit("updateActiveParks");
+    },
+    setMousedPark(context, newMousedPark) {
+      context.commit("setMousedPark", newMousedPark);
     },
   },
   getters: {
