@@ -16,6 +16,8 @@ passport.use(
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
     },
     async (token, done) => {
+      console.log("passport.use");
+      console.log(token);
       try {
         return done(null, token.user);
       } catch (error) {
@@ -43,6 +45,7 @@ passport.use(
 //   )
 // );
 
+// TODO: also return refresh token
 passport.use(
   "login",
   new localStrategy(
@@ -51,6 +54,7 @@ passport.use(
       passwordField: "password",
     },
     async (email, password, done) => {
+      console.log("passport.use:login");
       try {
         const user = await UserModel.findOne({ email });
 

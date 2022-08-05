@@ -161,6 +161,8 @@ export default {
       params.append("image", this.$refs.image.files[0]);
       params.append("removeImg", this.removeImg);
 
+      // TODO: add refresh/retry for expired auth token (401)
+      // TODO: pull this to vuex?
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {
@@ -170,6 +172,11 @@ export default {
       });
 
       const r = await response.status;
+
+      if (r === 401) {
+        console.log("need to refresh");
+      }
+
       if (r === 200) {
         this.showUpdateMsg = true;
         this.editId = null;

@@ -140,6 +140,7 @@ export default {
       params.append("kml", this.kml.files[0]);
       params.append("image", this.image.files[0]);
 
+      //TODO: add refresh/retry for expired auth token (401)
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
         headers: {
