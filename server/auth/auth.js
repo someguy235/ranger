@@ -12,12 +12,21 @@ dotenv.config();
 passport.use(
   new JWTstrategy(
     {
-      secretOrKey: process.env.TOKEN_SECRET,
+      secretOrKey: process.env.JWT_AUTH_SECRET,
       jwtFromRequest: ExtractJWT.fromAuthHeaderAsBearerToken(),
+      ignoreExpiration: true,
+      passReqToCallback: true,
     },
-    async (token, done) => {
-      console.log("passport.use");
-      console.log(token);
+    async (req, token, done) => {
+      const exp = new Date(token.exp * 1000);
+      const now = new Date();
+      console.log(now > exp);
+
+      console.log(req.cookies);
+
+      // TODO: try to refresh auth token, otherwise 401
+      // TODO: also return new auth token
+
       try {
         return done(null, token.user);
       } catch (error) {

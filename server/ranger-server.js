@@ -1,5 +1,6 @@
 const express = require("express");
 const compression = require("compression");
+const cookieParser = require("cookie-parser");
 const mongoose = require("mongoose");
 const passport = require("passport");
 
@@ -18,6 +19,7 @@ const secureRoutes = require("./routes/secure-routes");
 const app = express();
 
 app.use(compression());
+app.use(cookieParser());
 app.use(express.json());
 
 app.use("/ranger/api/", routes);
@@ -29,6 +31,8 @@ app.use(
 
 // Handle errors.
 app.use(function (err, req, res, next) {
+  console.log("passport:error");
+  console.log(err);
   res.status(err.status || 500);
   res.json({ error: err });
 });

@@ -21,6 +21,7 @@ const router = express.Router();
 // );
 
 // TODO: expire jwt
+// TODO: generate and persist refresh token
 router.post("/login", async (req, res, next) => {
   passport.authenticate("login", async (err, user, info) => {
     try {
@@ -33,10 +34,16 @@ router.post("/login", async (req, res, next) => {
         if (error) return next(error);
 
         const body = { _id: user._id, username: user.email };
-        const token = jwt.sign({ user: body }, process.env.TOKEN_SECRET, {
+        const token = jwt.sign({ user: body }, process.env.JWT_AUTH_SECRET, {
           expiresIn: "30s",
         });
+        const refresh = jwt.sign(
+          { user: body },
+          process.env.JWT_REFRESH_SECRET,
+          { expiresIn: "1d" }
+        );
 
+        res.cookie("refresh", refresh, { httpOnly: true, sameSite: "strict" });
         return res.json({ token, info });
       });
     } catch (error) {
@@ -44,6 +51,8 @@ router.post("/login", async (req, res, next) => {
     }
   })(req, res, next);
 });
+
+// router.post("/refresh", async (req, res, next) => {});
 
 router.get("/parks", async (req, res) => {
   try {
