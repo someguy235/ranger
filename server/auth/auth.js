@@ -4,6 +4,8 @@ const UserModel = require("../model/model").UserModel;
 
 const JWTstrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
+const jwt = require("jsonwebtoken");
+const jwt_decode = require("jwt-decode");
 
 const dotenv = require("dotenv");
 
@@ -17,17 +19,33 @@ passport.use(
       ignoreExpiration: true,
       passReqToCallback: true,
     },
+
     async (req, token, done) => {
-      const exp = new Date(token.exp * 1000);
-      const now = new Date();
-      console.log(now > exp);
-
-      console.log(req.cookies);
-
-      // TODO: try to refresh auth token, otherwise 401
-      // TODO: also return new auth token
-
       try {
+        const exp = new Date(token.exp * 1000);
+        const now = new Date();
+        if (now > exp) {
+          // check refresh token
+          const user = await UserModel.findOne({ _id: token.user._id });
+          const refresh = user.refresh;
+          if (refresh) {
+            const decode = jwt_decode(refresh);
+            const rExp = new Date(decode.exp * 1000);
+            if (rExp > now) {
+              const newAuth = jwt.sign(
+                { user: token.user },
+                process.env.JWT_AUTH_SECRET,
+                {
+                  expiresIn: "30s",
+                }
+              );
+              token.user.newAuth = newAuth;
+            } else {
+              throw "could not refresh";
+            }
+          }
+        }
+
         return done(null, token.user);
       } catch (error) {
         done(error);
@@ -54,7 +72,6 @@ passport.use(
 //   )
 // );
 
-// TODO: also return refresh token
 passport.use(
   "login",
   new localStrategy(

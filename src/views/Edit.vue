@@ -97,7 +97,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapMutations, mapState } from "vuex";
 import { ref } from "vue";
 
 export default {
@@ -130,6 +130,7 @@ export default {
     ...mapState(["user", "token", "parks"]),
   },
   methods: {
+    ...mapMutations(["setUser", "setToken"]),
     getParkNames(trip) {
       return trip.parks
         .map((parkId) => this.parks.filter((park) => park._id === parkId)[0])
@@ -161,7 +162,6 @@ export default {
       params.append("image", this.$refs.image.files[0]);
       params.append("removeImg", this.removeImg);
 
-      // TODO: add refresh/retry for expired auth token (401)
       // TODO: pull this to vuex?
       const response = await fetch("/ranger/api/upload", {
         method: "POST",
@@ -171,13 +171,11 @@ export default {
         body: params,
       });
 
-      const r = await response.status;
+      const res = await response;
+      const status = res.status;
+      const json = await res.json();
 
-      if (r === 401) {
-        console.log("need to refresh");
-      }
-
-      if (r === 200) {
+      if (status === 200) {
         this.showUpdateMsg = true;
         this.editId = null;
         this.editTitle = null;
@@ -187,6 +185,16 @@ export default {
         this.setSnackMsg("update successful");
         this.getTrips();
         this.toggleEdit(this.trip._id);
+        if (json.newAuth) {
+          this.setToken(json.newAuth);
+          localStorage.setItem("authToken", json.newAuth);
+        }
+      } else if (status === 401) {
+        this.setUser(null);
+        this.setToken(null);
+        localStorage.setItem("authToken", null);
+        localStorage.setItem("authUser", null);
+        this.setSnackMsg("login expired");
       } else {
         this.setSnackMsg("something went wrong");
       }

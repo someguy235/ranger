@@ -84,8 +84,6 @@ const getKmlBoundsAndDistance = (points) => {
   return [kmlBounds, kmlDistance];
 };
 
-// TODO: add 'refresh' endpoint to renew expired auth token
-
 router.post(
   "/upload",
   upload.fields([
@@ -167,7 +165,7 @@ router.post(
           });
         }
 
-        res.status(200).json();
+        res.status(200).json({ newAuth: req.user.newAuth });
       } catch (e) {
         console.log(e);
         res.status(500).json();

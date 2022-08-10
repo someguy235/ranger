@@ -2,7 +2,7 @@ const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
-const { TripModel, ParkModel } = require("../model/model");
+const { TripModel, ParkModel, UserModel } = require("../model/model");
 
 dotenv.config();
 
@@ -20,8 +20,6 @@ const router = express.Router();
 //   }
 // );
 
-// TODO: expire jwt
-// TODO: generate and persist refresh token
 router.post("/login", async (req, res, next) => {
   passport.authenticate("login", async (err, user, info) => {
     try {
@@ -42,6 +40,12 @@ router.post("/login", async (req, res, next) => {
           process.env.JWT_REFRESH_SECRET,
           { expiresIn: "1d" }
         );
+
+        const result = await UserModel.findOneAndUpdate(
+          { _id: user._id },
+          { refresh }
+        );
+        if (!result) throw "could not set refresh";
 
         res.cookie("refresh", refresh, { httpOnly: true, sameSite: "strict" });
         return res.json({ token, info });

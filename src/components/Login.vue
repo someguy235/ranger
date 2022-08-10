@@ -29,8 +29,8 @@
 </template>
 
 <script>
+// TODO: get refresh expire date from login endpoint and persist to localstorage, then check on page load
 import { mapMutations } from "vuex";
-
 export default {
   data() {
     return {
