@@ -6,7 +6,7 @@
         enctype="multipart/form-data"
         class="pb-6"
       >
-        <v-container :style="{ 'overflow-y': scroll }">
+        <v-container>
           <v-row class="pt-6" no-gutters>
             <v-col>
               <v-text-field v-model="editTitle" label="title" required />
@@ -97,12 +97,13 @@
 </template>
 
 <script>
-import { mapMutations, mapState } from "vuex";
+// TODO: delete trip
+import { mapState } from "vuex";
 import { ref } from "vue";
 
 export default {
   name: "Edit",
-  props: ["trip", "getTrips", "toggleEdit", "setSnackMsg"],
+  props: ["trip", "toggleEdit", "pushData"],
   setup() {
     const kml = ref(null);
     const image = ref(null);
@@ -127,10 +128,9 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user", "token", "parks"]),
+    ...mapState(["parks"]),
   },
   methods: {
-    ...mapMutations(["setUser", "setToken"]),
     getParkNames(trip) {
       return trip.parks
         .map((parkId) => this.parks.filter((park) => park._id === parkId)[0])
@@ -139,15 +139,6 @@ export default {
     },
     toggleShowColor() {
       this.showColor = !this.showColor;
-    },
-    editTrip(id) {
-      this.editId = id;
-      const targetTrip = this.trips.filter((trip) => trip._id === id)[0];
-      this.editTitle = targetTrip.title;
-      this.editBDate = targetTrip.bDate.substring(0, 10);
-      this.editEDate = targetTrip.eDate.substring(0, 10);
-      this.editColor = targetTrip.color;
-      this.editParkIds = targetTrip.parks;
     },
     async update() {
       const params = new FormData();
@@ -162,18 +153,7 @@ export default {
       params.append("image", this.$refs.image.files[0]);
       params.append("removeImg", this.removeImg);
 
-      // TODO: pull this to vuex?
-      const response = await fetch("/ranger/api/upload", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + this.token,
-        },
-        body: params,
-      });
-
-      const res = await response;
-      const status = res.status;
-      const json = await res.json();
+      const status = await this.pushData(params);
 
       if (status === 200) {
         this.showUpdateMsg = true;
@@ -182,21 +162,7 @@ export default {
         this.editBDate = null;
         this.editEDate = null;
         this.editParkIds = [];
-        this.setSnackMsg("update successful");
-        this.getTrips();
         this.toggleEdit(this.trip._id);
-        if (json.newAuth) {
-          this.setToken(json.newAuth);
-          localStorage.setItem("authToken", json.newAuth);
-        }
-      } else if (status === 401) {
-        this.setUser(null);
-        this.setToken(null);
-        localStorage.setItem("authToken", null);
-        localStorage.setItem("authUser", null);
-        this.setSnackMsg("login expired");
-      } else {
-        this.setSnackMsg("something went wrong");
       }
     },
   },

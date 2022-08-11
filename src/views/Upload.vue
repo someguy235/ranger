@@ -6,7 +6,7 @@
         enctype="multipart/form-data"
         class="pb-6"
       >
-        <v-container :style="{ 'overflow-y': scroll }">
+        <v-container>
           <v-row class="pt-6" no-gutters>
             <v-col>
               <v-text-field v-model="title" label="title" required />
@@ -90,7 +90,7 @@ import { ref } from "vue";
 
 export default {
   name: "Upload",
-  props: ["getTrips", "toggleUpload", "setSnackMsg"],
+  props: ["toggleUpload", "pushData"],
   setup() {
     const kml = ref(null);
     const image = ref(null);
@@ -110,7 +110,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["user", "token", "parks"]),
+    ...mapState(["parks"]),
   },
   methods: {
     togglePark(newId) {
@@ -140,27 +140,14 @@ export default {
       params.append("kml", this.kml.files[0]);
       params.append("image", this.image.files[0]);
 
-      //TODO: add refresh/retry for expired auth token (401)
-      const response = await fetch("/ranger/api/upload", {
-        method: "POST",
-        headers: {
-          Authorization: "Bearer " + this.token,
-        },
-        body: params,
-      });
+      const status = await this.pushData(params);
 
-      const r = await response.status;
-
-      if (r === 200) {
+      if (status === 200) {
         this.title = "";
         this.bDate = "";
         this.eDate = "";
         this.selectedParkIds = [];
-        this.setSnackMsg("upload successful");
-        this.getTrips();
         this.toggleUpload();
-      } else {
-        this.setSnackMsg("something went wrong");
       }
     },
   },
