@@ -167,7 +167,6 @@ router.post(
 
         res.status(200).json({ newAuth: req.user.newAuth });
       } catch (e) {
-        console.log(e);
         res.status(500).json();
       }
     } else {

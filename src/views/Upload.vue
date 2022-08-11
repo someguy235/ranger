@@ -147,7 +147,6 @@ export default {
         this.bDate = "";
         this.eDate = "";
         this.selectedParkIds = [];
-        this.toggleUpload();
       }
     },
   },

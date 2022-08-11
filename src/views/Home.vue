@@ -117,6 +117,9 @@ export default {
       const status = res.status;
       const json = await res.json();
 
+      if (this.showUpload) this.toggleUpload();
+      if (this.showEdit) this.toggleEdit(this.editTrip._id);
+
       if (status === 200) {
         this.setSnackMsg("update successful");
         this.getTrips();

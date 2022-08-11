@@ -162,7 +162,6 @@ export default {
         this.editBDate = null;
         this.editEDate = null;
         this.editParkIds = [];
-        this.toggleEdit(this.trip._id);
       }
     },
   },

@@ -36,12 +36,14 @@ passport.use(
                 { user: token.user },
                 process.env.JWT_AUTH_SECRET,
                 {
-                  expiresIn: "30s",
+                  expiresIn: "5m",
                 }
               );
               token.user.newAuth = newAuth;
             } else {
-              throw "could not refresh";
+              const err = new Error("could not refresh auth token");
+              err.status = 401;
+              throw err;
             }
           }
         }

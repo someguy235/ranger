@@ -31,8 +31,6 @@ app.use(
 
 // Handle errors.
 app.use(function (err, req, res, next) {
-  console.log("passport:error");
-  console.log(err);
   res.status(err.status || 500);
   res.json({ error: err });
 });
