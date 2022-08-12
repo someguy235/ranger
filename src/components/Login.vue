@@ -29,7 +29,6 @@
 </template>
 
 <script>
-// TODO: get refresh expire date from login endpoint and persist to localstorage, then check on page load
 import { mapMutations } from "vuex";
 export default {
   data() {
@@ -55,7 +54,7 @@ export default {
       });
 
       if (response.status === 200) {
-        const { token } = await response.json();
+        const { token, info } = await response.json();
         if (token) {
           this.setUser(this.username);
           this.setToken(token);
@@ -64,6 +63,9 @@ export default {
           this.cancel();
         } else {
           this.snackMsg = "something went wrong";
+        }
+        if (info.refreshExpire) {
+          localStorage.setItem("refreshExpire", info.refreshExpire);
         }
       } else {
         this.snackMsg = "something went wrong";

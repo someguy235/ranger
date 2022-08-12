@@ -2,6 +2,8 @@ const express = require("express");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv");
+const jwt_decode = require("jwt-decode");
+
 const { TripModel, ParkModel, UserModel } = require("../model/model");
 
 dotenv.config();
@@ -47,7 +49,10 @@ router.post("/login", async (req, res, next) => {
         );
         if (!result) throw "could not set refresh";
 
+        const decode = jwt_decode(refresh);
+
         res.cookie("refresh", refresh, { httpOnly: true, sameSite: "strict" });
+        info.refreshExpire = decode.exp;
         return res.json({ token, info });
       });
     } catch (error) {
@@ -55,8 +60,6 @@ router.post("/login", async (req, res, next) => {
     }
   })(req, res, next);
 });
-
-// router.post("/refresh", async (req, res, next) => {});
 
 router.get("/parks", async (req, res) => {
   try {

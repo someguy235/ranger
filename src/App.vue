@@ -32,11 +32,17 @@ export default {
     },
   },
   beforeMount() {
-    const authToken = localStorage.getItem("authToken");
-    if (authToken && authToken !== "null") this.setToken(authToken);
-
-    const authUser = localStorage.getItem("authUser");
-    if (authUser && authUser !== "null") this.setUser(authUser);
+    const refreshExpire = localStorage.getItem("refreshExpire");
+    if (refreshExpire && refreshExpire !== "null") {
+      const refreshExpireDate = new Date(refreshExpire * 1000);
+      const now = new Date();
+      if (refreshExpireDate > now) {
+        const authToken = localStorage.getItem("authToken");
+        if (authToken && authToken !== "null") this.setToken(authToken);
+        const authUser = localStorage.getItem("authUser");
+        if (authUser && authUser !== "null") this.setUser(authUser);
+      }
+    }
 
     this.getParks();
 
