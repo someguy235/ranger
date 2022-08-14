@@ -81,10 +81,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-// @import url("https://fonts.googleapis.com/css2?family=Vibur&display=swap");
 .header {
   display: grid;
-  grid-template-columns: auto minmax(50%, 1100px) auto;
+  // grid-template-columns: auto minmax(50%, 1100px) auto;
+  grid-template-columns: auto;
   width: 100%;
   .header-content {
     background-color: #e9baf1;
@@ -98,7 +98,7 @@ export default {
       url(../assets/images/ranger-header.jpg) no-repeat center center scroll;
 
     display: grid;
-    grid-template-columns: auto 20%;
+    grid-template-columns: auto 10%;
     margin: 20px 0;
     .title {
       color: white;

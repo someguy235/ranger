@@ -84,6 +84,20 @@ const getKmlBoundsAndDistance = (points) => {
   return [kmlBounds, kmlDistance];
 };
 
+const validate = (tripId, req) => {
+  let valid = true;
+  if (tripId) {
+    // update
+  } else {
+    // insert
+    if (!req.body.title) valid = false;
+    if (!req.body.bDate) valid = false;
+    if (!req.body.eDate) valid = false;
+    if (!req.body.parks) valid = false;
+  }
+  return valid;
+};
+
 router.post(
   "/upload",
   upload.fields([
@@ -91,10 +105,11 @@ router.post(
     { name: "kml", maxCount: 1 },
   ]),
   async (req, res) => {
-    // TODO: form validation, including file type
     if (req.isAuthenticated() && req.user.username != null) {
       try {
         const tripId = req.body.id;
+
+        if (!validate(tripId, req)) throw "form fields didn't validate";
 
         // handle image data
         let imgString = null;
@@ -167,6 +182,7 @@ router.post(
 
         res.status(200).json({ newAuth: req.user.newAuth });
       } catch (e) {
+        console.log(e);
         res.status(500).json();
       }
     } else {

@@ -9,17 +9,23 @@
         <v-container>
           <v-row class="pt-6" no-gutters>
             <v-col>
-              <v-text-field v-model="title" label="title" required />
+              <v-text-field
+                v-model="title"
+                label="title"
+                :rules="rules.title"
+              />
             </v-col>
           </v-row>
           <v-row class="dates pb-6" no-gutters>
             <v-col class="date">
-              <input id="bDate" v-model="bDate" type="date" required />
+              <input id="bDate" v-model="bDate" type="date" />
               <label for="bDate">begin date</label>
+              <label v-if="bDateInvalid" class="required">Required</label>
             </v-col>
             <v-col class="date">
-              <input id="eDate" v-model="eDate" type="date" required />
+              <input id="eDate" v-model="eDate" type="date" />
               <label for="eDate">end date</label>
+              <label v-if="eDateInvalid" class="required">Required</label>
             </v-col>
           </v-row>
           <v-row no-gutters>
@@ -31,6 +37,7 @@
                 item-title="name"
                 item-value="_id"
                 label="visited parks"
+                :rules="rules.parks"
               />
             </v-col>
           </v-row>
@@ -103,10 +110,16 @@ export default {
     return {
       title: "",
       bDate: "",
+      bDateInvalid: false,
       eDate: "",
+      eDateInvalid: false,
       color: null,
       selectedParkIds: [],
       showColor: false,
+      rules: {
+        title: [(value) => !!value || "Required"],
+        parks: [(v) => v.length > 0 || "At least one park must be selected"],
+      },
     };
   },
   computed: {
@@ -130,7 +143,24 @@ export default {
     getRandomColor() {
       return "#" + Math.floor(Math.random() * 16777215).toString(16);
     },
+    validateDate(date) {
+      const dateObj = new Date(date);
+      if (isNaN(dateObj)) return false;
+      return true;
+    },
     async upload() {
+      this.eDateInvalid = false;
+      this.bDateInvalid = false;
+      if (!this.validateDate(this.bDate)) this.bDateInvalid = true;
+      if (!this.validateDate(this.eDate)) this.eDateInvalid = true;
+      if (
+        this.bDateInvalid ||
+        this.eDateInvalid ||
+        this.title === "" ||
+        this.selectedParkIds.length === 0
+      )
+        return;
+
       const params = new FormData();
       params.append("title", this.title);
       params.append("bDate", this.bDate);
@@ -179,6 +209,10 @@ export default {
             align-items: center;
             align-self: center;
             border-bottom: 1px solid;
+          }
+          .required {
+            font-size: 0.8rem;
+            color: rgb(176, 0, 32);
           }
         }
       }
