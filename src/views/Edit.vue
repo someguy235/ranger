@@ -84,6 +84,11 @@
           </v-row>
           <v-row class="d-flex justify-center" no-gutters>
             <v-col class="d-flex justify-center">
+              <v-btn @click.prevent="toggleConfirmDelete" color="error">
+                Delete
+              </v-btn>
+            </v-col>
+            <v-col class="d-flex justify-center">
               <v-btn @click.prevent="toggleEdit(trip._id)">Cancel</v-btn>
             </v-col>
             <v-col class="d-flex justify-center">
@@ -97,13 +102,12 @@
 </template>
 
 <script>
-// TODO: delete trip
 import { mapState } from "vuex";
 import { ref } from "vue";
 
 export default {
   name: "Edit",
-  props: ["trip", "toggleEdit", "pushData"],
+  props: ["trip", "toggleEdit", "toggleConfirmDelete", "pushData"],
   setup() {
     const kml = ref(null);
     const image = ref(null);

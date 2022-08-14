@@ -21,10 +21,28 @@
       <edit
         :getTrips="getTrips"
         :toggleEdit="toggleEdit"
+        :toggleConfirmDelete="toggleConfirmDelete"
         :setSnackMsg="setSnackMsg"
         :trip="editTrip"
         :pushData="pushData"
       />
+    </v-dialog>
+    <v-dialog v-model="showConfirmDelete">
+      <div id="delete">
+        <v-form @submit.prevent="deleteTrip">
+          <v-container>
+            <v-row>
+              <v-col>Delete {{ editTrip.title }}?</v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-btn @click.prevent="toggleConfirmDelete">Cancel</v-btn>
+              </v-col>
+              <v-col> <v-btn type="submit">Confirm</v-btn> </v-col>
+            </v-row>
+          </v-container>
+        </v-form>
+      </div>
     </v-dialog>
     <v-snackbar v-model="showSnackMsg" class="text-center">{{
       snackMsg
@@ -49,6 +67,7 @@ export default {
     return {
       showUpload: false,
       showEdit: false,
+      showConfirmDelete: false,
       editTrip: null,
       snackMsg: null,
       showSnackMsg: false,
@@ -101,8 +120,35 @@ export default {
       this.editTrip = trip;
       this.showEdit = !this.showEdit;
     },
+    toggleConfirmDelete() {
+      this.showConfirmDelete = !this.showConfirmDelete;
+    },
     setSnackMsg(msg) {
       this.snackMsg = msg;
+    },
+    async deleteTrip() {
+      const res = await fetch("/ranger/api/delete/" + this.editTrip._id, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + this.token,
+        },
+      });
+      const status = await res.status;
+
+      if (status === 200) {
+        if (this.showEdit) this.toggleEdit(this.editTrip._id);
+        if (this.showConfirmDelete) this.toggleConfirmDelete();
+        this.setSnackMsg("delete successful");
+        this.getTrips();
+      } else if (status === 401) {
+        this.setUser(null);
+        this.setToken(null);
+        localStorage.setItem("authToken", null);
+        localStorage.setItem("authUser", null);
+        this.setSnackMsg("login expired");
+      } else {
+        this.setSnackMsg("something went wrong");
+      }
     },
     async pushData(params) {
       const response = await fetch("/ranger/api/upload", {
@@ -129,7 +175,6 @@ export default {
         }
         return 200;
       } else if (status === 401) {
-        console.log("login expired");
         this.setUser(null);
         this.setToken(null);
         localStorage.setItem("authToken", null);
@@ -154,6 +199,12 @@ export default {
   .content-row {
     display: grid;
     grid-template-columns: 20% 60% 20%;
+  }
+}
+#delete {
+  background-color: white;
+  form {
+    border: 1px solid grey;
   }
 }
 </style>

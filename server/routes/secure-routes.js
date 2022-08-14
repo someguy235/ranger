@@ -190,4 +190,22 @@ router.post(
     }
   }
 );
+
+router.delete("/delete" + "/:id", async (req, res) => {
+  if (req.isAuthenticated() && req.user.username != null) {
+    try {
+      if (req.params.id == null) throw "no trip id provided";
+      const filter = { _id: req.params.id, user: req.user.username };
+      const result = await TripModel.deleteOne(filter);
+      if (!result) throw "not a valid id";
+      res.status(200).json("delete successful");
+    } catch (e) {
+      console.log(e);
+      res.status(500).json();
+    }
+  } else {
+    res.status(401).json();
+  }
+});
+
 module.exports = router;
