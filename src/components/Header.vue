@@ -1,5 +1,4 @@
 <template>
-  <!-- TODO: fix header image -->
   <header class="header">
     <div></div>
     <div class="header-content">
@@ -95,7 +94,7 @@ export default {
         rgba(0, 0, 0, 0) 37%,
         rgba(0, 0, 0, 0.65) 100%
       ),
-      url(../assets/images/ranger-header.jpg) no-repeat center center scroll;
+      url(../assets/images/ranger-header-min.png) no-repeat center center scroll;
 
     display: grid;
     grid-template-columns: auto 10%;
