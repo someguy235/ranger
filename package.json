@@ -7,7 +7,7 @@
     "lint": "eslint \"src/**/*.{js,jsx}\" --quiet",
     "dev": "parcel public/index.html",
     "serve": "vue-cli-service serve",
-    "build": "parcel build src/index.html --public-url '.'",
+    "build": "vue-cli-service build",
     "start": "node server/ranger-server.js"
   },
   "keywords": [],

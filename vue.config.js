@@ -11,7 +11,7 @@ module.exports = defineConfig({
   devServer: {
     proxy: {
       "/ranger/api": {
-        target: "http://localhost:3001/",
+        target: "http://localhost:3002/",
         ws: false,
       },
     },
