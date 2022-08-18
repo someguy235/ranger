@@ -1,12 +1,18 @@
 <template>
-  <section class="trips">
-    <div class="trip-controls d-flex justify-center align-center">
+  <section v-if="user || viewUser" class="trips">
+    <div
+      v-if="trips && trips.length != 0"
+      class="trip-controls d-flex justify-center align-center"
+    >
       <v-btn value="all" @click="toggleActiveTrip('all')" class="mx-2">
         All
       </v-btn>
       <v-btn value="none" @click="toggleActiveTrip('none')" class="mx-2">
         None
       </v-btn>
+    </div>
+    <div v-else class="trip-controls d-flex justify-center align-center">
+      <v-chip>No trips to show</v-chip>
     </div>
     <div class="trip-list pa-2">
       <div v-for="trip in trips">
@@ -60,7 +66,7 @@
           </v-row>
         </v-card>
       </div>
-      <div v-if="user === viewUser" class="d-flex justify-center">
+      <div v-if="user && user === viewUser" class="d-flex justify-center">
         <v-btn @click="toggleUpload">New</v-btn>
       </div>
     </div>

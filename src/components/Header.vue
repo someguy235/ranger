@@ -28,6 +28,11 @@
               <v-btn variant="flat" @click="showLogin = true">login</v-btn>
             </v-col>
           </v-row>
+          <v-row class="d-flex justify-center">
+            <v-col class="d-flex align-center">
+              <v-btn variant="flat" disabled>sign up</v-btn>
+            </v-col>
+          </v-row>
         </v-container>
       </div>
       <div class="login" v-if="showLogin">

@@ -6,7 +6,7 @@
         :toggleEdit="toggleEdit"
         :viewUser="viewUser"
       />
-      <maps />
+      <maps :viewUser="viewUser" />
       <parks />
     </div>
     <v-dialog v-model="showUpload">

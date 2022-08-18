@@ -1,5 +1,5 @@
 <template>
-  <section class="map">
+  <section class="map" :class="{ large: !user && !viewUser }">
     <div id="mapContainer"></div>
     <!-- TODO: timeline -->
     <!-- <div class="timeline-row">
@@ -49,6 +49,7 @@ import { mapGetters, mapState } from "vuex";
 
 export default {
   name: "Maps",
+  props: ["viewUser"],
   data() {
     return {
       map: null,
@@ -62,6 +63,7 @@ export default {
   computed: {
     ...mapGetters(["getParkFileData"]),
     ...mapState([
+      "user",
       "parks",
       "trips",
       "icons",
@@ -219,9 +221,13 @@ export default {
 <style lang="scss" scoped>
 .map {
   display: grid;
-  // grid-template-rows: calc(100% - 88px) 88px;
   grid-template-rows: 100%;
+  &.large {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
 }
+
 #mapContainer {
   width: 100%;
   height: 100%;
