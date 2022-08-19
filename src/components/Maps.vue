@@ -1,5 +1,5 @@
 <template>
-  <section class="map" :class="{ large: !user && !viewUser }">
+  <section class="map">
     <div id="mapContainer"></div>
     <!-- TODO: timeline -->
     <!-- <div class="timeline-row">
@@ -222,10 +222,6 @@ export default {
 .map {
   display: grid;
   grid-template-rows: 100%;
-  &.large {
-    grid-column-start: 1;
-    grid-column-end: 3;
-  }
 }
 
 #mapContainer {

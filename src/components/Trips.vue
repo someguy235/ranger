@@ -1,5 +1,5 @@
 <template>
-  <section v-if="user || viewUser" class="trips">
+  <section class="trips">
     <div
       v-if="trips && trips.length != 0"
       class="trip-controls d-flex justify-center align-center"

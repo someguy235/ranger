@@ -2,18 +2,20 @@
   <v-app>
     <div id="container">
       <header-comp :setUser="setUser" :setToken="setToken" />
-      <router-view></router-view>
+      <home />
     </div>
   </v-app>
 </template>
 
 <script>
 import { mapMutations } from "vuex";
+import Home from "./views/Home.vue";
 import HeaderComp from "./components/Header.vue";
 
 export default {
   name: "App",
   components: {
+    Home,
     HeaderComp,
   },
   methods: {
