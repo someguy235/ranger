@@ -1,10 +1,8 @@
-const express = require("express");
-const compression = require("compression");
-const cookieParser = require("cookie-parser");
-const mongoose = require("mongoose");
-const passport = require("passport");
-
-// TODO: convert to ES modules
+import express from "express";
+import compression from "compression";
+import cookieParser from "cookie-parser";
+import mongoose from "mongoose";
+import passport from "passport";
 
 mongoose.connect("mongodb://127.0.0.1:27017/ranger", {
   useNewUrlParser: true,
@@ -13,10 +11,10 @@ mongoose.connect("mongodb://127.0.0.1:27017/ranger", {
 mongoose.connection.on("error", (error) => console.log(error));
 mongoose.Promise = global.Promise;
 
-require("./auth/auth");
+import "./auth/auth.mjs";
 
-const routes = require("./routes/routes");
-const secureRoutes = require("./routes/secure-routes");
+import routes from "./routes/routes.mjs";
+import secureRoutes from "./routes/secure-routes.mjs";
 
 const app = express();
 
@@ -32,7 +30,7 @@ app.use(
 );
 
 // Handle errors.
-app.use(function (err, req, res, next) {
+app.use(function (err, req, res) {
   res.status(err.status || 500);
   res.json({ error: err });
 });

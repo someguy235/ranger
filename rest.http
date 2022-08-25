@@ -43,4 +43,4 @@ Authorization: Bearer
 
 ###
 
-GET http://localhost:3001/ranger/api/parks
+GET http://localhost:3002/ranger/api/parks

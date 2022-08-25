@@ -1,9 +1,9 @@
-const express = require("express");
-const multer = require("multer");
-const sharp = require("sharp");
-const xml2js = require("xml2js");
+import express from "express";
+import multer from "multer";
+import sharp from "sharp";
+import xml2js from "xml2js";
 const router = express.Router();
-const { TripModel, ParkModel } = require("../model/model");
+import { TripModel, ParkModel } from "../model/model.mjs";
 
 const upload = multer();
 
@@ -208,4 +208,5 @@ router.delete("/delete" + "/:id", async (req, res) => {
   }
 });
 
-module.exports = router;
+// module.exports = router;
+export default router;

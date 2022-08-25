@@ -1,5 +1,7 @@
-const mongoose = require("mongoose");
-const bcrypt = require("bcrypt");
+// const mongoose = require("mongoose");
+import mongoose from "mongoose";
+// const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
 
 const Schema = mongoose.Schema;
 
@@ -102,8 +104,8 @@ const ParkSchema = new Schema({
   },
 });
 
-const UserModel = mongoose.model("user", UserSchema);
-const TripModel = mongoose.model("trip", TripSchema);
-const ParkModel = mongoose.model("park", ParkSchema);
+export const UserModel = mongoose.model("user", UserSchema);
+export const TripModel = mongoose.model("trip", TripSchema);
+export const ParkModel = mongoose.model("park", ParkSchema);
 
-module.exports = { UserModel, TripModel, ParkModel };
+// module.exports = { UserModel, TripModel, ParkModel };

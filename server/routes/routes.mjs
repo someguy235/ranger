@@ -1,10 +1,10 @@
-const express = require("express");
-const passport = require("passport");
-const jwt = require("jsonwebtoken");
-const dotenv = require("dotenv");
-const jwt_decode = require("jwt-decode");
+import express from "express";
+import passport from "passport";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
+import jwt_decode from "jwt-decode";
 
-const { TripModel, ParkModel, UserModel } = require("../model/model");
+import { TripModel, ParkModel, UserModel } from "../model/model.mjs";
 
 dotenv.config();
 
@@ -86,4 +86,4 @@ router.get("/trips", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;
