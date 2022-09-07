@@ -18,4 +18,4 @@ echo "building app..."
 npm run build
 
 echo "starting server..."
-pm2 start server/ranger-server.js
+pm2 start server/ranger-server.mjs

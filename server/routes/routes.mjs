@@ -3,12 +3,17 @@ import passport from "passport";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import jwt_decode from "jwt-decode";
+import { createClient } from "redis";
 
 import { TripModel, ParkModel, UserModel } from "../model/model.mjs";
 
 dotenv.config();
 
 const router = express.Router();
+
+const redis = createClient();
+redis.on("error", (err) => console.log("Redis Client Error", err));
+await redis.connect();
 
 // router.post(
 //   "/signup",
@@ -63,7 +68,13 @@ router.post("/login", async (req, res, next) => {
 
 router.get("/parks", async (req, res) => {
   try {
-    const parks = await ParkModel.find();
+    const PARKS_KEY = "ranger-parks";
+
+    let parks = await redis.json.get(PARKS_KEY, { path: "." });
+    if (!parks) {
+      parks = await ParkModel.find();
+      await redis.json.set("ranger-parks", ".", parks);
+    }
     res.json(parks);
   } catch (error) {
     console.log(error);
