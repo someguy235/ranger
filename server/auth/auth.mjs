@@ -5,7 +5,7 @@ import { UserModel } from "../model/model.mjs";
 import { Strategy as JWTstrategy } from "passport-jwt";
 import { ExtractJwt } from "passport-jwt";
 import jwt from "jsonwebtoken";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 import dotenv from "dotenv";
 
@@ -29,7 +29,7 @@ passport.use(
           const user = await UserModel.findOne({ _id: token.user._id });
           const refresh = user.refresh;
           if (refresh) {
-            const decode = jwt_decode(refresh);
+            const decode = jwtDecode(refresh);
             const rExp = new Date(decode.exp * 1000);
             if (rExp > now) {
               const newAuth = jwt.sign(

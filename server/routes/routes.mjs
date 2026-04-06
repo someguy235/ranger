@@ -2,7 +2,7 @@ import express from "express";
 import passport from "passport";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
-import jwt_decode from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { createClient } from "redis";
 
 import { TripModel, ParkModel, UserModel } from "../model/model.mjs";
@@ -54,7 +54,7 @@ router.post("/login", async (req, res, next) => {
         );
         if (!result) throw "could not set refresh";
 
-        const decode = jwt_decode(refresh);
+        const decode = jwtDecode(refresh);
 
         res.cookie("refresh", refresh, { httpOnly: true, sameSite: "strict" });
         info.refreshExpire = decode.exp;
