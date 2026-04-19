@@ -45,12 +45,12 @@ router.post("/login", async (req, res, next) => {
         const refresh = jwt.sign(
           { user: body },
           process.env.JWT_REFRESH_SECRET,
-          { expiresIn: "1d" }
+          { expiresIn: "1d" },
         );
 
         const result = await UserModel.findOneAndUpdate(
           { _id: user._id },
-          { refresh }
+          { refresh },
         );
         if (!result) throw "could not set refresh";
 
@@ -70,10 +70,11 @@ router.get("/parks", async (req, res) => {
   try {
     const PARKS_KEY = "ranger-parks";
 
-    let parks = await redis.json.get(PARKS_KEY, { path: "." });
+    const cached = await redis.get(PARKS_KEY);
+    let parks = cached ? JSON.parse(cached) : null;
     if (!parks) {
       parks = await ParkModel.find();
-      await redis.json.set("ranger-parks", ".", parks);
+      await redis.set(PARKS_KEY, JSON.stringify(parks));
     }
     res.json(parks);
   } catch (error) {
