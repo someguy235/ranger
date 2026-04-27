@@ -45,7 +45,8 @@ import L from "leaflet";
 // eslint-disable-next-line
 import KML from "../assets/js/L.KML";
 import { toRaw } from "vue";
-import { mapGetters, mapState } from "vuex";
+import { mapState } from "pinia";
+import { useRangerStore } from "../../store/store";
 
 export default {
   name: "Maps",
@@ -61,8 +62,8 @@ export default {
     };
   },
   computed: {
-    ...mapGetters(["getParkFileData"]),
-    ...mapState([
+    ...mapState(useRangerStore, [
+      "getParkFileData",
       "user",
       "parks",
       "trips",
@@ -86,7 +87,7 @@ export default {
     setupLeafletMap: function () {
       const map = L.map("mapContainer").setView(
         this.defaultCenter,
-        this.defaultZoom
+        this.defaultZoom,
       );
       L.tileLayer(
         "https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}",
@@ -97,7 +98,7 @@ export default {
           id: "mapbox/streets-v11",
           accessToken:
             "pk.eyJ1Ijoic29tZWd1eTIzNSIsImEiOiJjbDU1cm53Y2cwcTVhM2RsOHRhcDgwd2k1In0.tujS3dsElV1hJHylnYQnAQ",
-        }
+        },
       ).addTo(map);
       this.map = map;
     },
@@ -121,7 +122,7 @@ export default {
     },
   },
   watch: {
-    "$store.state.activeTrips": {
+    activeTrips: {
       handler() {
         let mapBounds = null;
         const map = toRaw(this.map);
@@ -163,7 +164,7 @@ export default {
         this.layers = layers;
       },
     },
-    "$store.state.activeParks": {
+    activeParks: {
       handler() {
         const map = toRaw(this.map);
         const markers = toRaw(this.markers);
@@ -189,7 +190,7 @@ export default {
         this.markers = markers;
       },
     },
-    "$store.state.mousedPark": {
+    mousedPark: {
       handler() {
         const map = toRaw(this.map);
         const mouseMarker = toRaw(this.mouseMarker);
@@ -198,7 +199,7 @@ export default {
           map.removeLayer(mouseMarker);
         } else {
           const park = this.parks.filter(
-            (park) => park._id === this.mousedPark
+            (park) => park._id === this.mousedPark,
           )[0];
           const marker = L.marker([park.lat, park.lon], {
             icon: L.icon({

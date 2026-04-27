@@ -8,7 +8,8 @@
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapActions } from "pinia";
+import { useRangerStore } from "../store/store";
 import Home from "./views/Home.vue";
 import HeaderComp from "./components/Header.vue";
 
@@ -19,7 +20,7 @@ export default {
     HeaderComp,
   },
   methods: {
-    ...mapMutations(["setUser", "setToken", "setParks", "setIcons"]),
+    ...mapActions(useRangerStore, ["setUser", "setToken", "setParks", "setIcons"]),
     async getParks() {
       const response = await fetch("/ranger/api/parks", {
         method: "GET",

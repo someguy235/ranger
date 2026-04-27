@@ -25,22 +25,24 @@
       </v-row>
     </v-container>
   </v-form>
-  <v-snackbar v-model="snackMsg">{{ snackMsg }}</v-snackbar>
+  <v-snackbar v-model="showSnack">{{ snackMsg }}</v-snackbar>
 </template>
 
 <script>
-import { mapMutations } from "vuex";
+import { mapActions } from "pinia";
+import { useRangerStore } from "../../store/store";
 export default {
   data() {
     return {
       username: "",
       password: "",
       snackMsg: null,
+      showSnack: false,
     };
   },
   props: ["cancel"],
   methods: {
-    ...mapMutations(["setUser", "setToken"]),
+    ...mapActions(useRangerStore, ["setUser", "setToken"]),
     async login() {
       const response = await fetch("/ranger/api/login", {
         method: "POST",
@@ -63,12 +65,14 @@ export default {
           this.cancel();
         } else {
           this.snackMsg = "something went wrong";
+          this.showSnack = true;
         }
         if (info.refreshExpire) {
           localStorage.setItem("refreshExpire", info.refreshExpire);
         }
       } else {
         this.snackMsg = "something went wrong";
+          this.showSnack = true;
       }
     },
   },

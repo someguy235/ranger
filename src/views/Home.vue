@@ -10,25 +10,29 @@
       <parks />
     </div>
     <v-dialog v-model="showUpload">
-      <upload
-        :getTrips="getTrips"
-        :toggleUpload="toggleUpload"
-        :setSnackMsg="setSnackMsg"
-        :pushData="pushData"
-      />
+      <v-card>
+        <upload
+          :getTrips="getTrips"
+          :toggleUpload="toggleUpload"
+          :setSnackMsg="setSnackMsg"
+          :pushData="pushData"
+        />
+      </v-card>
     </v-dialog>
     <v-dialog v-model="showEdit">
-      <edit
-        :getTrips="getTrips"
-        :toggleEdit="toggleEdit"
-        :toggleConfirmDelete="toggleConfirmDelete"
-        :setSnackMsg="setSnackMsg"
-        :trip="editTrip"
-        :pushData="pushData"
-      />
+      <v-card v-if="editTrip">
+        <edit
+          :getTrips="getTrips"
+          :toggleEdit="toggleEdit"
+          :toggleConfirmDelete="toggleConfirmDelete"
+          :setSnackMsg="setSnackMsg"
+          :trip="editTrip"
+          :pushData="pushData"
+        />
+      </v-card>
     </v-dialog>
     <v-dialog v-model="showConfirmDelete">
-      <div id="delete">
+      <v-card v-if="editTrip" id="delete">
         <v-form @submit.prevent="deleteTrip">
           <v-container>
             <v-row>
@@ -42,7 +46,7 @@
             </v-row>
           </v-container>
         </v-form>
-      </div>
+      </v-card>
     </v-dialog>
     <v-snackbar v-model="showSnackMsg" class="text-center">{{
       snackMsg
@@ -51,7 +55,8 @@
 </template>
 
 <script>
-import { mapGetters, mapMutations, mapState, useStore } from "vuex";
+import { mapActions, mapState } from "pinia";
+import { useRangerStore } from "../../store/store";
 import { useRoute } from "vue-router";
 import { computed } from "@vue/reactivity";
 
@@ -81,14 +86,13 @@ export default {
     Edit,
   },
   computed: {
-    ...mapState(["user", "token", "tripList"]),
-    ...mapGetters(["getTripDates"]),
+    ...mapState(useRangerStore, ["user", "token", "getTripDates"]),
   },
   setup() {
-    const store = useStore();
+    const store = useRangerStore();
     const route = useRoute();
     return {
-      viewUser: computed(() => route.query?.user || store.state.user),
+      viewUser: computed(() => route.query?.user || store.user),
     };
   },
   watch: {
@@ -100,14 +104,14 @@ export default {
     },
   },
   methods: {
-    ...mapMutations(["setUser", "setToken", "setTrips"]),
+    ...mapActions(useRangerStore, ["setUser", "setToken", "setTrips"]),
     async getTrips() {
       if (this.viewUser !== null) {
         const response = await fetch(
           `/ranger/api/trips?user=${this.viewUser}`,
           {
             method: "GET",
-          }
+          },
         );
         const trips = await response.json();
         this.setTrips(trips);

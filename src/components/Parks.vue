@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
+import { mapState, mapActions } from "pinia";
+import { useRangerStore } from "../../store/store";
 
 export default {
   name: "Parks",
@@ -44,8 +45,8 @@ export default {
     },
   },
   computed: {
-    ...mapGetters(["getParkFileData"]),
-    ...mapState([
+    ...mapState(useRangerStore, [
+      "getParkFileData",
       "parks",
       "trips",
       "icons",
@@ -55,7 +56,7 @@ export default {
     ]),
   },
   methods: {
-    ...mapActions(["setActiveParksFilter", "setMousedPark"]),
+    ...mapActions(useRangerStore, ["setActiveParksFilter", "setMousedPark"]),
     getGrayscaleStyle(park) {
       const active = this.activeParks.includes(park._id);
       return active ? "" : "filter:grayscale(1);opacity:.2;";

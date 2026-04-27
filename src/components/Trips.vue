@@ -58,9 +58,8 @@
                 inset
                 hide-details
                 color="blue"
-                :value="trip._id"
-                v-model="activeTripsData"
-                @change="toggleActiveTrip(trip._id)"
+                :model-value="activeTrips.includes(trip._id)"
+                @update:model-value="toggleActiveTrip(trip._id)"
               ></v-switch>
             </v-col>
           </v-row>
@@ -74,7 +73,8 @@
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
+import { mapActions, mapState } from "pinia";
+import { useRangerStore } from "../../store/store";
 import TripInfo from "./TripInfo.vue";
 
 export default {
@@ -84,16 +84,13 @@ export default {
     TripInfo,
   },
   data() {
-    return {
-      activeTripsData: [],
-    };
+    return {};
   },
   computed: {
-    ...mapGetters(["getParkFileData"]),
-    ...mapState(["user", "parks", "trips", "activeTrips"]),
+    ...mapState(useRangerStore, ["getParkFileData", "user", "parks", "trips", "activeTrips"]),
   },
   methods: {
-    ...mapActions(["toggleActiveTrip"]),
+    ...mapActions(useRangerStore, ["toggleActiveTrip"]),
     getParkName(id) {
       const park = this.parks.filter((p) => p._id === id)[0];
       return park.name;

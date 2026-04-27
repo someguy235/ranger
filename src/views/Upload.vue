@@ -92,7 +92,8 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from "pinia";
+import { useRangerStore } from "../../store/store";
 import { ref } from "vue";
 
 export default {
@@ -123,7 +124,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["parks"]),
+    ...mapState(useRangerStore, ["parks"]),
   },
   methods: {
     togglePark(newId) {

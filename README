@@ -1,5 +1,5 @@
 $ brew services start mongodb-community
-$ brew services start redis 
+$ brew services start redis
 $ npm run start
 $ npm run serve
 http://localhost:8080/ranger/?user=ems

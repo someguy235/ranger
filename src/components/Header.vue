@@ -45,8 +45,9 @@
 
 <script>
 import { computed } from "@vue/reactivity";
-import { mapState } from "vuex";
+import { mapState } from "pinia";
 import { useRoute } from "vue-router";
+import { useRangerStore } from "../../store/store";
 
 import Login from "./Login.vue";
 
@@ -56,7 +57,7 @@ export default {
     Login,
   },
   computed: {
-    ...mapState(["user"]),
+    ...mapState(useRangerStore, ["user"]),
   },
   setup() {
     const route = useRoute();
@@ -93,7 +94,8 @@ export default {
   .header-content {
     background-color: #e9baf1;
     background-size: cover !important;
-    background: radial-gradient(
+    background:
+      radial-gradient(
         ellipse at center,
         rgba(0, 0, 0, 0) 0%,
         rgba(0, 0, 0, 0) 37%,
