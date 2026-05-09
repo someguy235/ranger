@@ -28,9 +28,12 @@ export default {
       const parks = await response.json();
       this.setParks(parks);
     },
-    importAll(r) {
+    importAll() {
+      const modules = import.meta.glob("./assets/images/parks/*.png", { eager: true });
       const icons = {};
-      r.keys().forEach((key) => (icons[key.replace("./", "")] = r(key)));
+      Object.entries(modules).forEach(([key, mod]) => {
+        icons[key.replace("./assets/images/parks/", "")] = mod.default;
+      });
       this.setIcons(icons);
     },
   },
@@ -49,7 +52,7 @@ export default {
 
     this.getParks();
 
-    this.importAll(require.context("./assets/images/parks/", true, /\.png$/));
+    this.importAll();
   },
 };
 </script>

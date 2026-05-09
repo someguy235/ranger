@@ -42,8 +42,7 @@
 <script>
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
-// eslint-disable-next-line
-import KML from "../assets/js/L.KML";
+import "../assets/js/L.KML";
 import { toRaw } from "vue";
 import { mapState } from "pinia";
 import { useRangerStore } from "../../store/store";
